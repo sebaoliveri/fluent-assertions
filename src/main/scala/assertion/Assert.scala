@@ -17,7 +17,7 @@ object Assertion {
   import OptionalStringExpAssertionBuilder._
   def assertThat[T](maybeString: Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringConstant(maybeString)
-  def assertThat[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
+  def that[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringVariable(maybeString)
 
   // quantifiable

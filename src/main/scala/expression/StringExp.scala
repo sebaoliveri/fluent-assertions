@@ -3,7 +3,7 @@ package expression
 object StringExp {
   val Blank = ""
   val emailRegex: String = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"
-  val uriRegex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"
+  val uriRegex = "^(https?:\\/\\/)?(www\\.)?([\\w]+\\.)+[\u200C\u200B\\w]{2,63}\\/?$"
   val alphanumericRegex = "^[a-zA-Z0-9]+$"
   val alphabeticRegex = "^[a-zA-Z]+$"
   val numberRegex = "^[0-9]+$"
