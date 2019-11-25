@@ -22,7 +22,7 @@ object QuantifiableOrderedExp {
   def maybeBigDecimalVariable[T](maybeBigDecimal: T => Option[BigDecimal]): OptionalExp[T, Ordered[BigDecimal]] = OptionalExp(maybeBigDecimal)
 }
 
-case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends AnyExp[T,Ordered[R]](func) {
+case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends TypeExp[T,Ordered[R]](func) {
   def isGreaterThan(anotherQuantifiableExp: QuantifiableExp[T,R]): IsGreaterThanExp[T,R] = IsGreaterThanExp(this, anotherQuantifiableExp)
   def isLessThan(anotherQuantifiableExp: QuantifiableExp[T,R]): IsLessThanExp[T, R] = IsLessThanExp(this, anotherQuantifiableExp)
   def isGreaterThanOrEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): IsGreaterThanOrEqualToExp[T, R] = IsGreaterThanOrEqualToExp(this, anotherQuantifiableExp)
@@ -33,7 +33,7 @@ case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends AnyExp[T,O
   def evaluate(context: T): Ordered[R] = func(context)
 }
 
-case class QuantifiableExp[T,R](func: T => R) extends AnyExp[T,R](func) {
+case class QuantifiableExp[T,R](func: T => R) extends TypeExp[T,R](func) {
   override def evaluate(context: T): R = func(context)
 }
 

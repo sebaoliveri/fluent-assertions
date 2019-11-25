@@ -20,6 +20,11 @@ object Assertion {
   def that[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringVariable(maybeString)
 
+  // object
+  import ObjectExpAssertionBuilder._
+  def thatFor[T,R](anObject: T): ObjectExpAssertionBuilder[T,R] = fromObjectConstant(anObject)
+  def thatFor[T,R](anObject: T => R): ObjectExpAssertionBuilder[T,R] = fromObjectVariable(anObject)
+
   // quantifiable
   import QuantifiableExpAssertionBuilder._
   def assertThat[T](int: Int): QuantifiableExpAssertionBuilder[T,Int] =
@@ -95,18 +100,6 @@ object Assertion {
     fromMaybeLocalDateVariable(localDate)
   def assertThat[T](localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] =
     fromMaybeLocalDateTimeVariable(localDateTime)
-
-  // object
-
-  //TODO
-//  def assertIs[T,R](anObject: R, predicate: R => Boolean, otherwise: T => String): Assertion[T] =
-//    Assertion(ObjectExp.objectConstant(anObject).evaluate(predicate), otherwise)
-//
-//  // assertions for testing with pre built failing messages
-//  def thatStartsWith[T](string: String, prefix: String): Assertion[T] =
-//    assertThat(string).startsWith(prefix).otherwise(_ => s"$string does not start with $prefix")
-//  def thatStartsWith[T](string: T => String, prefix: String): Assertion[T] =
-//    assertThat(string).startsWith(prefix).otherwise(_ => s"$string does not start with $prefix")
 }
 
 object Assert {

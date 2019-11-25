@@ -5,7 +5,7 @@ object OptionalExp {
   def maybeStringVariable[T,R](option: T => Option[R]): OptionalExp[T, R] = OptionalExp(option)
 }
 
-case class OptionalExp[T,R](func: T => Option[R]) extends AnyExp[T,Option[R]](func) {
+case class OptionalExp[T,R](func: T => Option[R]) extends TypeExp[T,Option[R]](func) {
   override def evaluate(context: T): Option[R] = func(context)
 }
 

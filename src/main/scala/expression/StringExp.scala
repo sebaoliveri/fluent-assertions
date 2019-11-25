@@ -11,7 +11,7 @@ object StringExp {
   def stringVariable[T](f: T => String): StringExp[T] = StringExp(f)
 }
 
-case class StringExp[T](func: T => String) extends AnyExp[T,String](func) {
+case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
   import StringExp._
   import QuantifiableOrderedExp._
   def isEqualToIgnoringCase(stringExp: StringExp[T]): IsEqualToExp[T,String] = IsEqualToExp(StringExp(func.andThen(_.toUpperCase())), StringExp(stringExp.func.andThen(_.toUpperCase())))
