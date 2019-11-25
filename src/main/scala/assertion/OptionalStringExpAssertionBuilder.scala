@@ -18,9 +18,9 @@ case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String]
       IfDefinedExp[T,String](optionExp),
       (newExpression:BooleanExp[T,Bool], newOperator:((BooleanExp[T,Bool],BooleanExp[T,Bool])=>BooleanExp[T,Bool])) =>
         StringExpAssertionBuilder(stringVariable(optionExp.func.andThen(_.get)), newExpression, newOperator))
-  def wouldEqualTo(string: String): BoolExpAssertionBuilder[T, OptionalStringExpAssertionBuilder[T]] = wouldEqualTo(_ => string)
+  def wouldBeEqualTo(string: String): BoolExpAssertionBuilder[T, OptionalStringExpAssertionBuilder[T]] = wouldEqualTo(_ => string)
   def wouldEqualTo(string: T => String): BoolExpAssertionBuilder[T, OptionalStringExpAssertionBuilder[T]] = newBoolExp(OptionalBoolExp[T,String](optionExp, stringConstant(_).isEqualTo(stringVariable(string))))
-  def wouldEqualToIgnoringCase(string: String): BoolExpAssertionBuilder[T,OptionalStringExpAssertionBuilder[T]] = wouldEqualToIgnoringCase(_ => string)
+  def wouldBeEqualToIgnoringCase(string: String): BoolExpAssertionBuilder[T,OptionalStringExpAssertionBuilder[T]] = wouldEqualToIgnoringCase(_ => string)
   def wouldEqualToIgnoringCase(string: T => String): BoolExpAssertionBuilder[T,OptionalStringExpAssertionBuilder[T]] = newBoolExp(OptionalBoolExp[T,String](optionExp, stringConstant(_).isEqualToIgnoringCase(stringVariable(string))))
   def wouldStartWith(prefix: String): BoolExpAssertionBuilder[T, OptionalStringExpAssertionBuilder[T]] = wouldStartWith(_ => prefix)
   def wouldStartWith(prefix: T => String): BoolExpAssertionBuilder[T, OptionalStringExpAssertionBuilder[T]] = newBoolExp(OptionalBoolExp[T,String](optionExp, stringConstant(_).startsWith(stringVariable(prefix))))

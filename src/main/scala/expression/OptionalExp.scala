@@ -17,5 +17,4 @@ case class IfDefinedExp[T,R](constantExp: OptionalExp[T,R], expression: BooleanE
   override def and(anotherExpression: BooleanExp[T,Bool]): BooleanExp[T,Bool] = copy(expression = expression.and(anotherExpression))
   override def or(anotherExpression: BooleanExp[T,Bool]): BooleanExp[T,Bool] = copy(expression = expression.or(anotherExpression))
   override def evaluate(context: T): Bool = constantExp.evaluate(context).map(_ => expression.evaluate(context)).getOrElse(FalseExp)
-  // TODO line above... what? ignore parameter???
 }

@@ -470,16 +470,16 @@ class StringAssertionSpec extends FlatSpec with Matchers {
       .assert(that("123").isNumber.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that("").isAlphabetic.otherwise("not a number"))
+      .assert(that("").isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
     Assert
-      .assert(that("123 ").isAlphabetic.otherwise("not a number"))
+      .assert(that("123 ").isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
     Assert
-      .assert(that("12$3").isAlphabetic.otherwise("not a number"))
+      .assert(that("12$3").isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
     Assert
-      .assert(that("12a3").isAlphabetic.otherwise("not a number"))
+      .assert(that("12a3").isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
   }
 
