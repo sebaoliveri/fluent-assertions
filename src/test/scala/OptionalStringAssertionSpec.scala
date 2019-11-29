@@ -8,8 +8,8 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "is defined" in {
     Assert.assert(that(Some("sebastian")).isDefined.otherwise("No way it fails...")).expectsToBeTrue()
-    Assert.assert(that(Some("sebastian")).isDefined.startsWith("seba").otherwise("No way it fails...")).expectsToBeTrue()
-    Assert.assert(that(Some("sebastian")).isDefined.startsWith("eba").otherwise("Boom!")).expectsToBeFalseWith("Boom!")
+    Assert.assert(that(Some("sebastian")).isDefined.wouldStartWith("seba").otherwise("No way it fails...")).expectsToBeTrue()
+    Assert.assert(that(Some("sebastian")).isDefined.wouldStartWith("eba").otherwise("Boom!")).expectsToBeFalseWith("Boom!")
     Assert.assert(that(None).isDefined.otherwise("Boom!")).expectsToBeFalseWith("Boom!")
   }
 

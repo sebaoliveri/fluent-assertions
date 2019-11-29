@@ -40,10 +40,8 @@ object OptionalQuantifiableExpAssertionBuilder {
 case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
   extends BoolExpAssertionBuilder[T,OptionalQuantifiableExpAssertionBuilder[T,R]](expression) {
 
-  def isDefined: QuantifiableExpAssertionBuilder[T,R] =
-    QuantifiableExpAssertionBuilder(
-      QuantifiableOrderedExp(optionExp.func.andThen(_.get)),
-      operator(expression, IfDefinedExp[T,Ordered[R]](optionExp)))
+  def isDefined: OptionalQuantifiableExpAssertionBuilder[T,R] =
+    OptionalQuantifiableExpAssertionBuilder(optionExp, operator(expression, IsDefinedExp[T,Ordered[R]](optionExp)))
 
   def wouldBeEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     wouldBeEqualTo(_ => maybeQuantity)

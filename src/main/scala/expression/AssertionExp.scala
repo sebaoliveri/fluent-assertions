@@ -31,7 +31,7 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
 case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehaviour[T] {
 
-  override def and(assertionResult: AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
+  override def and(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
     assertionResult.andSuccessful(this)
 
   override def andSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
@@ -40,7 +40,7 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def andFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
     result
 
-  override def or(assertionResult: AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
+  override def or(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
     assertionResult.orSuccessful(this)
 
   override def orSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
@@ -63,7 +63,7 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
 
-  override def and(assertionResult: AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
+  override def and(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
     assertionResult.andFailure(this)
 
   override def andSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
@@ -72,7 +72,7 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def andFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
     AssertionFailureResult(result.errorMessages ++ errorMessages)
 
-  override def or(assertionResult: AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
+  override def or(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
     assertionResult.orFailure(this)
 
   override def orSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =

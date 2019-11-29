@@ -40,10 +40,8 @@ object OptionalDateExpAssertionBuilder {
 case class OptionalDateExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
   extends BoolExpAssertionBuilder[T,OptionalDateExpAssertionBuilder[T,R]](expression) {
 
-  def isDefined: DateExpAssertionBuilder[T,R] =
-    DateExpAssertionBuilder(
-      QuantifiableOrderedExp(optionExp.func.andThen(_.get)),
-      operator.apply(expression, IfDefinedExp[T,Ordered[R]](optionExp)))
+  def isDefined: OptionalDateExpAssertionBuilder[T,R] =
+    OptionalDateExpAssertionBuilder(optionExp, operator.apply(expression, IsDefinedExp[T,Ordered[R]](optionExp)))
 
   def wouldBeAfter(date: R): OptionalDateExpAssertionBuilder[T,R] =
     wouldBeAfter(_ => date)

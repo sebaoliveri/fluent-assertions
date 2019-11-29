@@ -128,9 +128,9 @@ case class StringExpAssertionBuilder[T](stringExp: StringExp[T], expression: Boo
   def isNotBlank: StringExpAssertionBuilder[T] =
     newWith(stringExp.isNotBlank)
 
-  override def or: StringExpAssertionBuilder[T] =
-    StringExpAssertionBuilder(stringExp, expression, _ or _)
-
   private def newWith(newExpression: BooleanExp[T,Bool]) =
     StringExpAssertionBuilder(stringExp, operator.apply(expression, newExpression))
+
+  override def or: StringExpAssertionBuilder[T] =
+    StringExpAssertionBuilder(stringExp, expression, _ or _)
 }

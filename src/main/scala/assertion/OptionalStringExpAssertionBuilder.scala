@@ -24,10 +24,8 @@ case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String]
 
   import StringExp._
 
-  def isDefined: StringExpAssertionBuilder[T] =
-    StringExpAssertionBuilder(
-      stringVariable(optionExp.func.andThen(_.get)),
-      operator(expression, IfDefinedExp[T,String](optionExp)))
+  def isDefined: OptionalStringExpAssertionBuilder[T] =
+    OptionalStringExpAssertionBuilder(optionExp, operator(expression, IsDefinedExp[T,String](optionExp)))
 
   def wouldBeEqualTo(string: String): OptionalStringExpAssertionBuilder[T] =
     wouldEqualTo(_ => string)
@@ -134,10 +132,10 @@ case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String]
   def wouldBeNotBlank: OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isNotBlank)
 
-  override def or: OptionalStringExpAssertionBuilder[T] =
-    OptionalStringExpAssertionBuilder(optionExp, expression, _ or _)
-
   private def newWith(newExpression: String => BooleanExp[T,Bool]) =
     OptionalStringExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,String](optionExp, newExpression)))
+
+  override def or: OptionalStringExpAssertionBuilder[T] =
+    OptionalStringExpAssertionBuilder(optionExp, expression, _ or _)
 }
