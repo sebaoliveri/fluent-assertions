@@ -14,21 +14,16 @@ Composable assertions with semantic meaning
     val eitherAnEmailOrAPhoneMustBeSpecifiedAlongWithPassword =
       that({userRegistrationForm:UserRegistrationForm => userRegistrationForm.maybeEmail})
           .isDefined
-          .and
           .isEmail
         .orThat({userRegistrationForm:UserRegistrationForm => userRegistrationForm.maybePhoneNumber})
           .isDefined
-          .and
           .isNumber
-          .and
           .isShorterThan(20)
         .otherwise("Any of the email or the phone number must be specified")
       .and(
         that({userRegistrationForm:UserRegistrationForm => userRegistrationForm.password})
           .isNotBlank
-          .and
           .isLongerThan(5)
-          .and
           .isShorterThanOrEqualTo(15)
           .otherwise("The password must be longer than 5 and shorter than 15"))
 
