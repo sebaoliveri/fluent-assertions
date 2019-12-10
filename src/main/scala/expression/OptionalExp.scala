@@ -28,16 +28,4 @@ case class IsDefinedExp[T,R](constantExp: OptionalExp[T,R]) extends BooleanExp[T
   override def evaluate(context: T): Bool =
     Bool(constantExp.evaluate(context).isDefined)
 }
-//case class IfDefinedExp[T,R](constantExp: OptionalExp[T,R], expression: BooleanExp[T,Bool] = new NullBooleanExp[T,Bool]()) extends BooleanExp[T,Bool] {
-//
-//  override def and(anotherExpression: BooleanExp[T,Bool]): BooleanExp[T,Bool] =
-//    copy(expression = expression.and(anotherExpression))
-//
-//  override def or(anotherExpression: BooleanExp[T,Bool]): BooleanExp[T,Bool] =
-//    copy(expression = expression.or(anotherExpression))
-//
-//  override def evaluate(context: T): Bool =
-//    constantExp.evaluate(context)
-//      .map(_ => expression.evaluate(context))
-//      .getOrElse(FalseExp)
-//}
+

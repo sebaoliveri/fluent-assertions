@@ -21,7 +21,6 @@ case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
   import StringExp._
   import QuantifiableOrderedExp._
 
-
   def isEqualToIgnoringCase(stringExp: StringExp[T]): IsEqualToExp[T,String] =
     IsEqualToExp(StringExp(func.andThen(_.toUpperCase())), StringExp(stringExp.func.andThen(_.toUpperCase())))
 
@@ -64,16 +63,16 @@ case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
   def isShorterThan(length: T => Int): IsLessThanExp[T,Int] =
     IsLessThanExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
 
-  def isLongerThanOrEqualTo(length: Int): IsGreaterThanOrEqualToExp[T,Int] =
-    IsGreaterThanOrEqualToExp(intVariable(func.andThen(_.length)), QuantifiableExp(_ => length))
+  def isLongerThanOrEqualTo(length: Int): BooleanExp[T, Bool] =
+    isLongerThanOrEqualTo({_:T => length})
 
-  def isLongerThanOrEqualTo(length: T => Int): IsGreaterThanOrEqualToExp[T,Int] =
+  def isLongerThanOrEqualTo(length: T => Int): BooleanExp[T, Bool] =
     IsGreaterThanOrEqualToExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
 
-  def isShorterThanOrEqualTo(length: Int): IsLessThanOrEqualToExp[T,Int] =
-    IsLessThanOrEqualToExp(intVariable(func.andThen(_.length)), QuantifiableExp(_ => length))
+  def isShorterThanOrEqualTo(length: Int): BooleanExp[T, Bool] =
+    isShorterThanOrEqualTo({_:T => length})
 
-  def isShorterThanOrEqualTo(length: T => Int): IsLessThanOrEqualToExp[T,Int] =
+  def isShorterThanOrEqualTo(length: T => Int): BooleanExp[T, Bool] =
     IsLessThanOrEqualToExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
 
   def isBlank: IsEqualToExp[T,String] =

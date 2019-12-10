@@ -27,6 +27,10 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
   def expectsToBeTrue(): Unit
 
   def expectsToBeFalseWith(expectedErrorMessages: String*): Unit
+
+  def signalIfFailed(exception: List[String] => Throwable): Unit
+
+  def signalFirstFailureIfFailed(exception: String => Throwable): Unit
 }
 
 case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehaviour[T] {
@@ -55,10 +59,14 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def map[T1](f: T => T1): AssertionResultBehaviour[T1] =
     AssertionSuccessfulResult(f(context))
 
-  def expectsToBeTrue(): Unit = {}
+  override def expectsToBeTrue(): Unit = {}
 
-  def expectsToBeFalseWith(expectedErrorMessages: String*): Unit =
+  override def expectsToBeFalseWith(expectedErrorMessages: String*): Unit =
     throw new RuntimeException("Expected to be false, but is true")
+
+  override def signalIfFailed(exception: List[String] => Throwable): Unit = {}
+
+  override def signalFirstFailureIfFailed(exception: String => Throwable): Unit = {}
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -87,10 +95,16 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def map[T1](f: T => T1): AssertionResultBehaviour[T1] =
     AssertionFailureResult(errorMessages)
 
-  def expectsToBeTrue(): Unit =
+  override def expectsToBeTrue(): Unit =
     throw new RuntimeException(s"Expected to be true, but got false with ${errorMessages.mkString(", ")}")
 
-  def expectsToBeFalseWith(expectedErrorMessages: String*): Unit =
+  override def expectsToBeFalseWith(expectedErrorMessages: String*): Unit =
     if (expectedErrorMessages != errorMessages)
       throw new RuntimeException(s"Expected $expectedErrorMessages but got $errorMessages")
+
+  override def signalIfFailed(exception: List[String] => Throwable): Unit =
+    throw exception(errorMessages)
+
+  override def signalFirstFailureIfFailed(exception: String => Throwable): Unit =
+    throw exception(errorMessages.head)
 }

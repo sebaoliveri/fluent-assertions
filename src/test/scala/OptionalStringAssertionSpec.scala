@@ -8,747 +8,747 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "is defined" in {
     Assert.assert(that(Some("sebastian")).isDefined.otherwise("No way it fails...")).expectsToBeTrue()
-    Assert.assert(that(Some("sebastian")).isDefined.wouldStartWith("seba").otherwise("No way it fails...")).expectsToBeTrue()
-    Assert.assert(that(Some("sebastian")).isDefined.wouldStartWith("eba").otherwise("Boom!")).expectsToBeFalseWith("Boom!")
+    Assert.assert(that(Some("sebastian")).isDefined.startsWith("seba").otherwise("No way it fails...")).expectsToBeTrue()
+    Assert.assert(that(Some("sebastian")).isDefined.startsWith("eba").otherwise("Boom!")).expectsToBeFalseWith("Boom!")
     Assert.assert(that(None).isDefined.otherwise("Boom!")).expectsToBeFalseWith("Boom!")
   }
 
-  it should "wouldBeEqualTo constant" in {
+  it should "equalTo constant" in {
     Assert
-      .assert(that(None).wouldBeEqualTo("Sebastian").otherwise("No way it fails..."))
+      .assert(that(None).isEqualTo("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualTo("Sebastian").otherwise("No way it fails..."))
+      .assert(that(Some("Sebastian")).isEqualTo("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
+      .assert(that(Some("Sebastian")).isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualTo(" sebastian").otherwise("Sebastian is not equal to sebastian"))
+      .assert(that(Some("Sebastian")).isEqualTo(" sebastian").otherwise("Sebastian is not equal to sebastian"))
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualTo("sebastian ").otherwise("Sebastian is not equal to sebastian"))
+      .assert(that(Some("Sebastian")).isEqualTo("sebastian ").otherwise("Sebastian is not equal to sebastian"))
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
     Assert
-      .assert(that(Some(" Sebastian")).wouldBeEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
+      .assert(that(Some(" Sebastian")).isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
     Assert
-      .assert(that(Some("Sebastian ")).wouldBeEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
+      .assert(that(Some("Sebastian ")).isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
   }
 
-  it should "wouldBeEqualTo variable" in {
+  it should "equalTo variable" in {
     val customer = Customer(Some("Sebastian"), None, None, None)
     Assert
-      .assert(that({ aCustomer:Customer => aCustomer.name}).wouldBeEqualTo("Sebastian").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({ aCustomer:Customer => aCustomer.name}).isEqualTo("Sebastian").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({ aCustomer:Customer => aCustomer.name}).wouldBeEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
-      .in(customer)
+      .assert(that({ aCustomer:Customer => aCustomer.name}).isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
   }
 
-  it should "wouldBeEqualToIgnoringCase constant" in {
+  it should "equalToIgnoringCase constant" in {
     Assert
-      .assert(that(None).wouldBeEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
+      .assert(that(None).isEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
+      .assert(that(Some("Sebastian")).isEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeEqualToIgnoringCase("SEBASTIAN").otherwise("No way it fails..."))
+      .assert(that(Some("sebastian")).isEqualToIgnoringCase("SEBASTIAN").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("SEBASTIAN")).wouldBeEqualToIgnoringCase("sebastian").otherwise("No way it fails..."))
+      .assert(that(Some("SEBASTIAN")).isEqualToIgnoringCase("sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some(" Sebastian")).wouldBeEqualToIgnoringCase("sebastian").otherwise(" Sebastian is not equal to sebastian"))
+      .assert(that(Some(" Sebastian")).isEqualToIgnoringCase("sebastian").otherwise(" Sebastian is not equal to sebastian"))
       .expectsToBeFalseWith(" Sebastian is not equal to sebastian")
     Assert
-      .assert(that(Some("Sebastian ")).wouldBeEqualToIgnoringCase("sebastian").otherwise("Sebastian  is not equal to sebastian"))
+      .assert(that(Some("Sebastian ")).isEqualToIgnoringCase("sebastian").otherwise("Sebastian  is not equal to sebastian"))
       .expectsToBeFalseWith("Sebastian  is not equal to sebastian")
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualToIgnoringCase(" Sebastian").otherwise("Sebastian is not equal to  sebastian"))
+      .assert(that(Some("Sebastian")).isEqualToIgnoringCase(" Sebastian").otherwise("Sebastian is not equal to  sebastian"))
       .expectsToBeFalseWith("Sebastian is not equal to  sebastian")
     Assert
-      .assert(that(Some("Sebastian")).wouldBeEqualToIgnoringCase("Sebastian ").otherwise("Sebastian is not equal to sebastian "))
+      .assert(that(Some("Sebastian")).isEqualToIgnoringCase("Sebastian ").otherwise("Sebastian is not equal to sebastian "))
       .expectsToBeFalseWith("Sebastian is not equal to sebastian ")
   }
 
-  it should "wouldBeEqualToIgnoringCase variable" in {
+  it should "equalToIgnoringCase variable" in {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldBeEqualToIgnoringCase("SEBASTIAN").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).isEqualToIgnoringCase("SEBASTIAN").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldBeEqualToIgnoringCase("SEBASTIAN ").otherwise("Sebastian is not equal to sebastian "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).isEqualToIgnoringCase("SEBASTIAN ").otherwise("Sebastian is not equal to sebastian "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian is not equal to sebastian ")
   }
 
-  it should "wouldStartWith constant" in {
+  it should "startsWith constant" in {
     Assert
-      .assert(that(None).wouldStartWith("Sebas").otherwise("No way it fails..."))
+      .assert(that(None).startsWith("Sebas").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldStartWith("Sebas").otherwise("No way it fails..."))
+      .assert(that(Some("Sebastian")).startsWith("Sebas").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldStartWith("sebas").otherwise("Sebastian does not start with sebas"))
+      .assert(that(Some("Sebastian")).startsWith("sebas").otherwise("Sebastian does not start with sebas"))
       .expectsToBeFalseWith("Sebastian does not start with sebas")
     Assert
-      .assert(that(Some("Sebastian")).wouldStartWith(" Sebas").otherwise("Sebastian does not start with  Sebas"))
+      .assert(that(Some("Sebastian")).startsWith(" Sebas").otherwise("Sebastian does not start with  Sebas"))
       .expectsToBeFalseWith("Sebastian does not start with  Sebas")
     Assert
-      .assert(that(Some("Sebastian")).wouldStartWith("Sebas ").otherwise("Sebastian does not start with Sebas "))
+      .assert(that(Some("Sebastian")).startsWith("Sebas ").otherwise("Sebastian does not start with Sebas "))
       .expectsToBeFalseWith("Sebastian does not start with Sebas ")
   }
 
-  it should "wouldStartWith variable" in {
+  it should "startsWith variable" in {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWith("sebas").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("sebas").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWith("SEBAS").otherwise("sebastian does not start with SEBAS"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("SEBAS").otherwise("sebastian does not start with SEBAS"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not start with SEBAS")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWith("sebas ").otherwise("sebastian does not start with sebas "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("sebas ").otherwise("sebastian does not start with sebas "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWith(" sebas").otherwise("sebastian does not start with  sebas"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWith(" sebas").otherwise("sebastian does not start with  sebas"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not start with  sebas")
   }
 
-  it should "wouldStartWithIgnoringCase constant" in {
+  it should "startsWithIgnoringCase constant" in {
     Assert
-      .assert(that(None).wouldStartWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
+      .assert(that(None).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldStartWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
+      .assert(that(Some("sebastian")).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("SEBASTIAN")).wouldStartWithIgnoringCase("sebas").otherwise("No way it fails..."))
+      .assert(that(Some("SEBASTIAN")).startsWithIgnoringCase("sebas").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldStartWithIgnoringCase("sebas ").otherwise("sebastian does not start with sebas "))
+      .assert(that(Some("sebastian")).startsWithIgnoringCase("sebas ").otherwise("sebastian does not start with sebas "))
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
-      .assert(that(Some("sebastian")).wouldStartWithIgnoringCase(" sebas").otherwise("sebastian does not start with  sebas"))
+      .assert(that(Some("sebastian")).startsWithIgnoringCase(" sebas").otherwise("sebastian does not start with  sebas"))
       .expectsToBeFalseWith("sebastian does not start with  sebas")
   }
 
-  it should "wouldStartWithIgnoringCase variable" in {
+  it should "startsWithIgnoringCase variable" in {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWithIgnoringCase("sebas ").otherwise("sebastian does not start with sebas "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("sebas ").otherwise("sebastian does not start with sebas "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWithIgnoringCase(" sebas").otherwise("sebastian does not start with  sebas"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase(" sebas").otherwise("sebastian does not start with  sebas"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not start with  sebas")
     val anotherCustomer = Customer(Some("SEBASTIAN"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldStartWithIgnoringCase("sebas").otherwise("No way it fails..."))
-      .in(anotherCustomer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("sebas").otherwise("No way it fails..."))
+      .verifiedIn(anotherCustomer)
       .expectsToBeTrue()
   }
 
-  it should "wouldEndWith constant" in {
+  it should "endsWith constant" in {
     Assert
-      .assert(that(None).wouldEndWith("tian").otherwise("No way it fails..."))
+      .assert(that(None).endsWith("tian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldEndWith("tian").otherwise("No way it fails..."))
+      .assert(that(Some("Sebastian")).endsWith("tian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldEndWith("TIAN").otherwise("Sebastian does not end with TIAN"))
+      .assert(that(Some("Sebastian")).endsWith("TIAN").otherwise("Sebastian does not end with TIAN"))
       .expectsToBeFalseWith("Sebastian does not end with TIAN")
     Assert
-      .assert(that(Some("Sebastian")).wouldEndWith(" tian").otherwise("Sebastian does not end with  tian"))
+      .assert(that(Some("Sebastian")).endsWith(" tian").otherwise("Sebastian does not end with  tian"))
       .expectsToBeFalseWith("Sebastian does not end with  tian")
     Assert
-      .assert(that(Some("Sebastian")).wouldEndWith("tian ").otherwise("Sebastian does not end with tian "))
+      .assert(that(Some("Sebastian")).endsWith("tian ").otherwise("Sebastian does not end with tian "))
       .expectsToBeFalseWith("Sebastian does not end with tian ")
   }
 
-  it should "wouldEndWith variable" in {
+  it should "endsWith variable" in {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWith("tian").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("tian").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWith("TIAN").otherwise("sebastian does not end with TIAN"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("TIAN").otherwise("sebastian does not end with TIAN"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not end with TIAN")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWith("tian ").otherwise("sebastian does not end with tian "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("tian ").otherwise("sebastian does not end with tian "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWith(" tian").otherwise("sebastian does not end with  tian"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWith(" tian").otherwise("sebastian does not end with  tian"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not end with  tian")
   }
 
-  it should "wouldEndWithIgnoringCase constant" in {
+  it should "endsWithIgnoringCase constant" in {
     Assert
-      .assert(that(None).wouldEndWithIgnoringCase("TIAN").otherwise("No way it fails..."))
+      .assert(that(None).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldEndWithIgnoringCase("TIAN").otherwise("No way it fails..."))
+      .assert(that(Some("sebastian")).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("SEBASTIAN")).wouldEndWithIgnoringCase("tian").otherwise("No way it fails..."))
+      .assert(that(Some("SEBASTIAN")).endsWithIgnoringCase("tian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldEndWithIgnoringCase("tian ").otherwise("sebastian does not end with tian "))
+      .assert(that(Some("sebastian")).endsWithIgnoringCase("tian ").otherwise("sebastian does not end with tian "))
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
-      .assert(that(Some("sebastian")).wouldEndWithIgnoringCase(" tian").otherwise("sebastian does not end with  tian"))
+      .assert(that(Some("sebastian")).endsWithIgnoringCase(" tian").otherwise("sebastian does not end with  tian"))
       .expectsToBeFalseWith("sebastian does not end with  tian")
   }
 
-  it should "wouldEndWithIgnoringCase variable" in {
+  it should "endsWithIgnoringCase variable" in {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWithIgnoringCase("TIAN").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWithIgnoringCase("tian ").otherwise("sebastian does not end with tian "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("tian ").otherwise("sebastian does not end with tian "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWithIgnoringCase(" tian").otherwise("sebastian does not end with  tian"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase(" tian").otherwise("sebastian does not end with  tian"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("sebastian does not end with  tian")
     val anotherCustomer = Customer(Some("SEBASTIAN"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldEndWithIgnoringCase("tian").otherwise("No way it fails..."))
-      .in(anotherCustomer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("tian").otherwise("No way it fails..."))
+      .verifiedIn(anotherCustomer)
       .expectsToBeTrue()
   }
 
-  it should "wouldContain constant" in {
+  it should "contains constant" in {
     Assert
-      .assert(that(None).wouldContain("basti").otherwise("No way it fails..."))
+      .assert(that(None).contains("basti").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldContain("basti").otherwise("No way it fails..."))
+      .assert(that(Some("Sebastian")).contains("basti").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldContain("BASTI").otherwise("Sebastian does not contain BASTI"))
+      .assert(that(Some("Sebastian")).contains("BASTI").otherwise("Sebastian does not contain BASTI"))
       .expectsToBeFalseWith("Sebastian does not contain BASTI")
     Assert
-      .assert(that(Some("Sebastian")).wouldContain(" basti").otherwise("Sebastian does not contain  basti"))
+      .assert(that(Some("Sebastian")).contains(" basti").otherwise("Sebastian does not contain  basti"))
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
-      .assert(that(Some("Sebastian")).wouldContain("basti ").otherwise("Sebastian does not contain basti "))
+      .assert(that(Some("Sebastian")).contains("basti ").otherwise("Sebastian does not contain basti "))
       .expectsToBeFalseWith("Sebastian does not contain basti ")
   }
 
-  it should "wouldContain variable" in {
+  it should "contains variable" in {
     val customer = Customer(Some("Sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContain("basti").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).contains("basti").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContain("BASTI").otherwise("Sebastian does not contain BASTI"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).contains("BASTI").otherwise("Sebastian does not contain BASTI"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian does not contain BASTI")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContain(" basti").otherwise("Sebastian does not contain  basti"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).contains(" basti").otherwise("Sebastian does not contain  basti"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContain("basti ").otherwise("Sebastian does not contain basti "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).contains("basti ").otherwise("Sebastian does not contain basti "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian does not contain basti ")
   }
 
-  it should "wouldContainIgnoringCase constant" in {
+  it should "containsIgnoringCase constant" in {
     Assert
-      .assert(that(None).wouldContainIgnoringCase("basti").otherwise("No way it fails..."))
+      .assert(that(None).containsIgnoringCase("basti").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("SEBASTIAN")).wouldContainIgnoringCase("basti").otherwise("No way it fails..."))
+      .assert(that(Some("SEBASTIAN")).containsIgnoringCase("basti").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldContainIgnoringCase("BASTI").otherwise("No way it fails..."))
+      .assert(that(Some("Sebastian")).containsIgnoringCase("BASTI").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("Sebastian")).wouldContainIgnoringCase(" basti").otherwise("Sebastian does not contain  basti"))
+      .assert(that(Some("Sebastian")).containsIgnoringCase(" basti").otherwise("Sebastian does not contain  basti"))
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
-      .assert(that(Some("Sebastian")).wouldContainIgnoringCase("basti ").otherwise("Sebastian does not contain basti "))
+      .assert(that(Some("Sebastian")).containsIgnoringCase("basti ").otherwise("Sebastian does not contain basti "))
       .expectsToBeFalseWith("Sebastian does not contain basti ")
   }
 
-  it should "wouldContainIgnoringCase variable" in {
+  it should "containsIgnoringCase variable" in {
     val customer = Customer(Some("Sebastian"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContainIgnoringCase("basti").otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti").otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContainIgnoringCase(" basti").otherwise("Sebastian does not contain  basti"))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase(" basti").otherwise("Sebastian does not contain  basti"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContainIgnoringCase("basti ").otherwise("Sebastian does not contain basti "))
-      .in(customer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti ").otherwise("Sebastian does not contain basti "))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("Sebastian does not contain basti ")
     val anotherCustomer = Customer(Some("SEBASTIAN"), None, None, None)
     Assert
-      .assert(that({aCustomer:Customer => aCustomer.name}).wouldContainIgnoringCase("basti").otherwise("No way it fails..."))
-      .in(anotherCustomer)
+      .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti").otherwise("No way it fails..."))
+      .verifiedIn(anotherCustomer)
       .expectsToBeTrue()
   }
 
-  it should "wouldBeEmail constant" in {
+  it should "isEmail constant" in {
     Assert
-      .assert(that(None).wouldBeEmail.otherwise("No way it fails..."))
+      .assert(that(None).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("user@domain.com")).wouldBeEmail.otherwise("No way it fails..."))
+      .assert(that(Some("user@domain.com")).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("user@domain.co.in")).wouldBeEmail.otherwise("No way it fails..."))
+      .assert(that(Some("user@domain.co.in")).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("user.name@domain.com")).wouldBeEmail.otherwise("No way it fails..."))
+      .assert(that(Some("user.name@domain.com")).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("user_name@domain.com")).wouldBeEmail.otherwise("No way it fails..."))
+      .assert(that(Some("user_name@domain.com")).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("username@yahoo.corporate.in")).wouldBeEmail.otherwise("No way it fails..."))
+      .assert(that(Some("username@yahoo.corporate.in")).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
 
     Assert
-      .assert(that(Some("")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some("@yahoo.com")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("@yahoo.com")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some("username@")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("username@")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some(".username@yahoo.com")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some(".username@yahoo.com")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some("username@yahoo.com.")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("username@yahoo.com.")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some("username@yahoo..com")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("username@yahoo..com")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some("username@yahoo.c")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("username@yahoo.c")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
     Assert
-      .assert(that(Some("username@yahoo.corporate")).wouldBeEmail.otherwise("malformed email"))
+      .assert(that(Some("username@yahoo.corporate")).isEmail.otherwise("malformed email"))
       .expectsToBeFalseWith("malformed email")
   }
 
-  it should "wouldBeEmail variable" in {
+  it should "isEmail variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), None, None)
     Assert
-      .assert(that({customer:Customer => customer.email}).wouldBeEmail.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.email}).isEmail.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
 
     val anotherCustomer = Customer(Some("david"), Some("david@email.c"), None, None)
     Assert
-      .assert(that({customer:Customer => customer.email}).wouldBeEmail.otherwise("malformed email"))
-      .in(anotherCustomer)
+      .assert(that({customer:Customer => customer.email}).isEmail.otherwise("malformed email"))
+      .verifiedIn(anotherCustomer)
       .expectsToBeFalseWith("malformed email")
   }
 
-  it should "wouldBeUri constant" in {
+  it should "isUri constant" in {
     Assert
-      .assert(that(None).wouldBeUri.otherwise("No way it fails..."))
+      .assert(that(None).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("http://google.com")).wouldBeUri.otherwise("No way it fails..."))
+      .assert(that(Some("http://google.com")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("http://google.com.ar")).wouldBeUri.otherwise("No way it fails..."))
+      .assert(that(Some("http://google.com.ar")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("www.google.com")).wouldBeUri.otherwise("No way it fails..."))
+      .assert(that(Some("www.google.com")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("https://google.com")).wouldBeUri.otherwise("No way it fails..."))
+      .assert(that(Some("https://google.com")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("http://www.google.com")).wouldBeUri.otherwise("No way it fails..."))
+      .assert(that(Some("http://www.google.com")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("http://goo gle.com")).wouldBeUri.otherwise("malformed uri"))
+      .assert(that(Some("http://goo gle.com")).isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
     Assert
-      .assert(that(Some("http://google.com.ar.")).wouldBeUri.otherwise("malformed uri"))
+      .assert(that(Some("http://google.com.ar.")).isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
     Assert
-      .assert(that(Some("http://goo$gle.com.ar")).wouldBeUri.otherwise("malformed uri"))
+      .assert(that(Some("http://goo$gle.com.ar")).isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
   }
 
-  it should "wouldBeUri variable" in {
+  it should "isUri variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.mystory.com"), None)
     Assert
-      .assert(that({customer:Customer => customer.homepage}).wouldBeUri.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("david"), Some("david@email.com"), Some("www.mys$tory.com"), None)
     Assert
-      .assert(that({customer:Customer => customer.homepage}).wouldBeUri.otherwise("malformed uri"))
-      .in(anotherCustomer)
+      .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("malformed uri"))
+      .verifiedIn(anotherCustomer)
       .expectsToBeFalseWith("malformed uri")
   }
 
-  it should "wouldBeAlphanumeric constant" in {
+  it should "isAlphanumeric constant" in {
     Assert
-      .assert(that(None).wouldBeAlphanumeric.otherwise("No way it fails..."))
+      .assert(that(None).isAlphanumeric.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("abc123")).wouldBeAlphanumeric.otherwise("No way it fails..."))
+      .assert(that(Some("abc123")).isAlphanumeric.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("abc")).wouldBeAlphanumeric.otherwise("No way it fails..."))
+      .assert(that(Some("abc")).isAlphanumeric.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("123")).wouldBeAlphanumeric.otherwise("No way it fails..."))
+      .assert(that(Some("123")).isAlphanumeric.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("abc$123")).wouldBeAlphanumeric.otherwise("not alphanumeric"))
+      .assert(that(Some("abc$123")).isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")
     Assert
-      .assert(that(Some("abc 123")).wouldBeAlphanumeric.otherwise("not alphanumeric"))
+      .assert(that(Some("abc 123")).isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")
     Assert
-      .assert(that(Some("abc.123")).wouldBeAlphanumeric.otherwise("not alphanumeric"))
+      .assert(that(Some("abc.123")).isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")
     Assert
-      .assert(that(Some("")).wouldBeAlphanumeric.otherwise("not alphanumeric"))
+      .assert(that(Some("")).isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")
   }
 
-  it should "wouldBeAlphanumeric variable" in {
+  it should "isAlphanumeric variable" in {
     val customer = Customer(Some("sebastian123"), Some("sebastian@email.com"), Some("www.google.com"), None)
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeAlphanumeric.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isAlphanumeric.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("seb$astian"), Some("sebastian@email.com"), Some("www.google.com"), None)
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeAlphanumeric.otherwise("not alphanumeric"))
-      .in(anotherCustomer)
+      .assert(that({customer:Customer => customer.name}).isAlphanumeric.otherwise("not alphanumeric"))
+      .verifiedIn(anotherCustomer)
       .expectsToBeFalseWith("not alphanumeric")
   }
 
-  it should "wouldBeAlphabetic constant" in {
+  it should "isAlphabetic constant" in {
     Assert
-      .assert(that(None).wouldBeAlphabetic.otherwise("No way it fails..."))
+      .assert(that(None).isAlphabetic.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("abc")).wouldBeAlphabetic.otherwise("No way it fails..."))
+      .assert(that(Some("abc")).isAlphabetic.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("ABC")).wouldBeAlphabetic.otherwise("No way it fails..."))
+      .assert(that(Some("ABC")).isAlphabetic.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("xyz")).wouldBeAlphabetic.otherwise("No way it fails..."))
+      .assert(that(Some("xyz")).isAlphabetic.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("XYZ")).wouldBeAlphabetic.otherwise("No way it fails..."))
+      .assert(that(Some("XYZ")).isAlphabetic.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("")).wouldBeAlphabetic.otherwise("not alphabetic"))
+      .assert(that(Some("")).isAlphabetic.otherwise("not alphabetic"))
       .expectsToBeFalseWith("not alphabetic")
     Assert
-      .assert(that(Some("123")).wouldBeAlphabetic.otherwise("not alphabetic"))
+      .assert(that(Some("123")).isAlphabetic.otherwise("not alphabetic"))
       .expectsToBeFalseWith("not alphabetic")
     Assert
-      .assert(that(Some("$")).wouldBeAlphabetic.otherwise("not alphabetic"))
+      .assert(that(Some("$")).isAlphabetic.otherwise("not alphabetic"))
       .expectsToBeFalseWith("not alphabetic")
     Assert
-      .assert(that(Some("ab%c")).wouldBeAlphabetic.otherwise("not alphabetic"))
+      .assert(that(Some("ab%c")).isAlphabetic.otherwise("not alphabetic"))
       .expectsToBeFalseWith("not alphabetic")
     Assert
-      .assert(that(Some("ab1c")).wouldBeAlphabetic.otherwise("not alphabetic"))
+      .assert(that(Some("ab1c")).isAlphabetic.otherwise("not alphabetic"))
       .expectsToBeFalseWith("not alphabetic")
   }
 
-  it should "wouldBeAlphabetic variant" in {
+  it should "isAlphabetic variant" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@gmail.com"), Some("www.sebastian.com"), None)
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeAlphabetic.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isAlphabetic.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("dav3e"), Some("dave@gmail.com"), Some("www.dave.com"), None)
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeAlphabetic.otherwise("not alphabetic"))
-      .in(anotherCustomer)
+      .assert(that({customer:Customer => customer.name}).isAlphabetic.otherwise("not alphabetic"))
+      .verifiedIn(anotherCustomer)
       .expectsToBeFalseWith("not alphabetic")
   }
 
-  it should "wouldBeNumber constant" in {
+  it should "isNumber constant" in {
     Assert
-      .assert(that(None).wouldBeNumber.otherwise("No way it fails..."))
+      .assert(that(None).isNumber.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("123")).wouldBeNumber.otherwise("No way it fails..."))
+      .assert(that(Some("123")).isNumber.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("")).wouldBeNumber.otherwise("not a number"))
+      .assert(that(Some("")).isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
     Assert
-      .assert(that(Some("123 ")).wouldBeNumber.otherwise("not a number"))
+      .assert(that(Some("123 ")).isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
     Assert
-      .assert(that(Some("12$3")).wouldBeNumber.otherwise("not a number"))
+      .assert(that(Some("12$3")).isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
     Assert
-      .assert(that(Some("12a3")).wouldBeNumber.otherwise("not a number"))
+      .assert(that(Some("12a3")).isNumber.otherwise("not a number"))
       .expectsToBeFalseWith("not a number")
   }
 
-  it should "wouldBeNumber variable" in {
+  it should "isNumber variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.age}).wouldBeNumber.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.age}).isNumber.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("dave"), Some("dave@email.com"), Some("www.dave.com"), Some("3a7"))
     Assert
-      .assert(that({customer:Customer => customer.age}).wouldBeNumber.otherwise("not a number"))
-      .in(anotherCustomer)
+      .assert(that({customer:Customer => customer.age}).isNumber.otherwise("not a number"))
+      .verifiedIn(anotherCustomer)
       .expectsToBeFalseWith("not a number")
   }
 
-  it should "wouldBeSameLengthAs constant" in {
+  it should "isSameLengthAs constant" in {
     Assert
-      .assert(that(None).wouldBeSameLengthAs(9).otherwise("No way it fails..."))
+      .assert(that(None).isSameLengthAs(9).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeSameLengthAs(9).otherwise("No way it fails..."))
+      .assert(that(Some("sebastian")).isSameLengthAs(9).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeSameLengthAs(8).otherwise("boom!"))
+      .assert(that(Some("sebastian")).isSameLengthAs(8).otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that(Some("sebastian")).wouldBeSameLengthAs(10).otherwise("boom!"))
+      .assert(that(Some("sebastian")).isSameLengthAs(10).otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeSameLengthAs variable" in {
+  it should "isSameLengthAs variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeSameLengthAs(9).otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isSameLengthAs(9).otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeSameLengthAs(8).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isSameLengthAs(8).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeSameLengthAs(10).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isSameLengthAs(10).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeLongerThan constant" in {
+  it should "isLongerThan constant" in {
     Assert
-      .assert(that(None).wouldBeLongerThan(8).otherwise("No way it fails..."))
+      .assert(that(None).isLongerThan(8).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeLongerThan(8).otherwise("No way it fails..."))
+      .assert(that(Some("sebastian")).isLongerThan(8).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeLongerThan(9).otherwise("boom!"))
+      .assert(that(Some("sebastian")).isLongerThan(9).otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that(Some("sebastian")).wouldBeLongerThan(10).otherwise("boom!"))
+      .assert(that(Some("sebastian")).isLongerThan(10).otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeLongerThan variable" in {
+  it should "isLongerThan variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeLongerThan(8).otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isLongerThan(8).otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeLongerThan(9).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isLongerThan(9).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeLongerThan(10).otherwise("boom!"))
-      .in(customer)
-      .expectsToBeFalseWith("boom!")
-  }
-
-  it should "wouldBeLongerThanOrEqualTo constant" in {
-    Assert
-      .assert(that(None).wouldBeLongerThanOrEqualTo(8).otherwise("No way it fails..."))
-      .expectsToBeTrue()
-    Assert
-      .assert(that(Some("sebastian")).wouldBeLongerThanOrEqualTo(8).otherwise("No way it fails..."))
-      .expectsToBeTrue()
-    Assert
-      .assert(that(Some("sebastian")).wouldBeLongerThanOrEqualTo(9).otherwise("boom!"))
-      .expectsToBeTrue()
-    Assert
-      .assert(that(Some("sebastian")).wouldBeLongerThanOrEqualTo(10).otherwise("boom!"))
+      .assert(that({customer:Customer => customer.name}).isLongerThan(10).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeLongerThanOrEqualTo variable" in {
+  it should "isLongerThanOrEqualTo constant" in {
+    Assert
+      .assert(that(None).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
+      .expectsToBeTrue()
+    Assert
+      .assert(that(Some("sebastian")).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
+      .expectsToBeTrue()
+    Assert
+      .assert(that(Some("sebastian")).isLongerThanOrEqualTo(9).otherwise("boom!"))
+      .expectsToBeTrue()
+    Assert
+      .assert(that(Some("sebastian")).isLongerThanOrEqualTo(10).otherwise("boom!"))
+      .expectsToBeFalseWith("boom!")
+  }
+
+  it should "isLongerThanOrEqualTo variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeLongerThanOrEqualTo(8).otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeLongerThanOrEqualTo(9).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(9).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeLongerThanOrEqualTo(10).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(10).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeShorterThan constant" in {
+  it should "isShorterThan constant" in {
     Assert
-      .assert(that(None).wouldBeShorterThan(10).otherwise("No way it fails..."))
+      .assert(that(None).isShorterThan(10).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeShorterThan(10).otherwise("No way it fails..."))
+      .assert(that(Some("sebastian")).isShorterThan(10).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("sebastian")).wouldBeShorterThan(9).otherwise("boom!"))
+      .assert(that(Some("sebastian")).isShorterThan(9).otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that(Some("sebastian")).wouldBeShorterThan(8).otherwise("boom!"))
+      .assert(that(Some("sebastian")).isShorterThan(8).otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeShorterThan variable" in {
+  it should "isShorterThan variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeShorterThan(10).otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isShorterThan(10).otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeShorterThan(9).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isShorterThan(9).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeShorterThan(8).otherwise("boom!"))
-      .in(customer)
-      .expectsToBeFalseWith("boom!")
-  }
-
-  it should "wouldBeShorterThanOrEqualTo constant" in {
-    Assert
-      .assert(that(None).wouldBeShorterThanOrEqualTo(10).otherwise("No way it fails..."))
-      .expectsToBeTrue()
-    Assert
-      .assert(that(Some("sebastian")).wouldBeShorterThanOrEqualTo(10).otherwise("No way it fails..."))
-      .expectsToBeTrue()
-    Assert
-      .assert(that(Some("sebastian")).wouldBeShorterThanOrEqualTo(9).otherwise("boom!"))
-      .expectsToBeTrue()
-    Assert
-      .assert(that(Some("sebastian")).wouldBeShorterThanOrEqualTo(8).otherwise("boom!"))
+      .assert(that({customer:Customer => customer.name}).isShorterThan(8).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeShorterThanOrEqualTo variable" in {
+  it should "isShorterThanOrEqualTo constant" in {
+    Assert
+      .assert(that(None).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
+      .expectsToBeTrue()
+    Assert
+      .assert(that(Some("sebastian")).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
+      .expectsToBeTrue()
+    Assert
+      .assert(that(Some("sebastian")).isShorterThanOrEqualTo(9).otherwise("boom!"))
+      .expectsToBeTrue()
+    Assert
+      .assert(that(Some("sebastian")).isShorterThanOrEqualTo(8).otherwise("boom!"))
+      .expectsToBeFalseWith("boom!")
+  }
+
+  it should "isShorterThanOrEqualTo variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeShorterThanOrEqualTo(10).otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeShorterThanOrEqualTo(9).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(9).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeShorterThanOrEqualTo(8).otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(8).otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeBlank constant" in {
+  it should "isBlank constant" in {
     Assert
-      .assert(that(None).wouldBeBlank.otherwise("No way it fails..."))
+      .assert(that(None).isBlank.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("")).wouldBeBlank.otherwise("No way it fails..."))
+      .assert(that(Some("")).isBlank.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("  ")).wouldBeBlank.otherwise("No way it fails..."))
+      .assert(that(Some("  ")).isBlank.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("a")).wouldBeBlank.otherwise("boom!"))
+      .assert(that(Some("a")).isBlank.otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeBlank variable" in {
+  it should "isBlank variable" in {
     val customer = Customer(Some(" "), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeBlank.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isBlank.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeBlank.otherwise("No way it fails..."))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isBlank.otherwise("No way it fails..."))
+      .verifiedIn(customer)
       .expectsToBeTrue()
   }
 
-  it should "wouldBeNotBlank constant" in {
+  it should "isNotBlank constant" in {
     Assert
-      .assert(that(None).wouldBeNotBlank.otherwise("boom!"))
+      .assert(that(None).isNotBlank.otherwise("boom!"))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("a")).wouldBeNotBlank.otherwise("boom!"))
+      .assert(that(Some("a")).isNotBlank.otherwise("boom!"))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("")).wouldBeNotBlank.otherwise("boom!"))
+      .assert(that(Some("")).isNotBlank.otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
     Assert
-      .assert(that(Some("  ")).wouldBeNotBlank.otherwise("boom!"))
+      .assert(that(Some("  ")).isNotBlank.otherwise("boom!"))
       .expectsToBeFalseWith("boom!")
   }
 
-  it should "wouldBeNotBlank variable" in {
+  it should "isNotBlank variable" in {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeNotBlank.otherwise("boom!"))
-      .in(customer)
+      .assert(that({customer:Customer => customer.name}).isNotBlank.otherwise("boom!"))
+      .verifiedIn(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("  "), Some("dave@email.com"), Some("www.dave.com"), Some("35"))
     Assert
-      .assert(that({customer:Customer => customer.name}).wouldBeNotBlank.otherwise("boom!"))
-      .in(anotherCustomer)
+      .assert(that({customer:Customer => customer.name}).isNotBlank.otherwise("boom!"))
+      .verifiedIn(anotherCustomer)
       .expectsToBeFalseWith("boom!")
   }
 }

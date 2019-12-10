@@ -6,7 +6,6 @@ import expression._
 object Assertion {
 
   // string
-
   import StringExpAssertionBuilder._
   def that[T](string: String): StringExpAssertionBuilder[T] =
     fromStringConstant(string)
@@ -107,8 +106,19 @@ object Assert {
 }
 
 case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
+
   private val NoContext = new Object().asInstanceOf[T]
-  def expectsToBeTrue(): Unit = in(NoContext).expectsToBeTrue()
-  def expectsToBeFalseWith(errorMessages: String*): Unit = in(NoContext).expectsToBeFalseWith(errorMessages:_*)
-  def in(context: T): AssertionResultBehaviour[T] = expression.evaluate(context)
+
+  def expectsToBeTrue(): Unit =
+    verifiedIn(NoContext).expectsToBeTrue()
+  def expectsToBeFalseWith(errorMessages: String*): Unit =
+    verifiedIn(NoContext).expectsToBeFalseWith(errorMessages:_*)
+
+  def signalIfFailed(exception: List[String] => Throwable): Unit =
+    verifiedIn(NoContext).signalIfFailed(exception)
+  def signalFirstFailureIfFailed(exception: String => Throwable): Unit =
+    verifiedIn(NoContext).signalFirstFailureIfFailed(exception)
+
+  def verified(): AssertionResultBehaviour[T] = verifiedIn(NoContext)
+  def verifiedIn(context: T): AssertionResultBehaviour[T] = expression.evaluate(context)
 }

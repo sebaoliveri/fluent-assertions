@@ -27,109 +27,109 @@ case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String]
   def isDefined: OptionalStringExpAssertionBuilder[T] =
     OptionalStringExpAssertionBuilder(optionExp, operator(expression, IsDefinedExp[T,String](optionExp)))
 
-  def wouldBeEqualTo(string: String): OptionalStringExpAssertionBuilder[T] =
-    wouldEqualTo(_ => string)
+  def isEqualTo(string: String): OptionalStringExpAssertionBuilder[T] =
+    isEqualTo(_ => string)
 
-  def wouldEqualTo(string: T => String): OptionalStringExpAssertionBuilder[T] =
+  def isEqualTo(string: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isEqualTo(stringVariable(string)))
 
-  def wouldBeEqualToIgnoringCase(string: String): OptionalStringExpAssertionBuilder[T] =
-    wouldEqualToIgnoringCase(_ => string)
+  def isEqualToIgnoringCase(string: String): OptionalStringExpAssertionBuilder[T] =
+    isEqualToIgnoringCase(_ => string)
 
-  def wouldEqualToIgnoringCase(string: T => String): OptionalStringExpAssertionBuilder[T] =
+  def isEqualToIgnoringCase(string: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isEqualToIgnoringCase(stringVariable(string)))
 
-  def wouldStartWith(prefix: String): OptionalStringExpAssertionBuilder[T] =
-    wouldStartWith(_ => prefix)
+  def startsWith(prefix: String): OptionalStringExpAssertionBuilder[T] =
+    startsWith(_ => prefix)
 
-  def wouldStartWith(prefix: T => String): OptionalStringExpAssertionBuilder[T] =
+  def startsWith(prefix: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).startsWith(stringVariable(prefix)))
 
-  def wouldStartWithIgnoringCase(prefix: String): OptionalStringExpAssertionBuilder[T] =
-    wouldStartWithIgnoringCase(_ => prefix)
+  def startsWithIgnoringCase(prefix: String): OptionalStringExpAssertionBuilder[T] =
+    startsWithIgnoringCase(_ => prefix)
 
-  def wouldStartWithIgnoringCase(prefix: T => String): OptionalStringExpAssertionBuilder[T] =
+  def startsWithIgnoringCase(prefix: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).startsWithIgnoringCase(stringVariable(prefix)))
 
-  def wouldEndWith(suffix: String): OptionalStringExpAssertionBuilder[T] =
-    wouldEndWith(_ => suffix)
+  def endsWith(suffix: String): OptionalStringExpAssertionBuilder[T] =
+    endsWith(_ => suffix)
 
-  def wouldEndWith(suffix: T => String): OptionalStringExpAssertionBuilder[T] =
+  def endsWith(suffix: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).endsWith(stringVariable(suffix)))
 
-  def wouldEndWithIgnoringCase(suffix: String): OptionalStringExpAssertionBuilder[T] =
-    wouldEndWithIgnoringCase(_ => suffix)
+  def endsWithIgnoringCase(suffix: String): OptionalStringExpAssertionBuilder[T] =
+    endsWithIgnoringCase(_ => suffix)
 
-  def wouldEndWithIgnoringCase(suffix: T => String): OptionalStringExpAssertionBuilder[T] =
+  def endsWithIgnoringCase(suffix: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).endsWithIgnoringCase(stringVariable(suffix)))
 
-  def wouldContain(string: String): OptionalStringExpAssertionBuilder[T] =
-    wouldContain(_ => string)
+  def contains(string: String): OptionalStringExpAssertionBuilder[T] =
+    contains(_ => string)
 
-  def wouldContain(string: T => String): OptionalStringExpAssertionBuilder[T] =
+  def contains(string: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).contains(stringVariable(string)))
 
-  def wouldContainIgnoringCase(string: String): OptionalStringExpAssertionBuilder[T] =
-    wouldContainIgnoringCase(_ => string)
+  def containsIgnoringCase(string: String): OptionalStringExpAssertionBuilder[T] =
+    containsIgnoringCase(_ => string)
 
-  def wouldContainIgnoringCase(string: T => String): OptionalStringExpAssertionBuilder[T] =
+  def containsIgnoringCase(string: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).containsIgnoringCase(stringVariable(string)))
 
-  def wouldMatch(regex: String): OptionalStringExpAssertionBuilder[T] =
-    wouldMatch(_ => regex)
+  def matches(regex: String): OptionalStringExpAssertionBuilder[T] =
+    matches(_ => regex)
 
-  def wouldMatch(regex: T => String): OptionalStringExpAssertionBuilder[T] =
+  def matches(regex: T => String): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).matches(stringVariable(regex)))
 
-  def wouldBeEmail: OptionalStringExpAssertionBuilder[T] =
-    wouldMatch(emailRegex)
+  def isEmail: OptionalStringExpAssertionBuilder[T] =
+    matches(emailRegex)
 
-  def wouldBeUri: OptionalStringExpAssertionBuilder[T] =
-    wouldMatch(uriRegex)
+  def isUri: OptionalStringExpAssertionBuilder[T] =
+    matches(uriRegex)
 
-  def wouldBeAlphanumeric: OptionalStringExpAssertionBuilder[T] =
-    wouldMatch(alphanumericRegex)
+  def isAlphanumeric: OptionalStringExpAssertionBuilder[T] =
+    matches(alphanumericRegex)
 
-  def wouldBeAlphabetic: OptionalStringExpAssertionBuilder[T] =
-    wouldMatch(alphabeticRegex)
+  def isAlphabetic: OptionalStringExpAssertionBuilder[T] =
+    matches(alphabeticRegex)
 
-  def wouldBeNumber: OptionalStringExpAssertionBuilder[T] =
-    wouldMatch(numberRegex)
+  def isNumber: OptionalStringExpAssertionBuilder[T] =
+    matches(numberRegex)
 
-  def wouldBeSameLengthAs(length: Int): OptionalStringExpAssertionBuilder[T] =
-    wouldBeSameLengthAs(_ => length)
+  def isSameLengthAs(length: Int): OptionalStringExpAssertionBuilder[T] =
+    isSameLengthAs(_ => length)
 
-  def wouldBeSameLengthAs(length: T => Int): OptionalStringExpAssertionBuilder[T] =
+  def isSameLengthAs(length: T => Int): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isSameLengthAs(length))
 
-  def wouldBeLongerThan(length: Int): OptionalStringExpAssertionBuilder[T] =
-    wouldBeLongerThan(_ => length)
+  def isLongerThan(length: Int): OptionalStringExpAssertionBuilder[T] =
+    isLongerThan(_ => length)
 
-  def wouldBeLongerThan(length: T => Int): OptionalStringExpAssertionBuilder[T] =
+  def isLongerThan(length: T => Int): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isLongerThan(length))
 
-  def wouldBeShorterThan(length: Int): OptionalStringExpAssertionBuilder[T] =
-    wouldBeShorterThan(_ => length)
+  def isShorterThan(length: Int): OptionalStringExpAssertionBuilder[T] =
+    isShorterThan(_ => length)
 
-  def wouldBeShorterThan(length: T => Int): OptionalStringExpAssertionBuilder[T] =
+  def isShorterThan(length: T => Int): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isShorterThan(length))
 
-  def wouldBeLongerThanOrEqualTo(length: Int): OptionalStringExpAssertionBuilder[T] =
-    wouldBeLongerThanOrEqualTo(_ => length)
+  def isLongerThanOrEqualTo(length: Int): OptionalStringExpAssertionBuilder[T] =
+    isLongerThanOrEqualTo(_ => length)
 
-  def wouldBeLongerThanOrEqualTo(length: T => Int): OptionalStringExpAssertionBuilder[T] =
+  def isLongerThanOrEqualTo(length: T => Int): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isLongerThanOrEqualTo(length))
 
-  def wouldBeShorterThanOrEqualTo(length: Int): OptionalStringExpAssertionBuilder[T] =
-    wouldBeShorterThanOrEqualTo(_ => length)
+  def isShorterThanOrEqualTo(length: Int): OptionalStringExpAssertionBuilder[T] =
+    isShorterThanOrEqualTo(_ => length)
 
-  def wouldBeShorterThanOrEqualTo(length: T => Int): OptionalStringExpAssertionBuilder[T] =
+  def isShorterThanOrEqualTo(length: T => Int): OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isShorterThanOrEqualTo(length))
 
-  def wouldBeBlank: OptionalStringExpAssertionBuilder[T] =
+  def isBlank: OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isBlank)
 
-  def wouldBeNotBlank: OptionalStringExpAssertionBuilder[T] =
+  def isNotBlank: OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isNotBlank)
 
   private def newWith(newExpression: String => BooleanExp[T,Bool]) =
