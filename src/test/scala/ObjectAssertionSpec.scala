@@ -33,17 +33,17 @@ class ObjectAssertionSpec extends FlatSpec with Matchers {
     val context = CustomerContext(Customer("thelma", Some("thelma@email.com"), None))
     Assert
       .assert(thatFor({context:CustomerContext => context.customer}).isTrueThat({ customer:Customer => customer.hasEitherEmailOrPhone }).otherwise("Boom!"))
-      .verifiedIn(context)
+      .in(context)
       .expectsToBeTrue()
     val anotherContext = CustomerContext(Customer("thelma", None, Some("237891239")))
     Assert
       .assert(thatFor({context:CustomerContext => context.customer}).isTrueThat({ customer:Customer => customer.hasEitherEmailOrPhone}).otherwise("Boom!"))
-      .verifiedIn(anotherContext)
+      .in(anotherContext)
       .expectsToBeTrue()
     val yetAnotherContext = CustomerContext(Customer("thelma", None, None))
     Assert
       .assert(thatFor({context:CustomerContext => context.customer}).isTrueThat({ customer:Customer => customer.hasEitherEmailOrPhone}).otherwise("Boom!"))
-      .verifiedIn(yetAnotherContext)
+      .in(yetAnotherContext)
       .expectsToBeFalseWith("Boom!")
   }
 
@@ -63,17 +63,17 @@ class ObjectAssertionSpec extends FlatSpec with Matchers {
     val context = CustomerContext(Customer("sebastian", Some("sebastian@email.com"), None))
     Assert
       .assert(thatFor({context:CustomerContext => context.customer}).isFalseThat({ customer:Customer => customer.hasEitherEmailOrPhone }).otherwise("Boom!"))
-      .verifiedIn(context)
+      .in(context)
       .expectsToBeFalseWith("Boom!")
     val anotherContext = CustomerContext(Customer("sebastian", None, Some("48998765")))
     Assert
       .assert(thatFor({context:CustomerContext => context.customer}).isFalseThat({ customer:Customer => customer.hasEitherEmailOrPhone}).otherwise("Boom!"))
-      .verifiedIn(anotherContext)
+      .in(anotherContext)
       .expectsToBeFalseWith("Boom!")
     val yetAnotherContext = CustomerContext(Customer("sebastian", None, None))
     Assert
       .assert(thatFor({context:CustomerContext => context.customer}).isFalseThat({ customer:Customer => customer.hasEitherEmailOrPhone}).otherwise("Boom!"))
-      .verifiedIn(yetAnotherContext)
+      .in(yetAnotherContext)
       .expectsToBeTrue()
   }
 

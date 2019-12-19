@@ -110,15 +110,16 @@ case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
   private val NoContext = new Object().asInstanceOf[T]
 
   def expectsToBeTrue(): Unit =
-    verifiedIn(NoContext).expectsToBeTrue()
+    in(NoContext).expectsToBeTrue()
   def expectsToBeFalseWith(errorMessages: String*): Unit =
-    verifiedIn(NoContext).expectsToBeFalseWith(errorMessages:_*)
+    in(NoContext).expectsToBeFalseWith(errorMessages:_*)
 
   def signalIfFailed(exception: List[String] => Throwable): Unit =
-    verifiedIn(NoContext).signalIfFailed(exception)
+    in(NoContext).signalIfFailed(exception)
   def signalFirstFailureIfFailed(exception: String => Throwable): Unit =
-    verifiedIn(NoContext).signalFirstFailureIfFailed(exception)
+    in(NoContext).signalFirstFailureIfFailed(exception)
 
-  def verified(): AssertionResultBehaviour[T] = verifiedIn(NoContext)
-  def verifiedIn(context: T): AssertionResultBehaviour[T] = expression.evaluate(context)
+  def in(context: T): AssertionResultBehaviour[T] = expression.evaluate(context)
+  def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
+    in(NoContext).matches(partialFunction)
 }

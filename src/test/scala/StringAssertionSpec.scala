@@ -1,6 +1,7 @@
 import assertion.Assert
 import org.scalatest.{FlatSpec, Matchers}
 import assertion.Assertion._
+import expression.{AssertionFailureResult, AssertionResultBehaviour, AssertionSuccessfulResult, BooleanExp}
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 
@@ -31,11 +32,11 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("Sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({ aCustomer:Customer => aCustomer.name}).isEqualTo("Sebastian").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({ aCustomer:Customer => aCustomer.name}).isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
   }
 
@@ -67,15 +68,16 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).isEqualToIgnoringCase("SEBASTIAN").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).isEqualToIgnoringCase("SEBASTIAN ").otherwise("Sebastian is not equal to sebastian "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian is not equal to sebastian ")
   }
 
   it should "startsWith constant" in {
+
     Assert
       .assert(that("Sebastian").startsWith("Sebas").otherwise("No way it fails..."))
       .expectsToBeTrue()
@@ -92,21 +94,22 @@ class StringAssertionSpec extends FlatSpec with Matchers {
 
   it should "startsWith variable" in {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
+
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("sebas").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("SEBAS").otherwise("sebastian does not start with SEBAS"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with SEBAS")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("sebas ").otherwise("sebastian does not start with sebas "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith(" sebas").otherwise("sebastian does not start with  sebas"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with  sebas")
   }
 
@@ -129,20 +132,20 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("sebas ").otherwise("sebastian does not start with sebas "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase(" sebas").otherwise("sebastian does not start with  sebas"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with  sebas")
     val anotherCustomer = Customer("SEBASTIAN", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("sebas").otherwise("No way it fails..."))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeTrue()
   }
 
@@ -165,19 +168,19 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("tian").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("TIAN").otherwise("sebastian does not end with TIAN"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with TIAN")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("tian ").otherwise("sebastian does not end with tian "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith(" tian").otherwise("sebastian does not end with  tian"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with  tian")
   }
 
@@ -200,20 +203,20 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("tian ").otherwise("sebastian does not end with tian "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase(" tian").otherwise("sebastian does not end with  tian"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with  tian")
     val anotherCustomer = Customer("SEBASTIAN", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("tian").otherwise("No way it fails..."))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeTrue()
   }
 
@@ -236,19 +239,19 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("Sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains("basti").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains("BASTI").otherwise("Sebastian does not contain BASTI"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain BASTI")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains(" basti").otherwise("Sebastian does not contain  basti"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains("basti ").otherwise("Sebastian does not contain basti "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain basti ")
   }
 
@@ -271,20 +274,20 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("Sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase(" basti").otherwise("Sebastian does not contain  basti"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti ").otherwise("Sebastian does not contain basti "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain basti ")
     val anotherCustomer = Customer("SEBASTIAN", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti").otherwise("No way it fails..."))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeTrue()
   }
 
@@ -335,13 +338,13 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({customer:Customer => customer.email}).isEmail.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
 
     val anotherCustomer = Customer("david", "david@email.c", "www.mystory.com", "37")
     Assert
       .assert(that({customer:Customer => customer.email}).isEmail.otherwise("malformed email"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("malformed email")
   }
 
@@ -376,12 +379,12 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
     Assert
       .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer("david", "david@email.com", "www.mys$tory.com", "37")
     Assert
       .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("malformed uri"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("malformed uri")
   }
 
@@ -413,12 +416,12 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian123", "sebastian@email.com", "www.google.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphanumeric.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer("seb$astian", "sebastian@email.com", "www.google.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphanumeric.otherwise("not alphanumeric"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("not alphanumeric")
   }
 
@@ -456,12 +459,12 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@gmail.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphabetic.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer("dav3e", "dave@gmail.com", "www.dave.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphabetic.otherwise("not alphabetic"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("not alphabetic")
   }
 
@@ -487,12 +490,12 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.age}).isNumber.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer("dave", "dave@email.com", "www.dave.com", "3a7")
     Assert
       .assert(that({customer:Customer => customer.age}).isNumber.otherwise("not a number"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("not a number")
   }
 
@@ -512,15 +515,15 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isSameLengthAs(9).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isSameLengthAs(8).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
     Assert
       .assert(that({customer:Customer => customer.name}).isSameLengthAs(10).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -540,15 +543,15 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThan(8).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThan(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThan(10).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -568,15 +571,15 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(10).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -596,15 +599,15 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThan(10).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThan(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThan(8).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -624,15 +627,15 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(8).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -652,11 +655,11 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(" ", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isBlank.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isBlank.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
   }
 
@@ -676,12 +679,12 @@ class StringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer("sebastian", "sebastian@email.com", "www.sebastian.com", "37")
     Assert
       .assert(that({customer:Customer => customer.name}).isNotBlank.otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer("  ", "dave@email.com", "www.dave.com", "35")
     Assert
       .assert(that({customer:Customer => customer.name}).isNotBlank.otherwise("boom!"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("boom!")
   }
 }

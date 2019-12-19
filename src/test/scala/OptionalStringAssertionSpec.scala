@@ -41,11 +41,11 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("Sebastian"), None, None, None)
     Assert
       .assert(that({ aCustomer:Customer => aCustomer.name}).isEqualTo("Sebastian").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({ aCustomer:Customer => aCustomer.name}).isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian is not equal to sebastian")
   }
 
@@ -80,11 +80,11 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).isEqualToIgnoringCase("SEBASTIAN").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).isEqualToIgnoringCase("SEBASTIAN ").otherwise("Sebastian is not equal to sebastian "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian is not equal to sebastian ")
   }
 
@@ -110,19 +110,19 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("sebas").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("SEBAS").otherwise("sebastian does not start with SEBAS"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with SEBAS")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith("sebas ").otherwise("sebastian does not start with sebas "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWith(" sebas").otherwise("sebastian does not start with  sebas"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with  sebas")
   }
 
@@ -148,20 +148,20 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("sebas ").otherwise("sebastian does not start with sebas "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with sebas ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase(" sebas").otherwise("sebastian does not start with  sebas"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not start with  sebas")
     val anotherCustomer = Customer(Some("SEBASTIAN"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).startsWithIgnoringCase("sebas").otherwise("No way it fails..."))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeTrue()
   }
 
@@ -187,19 +187,19 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("tian").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("TIAN").otherwise("sebastian does not end with TIAN"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with TIAN")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith("tian ").otherwise("sebastian does not end with tian "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWith(" tian").otherwise("sebastian does not end with  tian"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with  tian")
   }
 
@@ -225,20 +225,20 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("tian ").otherwise("sebastian does not end with tian "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with tian ")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase(" tian").otherwise("sebastian does not end with  tian"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("sebastian does not end with  tian")
     val anotherCustomer = Customer(Some("SEBASTIAN"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).endsWithIgnoringCase("tian").otherwise("No way it fails..."))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeTrue()
   }
 
@@ -264,19 +264,19 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("Sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains("basti").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains("BASTI").otherwise("Sebastian does not contain BASTI"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain BASTI")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains(" basti").otherwise("Sebastian does not contain  basti"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).contains("basti ").otherwise("Sebastian does not contain basti "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain basti ")
   }
 
@@ -302,20 +302,20 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("Sebastian"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti").otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase(" basti").otherwise("Sebastian does not contain  basti"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain  basti")
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti ").otherwise("Sebastian does not contain basti "))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("Sebastian does not contain basti ")
     val anotherCustomer = Customer(Some("SEBASTIAN"), None, None, None)
     Assert
       .assert(that({aCustomer:Customer => aCustomer.name}).containsIgnoringCase("basti").otherwise("No way it fails..."))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeTrue()
   }
 
@@ -369,13 +369,13 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), None, None)
     Assert
       .assert(that({customer:Customer => customer.email}).isEmail.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
 
     val anotherCustomer = Customer(Some("david"), Some("david@email.c"), None, None)
     Assert
       .assert(that({customer:Customer => customer.email}).isEmail.otherwise("malformed email"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("malformed email")
   }
 
@@ -413,12 +413,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.mystory.com"), None)
     Assert
       .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("david"), Some("david@email.com"), Some("www.mys$tory.com"), None)
     Assert
       .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("malformed uri"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("malformed uri")
   }
 
@@ -453,12 +453,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian123"), Some("sebastian@email.com"), Some("www.google.com"), None)
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphanumeric.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("seb$astian"), Some("sebastian@email.com"), Some("www.google.com"), None)
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphanumeric.otherwise("not alphanumeric"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("not alphanumeric")
   }
 
@@ -499,12 +499,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@gmail.com"), Some("www.sebastian.com"), None)
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphabetic.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("dav3e"), Some("dave@gmail.com"), Some("www.dave.com"), None)
     Assert
       .assert(that({customer:Customer => customer.name}).isAlphabetic.otherwise("not alphabetic"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("not alphabetic")
   }
 
@@ -533,12 +533,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.age}).isNumber.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("dave"), Some("dave@email.com"), Some("www.dave.com"), Some("3a7"))
     Assert
       .assert(that({customer:Customer => customer.age}).isNumber.otherwise("not a number"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("not a number")
   }
 
@@ -561,15 +561,15 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isSameLengthAs(9).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isSameLengthAs(8).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
     Assert
       .assert(that({customer:Customer => customer.name}).isSameLengthAs(10).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -592,15 +592,15 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThan(8).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThan(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThan(10).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -623,15 +623,15 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isLongerThanOrEqualTo(10).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -654,15 +654,15 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThan(10).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThan(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThan(8).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -685,15 +685,15 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(9).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isShorterThanOrEqualTo(8).otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeFalseWith("boom!")
   }
 
@@ -716,11 +716,11 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some(" "), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isBlank.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     Assert
       .assert(that({customer:Customer => customer.name}).isBlank.otherwise("No way it fails..."))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
   }
 
@@ -743,12 +743,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.sebastian.com"), Some("37"))
     Assert
       .assert(that({customer:Customer => customer.name}).isNotBlank.otherwise("boom!"))
-      .verifiedIn(customer)
+      .in(customer)
       .expectsToBeTrue()
     val anotherCustomer = Customer(Some("  "), Some("dave@email.com"), Some("www.dave.com"), Some("35"))
     Assert
       .assert(that({customer:Customer => customer.name}).isNotBlank.otherwise("boom!"))
-      .verifiedIn(anotherCustomer)
+      .in(anotherCustomer)
       .expectsToBeFalseWith("boom!")
   }
 }

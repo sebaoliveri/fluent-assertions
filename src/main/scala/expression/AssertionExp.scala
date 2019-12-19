@@ -31,6 +31,9 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
   def signalIfFailed(exception: List[String] => Throwable): Unit
 
   def signalFirstFailureIfFailed(exception: String => Throwable): Unit
+
+  def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
+    partialFunction.apply(this)
 }
 
 case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehaviour[T] {
