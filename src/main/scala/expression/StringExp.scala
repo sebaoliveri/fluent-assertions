@@ -4,9 +4,9 @@ object StringExp {
 
   val Blank = ""
   val emailRegex: String = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"
-  val uriRegex = "^(https?:\\/\\/)?(www\\.)?([\\w]+\\.)+[\u200C\u200B\\w]{2,63}\\/?$"
-  val alphanumericRegex = "^[a-zA-Z0-9]+$"
-  val alphabeticRegex = "^[a-zA-Z]+$"
+  val uriRegex =  "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+  val alphanumericRegex = "^[a-zA-Z0-9 ]+$"
+  val alphabeticRegex = "^[a-zA-Z ]+$"
   val numberRegex = "^[0-9]+$"
 
   def stringConstant[T](string: => String): StringExp[T] =

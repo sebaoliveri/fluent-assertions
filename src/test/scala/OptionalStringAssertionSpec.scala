@@ -390,8 +390,8 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
       .assert(that(Some("http://google.com.ar")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that(Some("www.google.com")).isUri.otherwise("No way it fails..."))
-      .expectsToBeTrue()
+      .assert(that(Some("www.google.com")).isUri.otherwise("protocol missing"))
+      .expectsToBeFalseWith("protocol missing")
     Assert
       .assert(that(Some("https://google.com")).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
@@ -402,15 +402,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
       .assert(that(Some("http://goo gle.com")).isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
     Assert
-      .assert(that(Some("http://google.com.ar.")).isUri.otherwise("malformed uri"))
-      .expectsToBeFalseWith("malformed uri")
-    Assert
       .assert(that(Some("http://goo$gle.com.ar")).isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
   }
 
   it should "isUri variable" in {
-    val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("www.mystory.com"), None)
+    val customer = Customer(Some("sebastian"), Some("sebastian@email.com"), Some("http://www.mystory.com"), None)
     Assert
       .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("No way it fails..."))
       .in(customer)
@@ -439,8 +436,8 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
       .assert(that(Some("abc$123")).isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")
     Assert
-      .assert(that(Some("abc 123")).isAlphanumeric.otherwise("not alphanumeric"))
-      .expectsToBeFalseWith("not alphanumeric")
+      .assert(that(Some("abc 123")).isAlphanumeric.otherwise("No way it fails..."))
+      .expectsToBeTrue()
     Assert
       .assert(that(Some("abc.123")).isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")

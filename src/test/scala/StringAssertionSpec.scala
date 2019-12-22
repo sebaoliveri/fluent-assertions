@@ -1,7 +1,6 @@
 import assertion.Assert
 import org.scalatest.{FlatSpec, Matchers}
 import assertion.Assertion._
-import expression.{AssertionFailureResult, AssertionResultBehaviour, AssertionSuccessfulResult, BooleanExp}
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 
@@ -356,8 +355,8 @@ class StringAssertionSpec extends FlatSpec with Matchers {
       .assert(that("http://google.com.ar").isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
-      .assert(that("www.google.com").isUri.otherwise("No way it fails..."))
-      .expectsToBeTrue()
+      .assert(that("www.google.com").isUri.otherwise("Protocol missing"))
+      .expectsToBeFalseWith("Protocol missing")
     Assert
       .assert(that("https://google.com").isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
@@ -368,15 +367,12 @@ class StringAssertionSpec extends FlatSpec with Matchers {
       .assert(that("http://goo gle.com").isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
     Assert
-      .assert(that("http://google.com.ar.").isUri.otherwise("malformed uri"))
-      .expectsToBeFalseWith("malformed uri")
-    Assert
       .assert(that("http://goo$gle.com.ar").isUri.otherwise("malformed uri"))
       .expectsToBeFalseWith("malformed uri")
   }
 
   it should "isUrl variable" in {
-    val customer = Customer("sebastian", "sebastian@email.com", "www.mystory.com", "37")
+    val customer = Customer("sebastian", "sebastian@email.com", "http://www.mystory.com", "37")
     Assert
       .assert(that({customer:Customer => customer.homepage}).isUri.otherwise("No way it fails..."))
       .in(customer)
@@ -400,9 +396,6 @@ class StringAssertionSpec extends FlatSpec with Matchers {
       .expectsToBeTrue()
     Assert
       .assert(that("abc$123").isAlphanumeric.otherwise("not alphanumeric"))
-      .expectsToBeFalseWith("not alphanumeric")
-    Assert
-      .assert(that("abc 123").isAlphanumeric.otherwise("not alphanumeric"))
       .expectsToBeFalseWith("not alphanumeric")
     Assert
       .assert(that("abc.123").isAlphanumeric.otherwise("not alphanumeric"))
