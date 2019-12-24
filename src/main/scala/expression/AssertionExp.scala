@@ -30,8 +30,6 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def signalIfFailed(exception: List[String] => Throwable): Unit
 
-  def signalFirstFailureIfFailed(exception: String => Throwable): Unit
-
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     partialFunction.apply(this)
 }
@@ -68,8 +66,6 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
     throw new RuntimeException("Expected to be false, but is true")
 
   override def signalIfFailed(exception: List[String] => Throwable): Unit = {}
-
-  override def signalFirstFailureIfFailed(exception: String => Throwable): Unit = {}
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -107,7 +103,4 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
 
   override def signalIfFailed(exception: List[String] => Throwable): Unit =
     throw exception(errorMessages)
-
-  override def signalFirstFailureIfFailed(exception: String => Throwable): Unit =
-    throw exception(errorMessages.head)
 }

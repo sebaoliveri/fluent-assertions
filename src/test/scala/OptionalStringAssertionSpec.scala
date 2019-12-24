@@ -10,12 +10,12 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
     Assert.assert(that(Some("sebastian")).isDefined.otherwise("No way it fails...")).expectsToBeTrue()
     Assert.assert(that(Some("sebastian")).isDefined.startsWith("seba").otherwise("No way it fails...")).expectsToBeTrue()
     Assert.assert(that(Some("sebastian")).isDefined.startsWith("eba").otherwise("Boom!")).expectsToBeFalseWith("Boom!")
-    Assert.assert(that(None).isDefined.otherwise("Boom!")).expectsToBeFalseWith("Boom!")
+    Assert.assert(that(None:Option[String]).isDefined.otherwise("Boom!")).expectsToBeFalseWith("Boom!")
   }
 
   it should "equalTo constant" in {
     Assert
-      .assert(that(None).isEqualTo("Sebastian").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isEqualTo("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("Sebastian")).isEqualTo("Sebastian").otherwise("No way it fails..."))
@@ -51,7 +51,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "equalToIgnoringCase constant" in {
     Assert
-      .assert(that(None).isEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("Sebastian")).isEqualToIgnoringCase("Sebastian").otherwise("No way it fails..."))
@@ -90,7 +90,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "startsWith constant" in {
     Assert
-      .assert(that(None).startsWith("Sebas").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).startsWith("Sebas").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("Sebastian")).startsWith("Sebas").otherwise("No way it fails..."))
@@ -128,7 +128,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "startsWithIgnoringCase constant" in {
     Assert
-      .assert(that(None).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).startsWithIgnoringCase("SEBAS").otherwise("No way it fails..."))
@@ -167,7 +167,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "endsWith constant" in {
     Assert
-      .assert(that(None).endsWith("tian").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).endsWith("tian").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("Sebastian")).endsWith("tian").otherwise("No way it fails..."))
@@ -205,7 +205,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "endsWithIgnoringCase constant" in {
     Assert
-      .assert(that(None).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).endsWithIgnoringCase("TIAN").otherwise("No way it fails..."))
@@ -244,7 +244,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "contains constant" in {
     Assert
-      .assert(that(None).contains("basti").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).contains("basti").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("Sebastian")).contains("basti").otherwise("No way it fails..."))
@@ -282,7 +282,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "containsIgnoringCase constant" in {
     Assert
-      .assert(that(None).containsIgnoringCase("basti").otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).containsIgnoringCase("basti").otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("SEBASTIAN")).containsIgnoringCase("basti").otherwise("No way it fails..."))
@@ -321,7 +321,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isEmail constant" in {
     Assert
-      .assert(that(None).isEmail.otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isEmail.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("user@domain.com")).isEmail.otherwise("No way it fails..."))
@@ -381,7 +381,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isUri constant" in {
     Assert
-      .assert(that(None).isUri.otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isUri.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("http://google.com")).isUri.otherwise("No way it fails..."))
@@ -421,7 +421,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isAlphanumeric constant" in {
     Assert
-      .assert(that(None).isAlphanumeric.otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isAlphanumeric.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("abc123")).isAlphanumeric.otherwise("No way it fails..."))
@@ -461,7 +461,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isAlphabetic constant" in {
     Assert
-      .assert(that(None).isAlphabetic.otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isAlphabetic.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("abc")).isAlphabetic.otherwise("No way it fails..."))
@@ -507,7 +507,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isNumber constant" in {
     Assert
-      .assert(that(None).isNumber.otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isNumber.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("123")).isNumber.otherwise("No way it fails..."))
@@ -541,7 +541,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isSameLengthAs constant" in {
     Assert
-      .assert(that(None).isSameLengthAs(9).otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isSameLengthAs(9).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).isSameLengthAs(9).otherwise("No way it fails..."))
@@ -572,7 +572,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isLongerThan constant" in {
     Assert
-      .assert(that(None).isLongerThan(8).otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isLongerThan(8).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).isLongerThan(8).otherwise("No way it fails..."))
@@ -603,7 +603,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isLongerThanOrEqualTo constant" in {
     Assert
-      .assert(that(None).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).isLongerThanOrEqualTo(8).otherwise("No way it fails..."))
@@ -634,7 +634,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isShorterThan constant" in {
     Assert
-      .assert(that(None).isShorterThan(10).otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isShorterThan(10).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).isShorterThan(10).otherwise("No way it fails..."))
@@ -665,7 +665,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isShorterThanOrEqualTo constant" in {
     Assert
-      .assert(that(None).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("sebastian")).isShorterThanOrEqualTo(10).otherwise("No way it fails..."))
@@ -696,7 +696,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isBlank constant" in {
     Assert
-      .assert(that(None).isBlank.otherwise("No way it fails..."))
+      .assert(that(None:Option[String]).isBlank.otherwise("No way it fails..."))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("")).isBlank.otherwise("No way it fails..."))
@@ -723,7 +723,7 @@ class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 
   it should "isNotBlank constant" in {
     Assert
-      .assert(that(None).isNotBlank.otherwise("boom!"))
+      .assert(that(None:Option[String]).isNotBlank.otherwise("boom!"))
       .expectsToBeTrue()
     Assert
       .assert(that(Some("a")).isNotBlank.otherwise("boom!"))
