@@ -1,18 +1,16 @@
 package assertion
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
-
 import expression._
-
 import scala.util.{Either, Try}
 
 object Assertion {
 
   // traversable
   import IterableExpAssertionBuilder._
-  def that[T,R](iterable: Iterable[R]): IterableExpAssertionBuilder[T,R] =
+  def that[T,R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
     fromIterableConstant(iterable)
-  def that[T,R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T,R] =
+  def that[T,R](iterable: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
     fromIterableVariable(iterable)
 
   // string

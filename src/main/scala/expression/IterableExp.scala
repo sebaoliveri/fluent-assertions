@@ -4,14 +4,14 @@ import expression.QuantifiableOrderedExp.intVariable
 
 object IterableExp {
 
-  def iterableConstant[T,R](iterable: => Iterable[R]): IterableExp[T,R] =
+  def iterableConstant[T,R](iterable: collection.immutable.Iterable[R]): IterableExp[T,R] =
     iterableVariable(_ => iterable)
 
-  def iterableVariable[T,R](f: T => Iterable[R]): IterableExp[T,R] =
+  def iterableVariable[T,R](f: T => collection.immutable.Iterable[R]): IterableExp[T,R] =
     IterableExp(f)
 }
 
-case class IterableExp[T,R](func: T => Iterable[R]) extends TypeExp[T,Iterable[R]](func) {
+case class IterableExp[T,R](func: T => collection.immutable.Iterable[R]) extends TypeExp[T,collection.immutable.Iterable[R]](func) {
 
   private val and: (Bool,Bool) => Bool = _ and _
   private val or: (Bool,Bool) => Bool = _ or _
@@ -26,7 +26,7 @@ case class IterableExp[T,R](func: T => Iterable[R]) extends TypeExp[T,Iterable[R
   def isEmpty: BooleanExp[T,Bool] =
     NotExp(isNotEmpty)
 
-  override def evaluate(context: T): Iterable[R] = func(context)
+  override def evaluate(context: T): collection.immutable.Iterable[R] = func(context)
 }
 
 case class FoldBoolExp[T,R](iterableExp: IterableExp[T,R], predicate: R => Boolean, operator: (Bool,Bool) => Bool)
