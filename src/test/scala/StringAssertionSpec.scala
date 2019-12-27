@@ -6,6 +6,15 @@ class StringAssertionSpec extends FlatSpec with Matchers {
 
   case class Customer(name: String, email: String, homepage: String, age: String)
 
+  it should "exists any" in {
+    val customers: Seq[String] = List("John", "Pepe")
+    //Assert.assert(that[String,String](customers).existAny(_ == "John").otherwise("PUM")).expectsToBeTrue()
+    //Assert.assert(that[String,String](customers).existAny(_ == "Cucho").otherwise("PUM")).expectsToBeFalseWith("PUM")
+
+    Assert.assert(that[String,String](customers).isNotEmpty.existAny(_ == "John").otherwise("PUM")).expectsToBeTrue()
+    //Assert.assert(that[String,String](customers).isEmpty.otherwise("PUM")).expectsToBeFalseWith("PUM")
+  }
+
   it should "isEqualTo constant" in {
     Assert
       .assert(that("Sebastian").isEqualTo("Sebastian").otherwise("No way it fails..."))

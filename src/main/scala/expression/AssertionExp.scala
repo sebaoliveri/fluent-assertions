@@ -1,6 +1,6 @@
 package expression
 
-import scala.util.Either
+import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String) extends BooleanExp[T,AssertionResultBehaviour[T]] {
 
@@ -21,6 +21,8 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
   def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T]
 
   def toEither: Either[List[String], T]
+
+  def toTry: Try[T]
 
   def map[T1](f: T => T1): AssertionResultBehaviour[T1]
 
@@ -57,6 +59,8 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def toEither: Either[List[String], T] =
     Right(context)
 
+  override def toTry: Try[T] = Success(context)
+
   override def map[T1](f: T => T1): AssertionResultBehaviour[T1] =
     AssertionSuccessfulResult(f(context))
 
@@ -91,6 +95,8 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def toEither: Either[List[String], T] =
     Left(errorMessages)
 
+  override def toTry: Try[T] = Failure(AssertionFailure(errorMessages))
+
   override def map[T1](f: T => T1): AssertionResultBehaviour[T1] =
     AssertionFailureResult(errorMessages)
 
@@ -104,3 +110,5 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def signalIfFailed(exception: List[String] => Throwable): Unit =
     throw exception(errorMessages)
 }
+
+case class AssertionFailure(errorMessages: List[String]) extends RuntimeException

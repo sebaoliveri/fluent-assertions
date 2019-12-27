@@ -1,9 +1,19 @@
 package assertion
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
+
 import expression._
 
+import scala.util.{Either, Try}
+
 object Assertion {
+
+  // traversable
+  import IterableExpAssertionBuilder._
+  def that[T,R](iterable: Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    fromIterableConstant(iterable)
+  def that[T,R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    fromIterableVariable(iterable)
 
   // string
   import StringExpAssertionBuilder._
@@ -102,7 +112,7 @@ object Assertion {
 }
 
 object Assert {
-  def assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) = Assert(expression)
+  def assert[T](expression: Expression[T,AssertionResultBehaviour[T]]): Assert[T] = Assert(expression)
 }
 
 case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
@@ -111,13 +121,21 @@ case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
 
   def expectsToBeTrue(): Unit =
     in(NoContext).expectsToBeTrue()
+
   def expectsToBeFalseWith(errorMessages: String*): Unit =
     in(NoContext).expectsToBeFalseWith(errorMessages:_*)
+
+  def toEither: Either[List[String], T] = in(NoContext).toEither
+
+  def toTry: Try[T] = in(NoContext).toTry
+
+  def map[T1](f: T => T1): AssertionResultBehaviour[T1] = in(NoContext).map(f)
 
   def signalIfFailed(exception: List[String] => Throwable): Unit =
     in(NoContext).signalIfFailed(exception)
 
   def in(context: T): AssertionResultBehaviour[T] = expression.evaluate(context)
+
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     in(NoContext).matches(partialFunction)
 }
