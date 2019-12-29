@@ -24,56 +24,59 @@ case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
   def isEqualToIgnoringCase(stringExp: StringExp[T]): IsEqualToExp[T,String] =
     IsEqualToExp(StringExp(func.andThen(_.toUpperCase())), StringExp(stringExp.func.andThen(_.toUpperCase())))
 
-  def startsWith(stringExp: StringExp[T]): StartsWithExp[T] =
-    StartsWithExp(this, stringExp)
+  def startsWith(stringExp: StringExp[T]): BooleanExp[T,Bool] =
+    IterableExp(func.andThen(_.toIterable)).containsAllInSameOrder(IterableExp(stringExp.func.andThen(_.toIterable)))
 
-  def startsWithIgnoringCase(stringExp: StringExp[T]): StartsWithExp[T] =
-    StartsWithExp(StringExp(func.andThen(_.toUpperCase)), StringExp(stringExp.func.andThen(_.toUpperCase)))
+  def startsWithIgnoringCase(stringExp: StringExp[T]): BooleanExp[T,Bool] =
+    IterableExp(func.andThen(_.toUpperCase).andThen(_.toIterable))
+      .containsAllInSameOrder(IterableExp(stringExp.func.andThen(_.toUpperCase).andThen(_.toIterable)))
 
-  def endsWith(stringExp: StringExp[T]): EndsWithExp[T] =
-    EndsWithExp(this, stringExp)
+  def endsWith(stringExp: StringExp[T]): BooleanExp[T,Bool] =
+    IterableExp(func.andThen(_.toIterable).andThen(_.reverse))
+      .containsAllInSameOrder(IterableExp(stringExp.func.andThen(_.toIterable).andThen(_.reverse)))
 
-  def endsWithIgnoringCase(stringExp: StringExp[T]): EndsWithExp[T] =
-    EndsWithExp(StringExp(func.andThen(_.toUpperCase)), StringExp(stringExp.func.andThen(_.toUpperCase)))
+  def endsWithIgnoringCase(stringExp: StringExp[T]): BooleanExp[T,Bool] =
+    IterableExp(func.andThen(_.toUpperCase).andThen(_.toIterable).andThen(_.reverse))
+      .containsAllInSameOrder(IterableExp(stringExp.func.andThen(_.toUpperCase).andThen(_.toIterable).andThen(_.reverse)))
 
-  def contains(stringExp: StringExp[T]): ContainsStringExp[T] =
-    ContainsStringExp(this, stringExp)
+  def contains(stringExp: StringExp[T]): BooleanExp[T,Bool] =
+    IterableExp(func.andThen(_.toIterable)).containsSomeInSameOrder(IterableExp(stringExp.func.andThen(_.toIterable)))
 
-  def containsIgnoringCase(stringExp: StringExp[T]): ContainsStringExp[T] =
-    ContainsStringExp(StringExp(func.andThen(_.toUpperCase)), StringExp(stringExp.func.andThen(_.toUpperCase)))
+  def containsIgnoringCase(stringExp: StringExp[T]): BooleanExp[T,Bool] =
+    IterableExp(func.andThen(_.toUpperCase).andThen(_.toIterable)).containsSomeInSameOrder(IterableExp(stringExp.func.andThen(_.toUpperCase).andThen(_.toIterable)))
 
   def matches(stringExp: StringExp[T]): MatchesExp[T] =
     MatchesExp(this, stringExp)
 
-  def isSameLengthAs(length: Int): IsEqualToExp[T, Ordered[Int]] =
+  def isSameLengthAs(length: Int): IsEqualToExp[T,Ordered[Int]] =
     isSameLengthAs(_ => length)
 
-  def isSameLengthAs(length: T => Int): IsEqualToExp[T, Ordered[Int]] =
-    IsEqualToExp(intVariable(func.andThen(_.length)), intVariable(length))
+  def isSameLengthAs(length: T => Int): IsEqualToExp[T,Ordered[Int]] =
+    intVariable(func.andThen(_.length)).isEqualTo(intVariable(length))
 
   def isLongerThan(length: Int): IsGreaterThanExp[T,Int] =
-    IsGreaterThanExp(intVariable(func.andThen(_.length)), QuantifiableExp(_ => length))
+    isLongerThan(_ => length)
 
   def isLongerThan(length: T => Int): IsGreaterThanExp[T,Int] =
-    IsGreaterThanExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
+    intVariable(func.andThen(_.length)).isGreaterThan(QuantifiableExp(length))
 
   def isShorterThan(length: Int): IsLessThanExp[T,Int] =
-    IsLessThanExp(intVariable(func.andThen(_.length)), QuantifiableExp(_ => length))
+    isShorterThan(_ => length)
 
   def isShorterThan(length: T => Int): IsLessThanExp[T,Int] =
-    IsLessThanExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
+    intVariable(func.andThen(_.length)).isLessThan(QuantifiableExp(length))
 
-  def isLongerThanOrEqualTo(length: Int): BooleanExp[T, Bool] =
-    isLongerThanOrEqualTo({_:T => length})
+  def isLongerThanOrEqualTo(length: Int): BooleanExp[T,Bool] =
+    isLongerThanOrEqualTo(_ => length)
 
-  def isLongerThanOrEqualTo(length: T => Int): BooleanExp[T, Bool] =
-    IsGreaterThanOrEqualToExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
+  def isLongerThanOrEqualTo(length: T => Int): BooleanExp[T,Bool] =
+    intVariable(func.andThen(_.length)).isGreaterThanOrEqualTo(QuantifiableExp(length))
 
-  def isShorterThanOrEqualTo(length: Int): BooleanExp[T, Bool] =
-    isShorterThanOrEqualTo({_:T => length})
+  def isShorterThanOrEqualTo(length: Int): BooleanExp[T,Bool] =
+    isShorterThanOrEqualTo(_ => length)
 
-  def isShorterThanOrEqualTo(length: T => Int): BooleanExp[T, Bool] =
-    IsLessThanOrEqualToExp(intVariable(func.andThen(_.length)), QuantifiableExp(length))
+  def isShorterThanOrEqualTo(length: T => Int): BooleanExp[T,Bool] =
+    intVariable(func.andThen(_.length)).isLessThanOrEqualTo(QuantifiableExp(length))
 
   def isBlank: IsEqualToExp[T,String] =
     IsEqualToExp(stringVariable(func.andThen(_.trim)), stringConstant(Blank))
@@ -83,24 +86,6 @@ case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
 
   override def evaluate(context: T): String =
     func(context)
-}
-
-case class StartsWithExp[T](left: StringExp[T], right: StringExp[T]) extends BooleanExp[T,Bool] {
-
-  override def evaluate(context: T): Bool =
-    Bool(left.evaluate(context).startsWith(right.evaluate(context)))
-}
-
-case class EndsWithExp[T](left: StringExp[T], right: StringExp[T]) extends BooleanExp[T,Bool] {
-
-  override def evaluate(context: T): Bool =
-    Bool(left.evaluate(context).endsWith(right.evaluate(context)))
-}
-
-case class ContainsStringExp[T](left: StringExp[T], right: StringExp[T]) extends BooleanExp[T,Bool] {
-
-  override def evaluate(context: T): Bool =
-    Bool(left.evaluate(context).contains(right.evaluate(context)))
 }
 
 case class MatchesExp[T](stringExp: StringExp[T], regex: StringExp[T]) extends BooleanExp[T,Bool] {

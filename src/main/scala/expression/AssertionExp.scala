@@ -1,5 +1,7 @@
 package expression
 
+import assertion.AssertionFailureException
+
 import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String) extends BooleanExp[T,AssertionResultBehaviour[T]] {
@@ -24,13 +26,11 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def toTry: Try[T]
 
-  def map[T1](f: T => T1): AssertionResultBehaviour[T1]
-
   def expectsToBeTrue(): Unit
 
   def expectsToBeFalseWith(expectedErrorMessages: String*): Unit
 
-  def signalIfFailed(exception: List[String] => Throwable): Unit
+  def signalIfFailed(): Unit
 
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     partialFunction.apply(this)
@@ -61,15 +61,12 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
 
   override def toTry: Try[T] = Success(context)
 
-  override def map[T1](f: T => T1): AssertionResultBehaviour[T1] =
-    AssertionSuccessfulResult(f(context))
-
   override def expectsToBeTrue(): Unit = {}
 
   override def expectsToBeFalseWith(expectedErrorMessages: String*): Unit =
     throw new RuntimeException("Expected to be false, but is true")
 
-  override def signalIfFailed(exception: List[String] => Throwable): Unit = {}
+  override def signalIfFailed(): Unit = {}
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -95,10 +92,7 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def toEither: Either[List[String], T] =
     Left(errorMessages)
 
-  override def toTry: Try[T] = Failure(AssertionFailure(errorMessages))
-
-  override def map[T1](f: T => T1): AssertionResultBehaviour[T1] =
-    AssertionFailureResult(errorMessages)
+  override def toTry: Try[T] = Failure(AssertionFailureException(errorMessages))
 
   override def expectsToBeTrue(): Unit =
     throw new RuntimeException(s"Expected to be true, but got false with ${errorMessages.mkString(", ")}")
@@ -107,8 +101,7 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
     if (expectedErrorMessages != errorMessages)
       throw new RuntimeException(s"Expected $expectedErrorMessages but got $errorMessages")
 
-  override def signalIfFailed(exception: List[String] => Throwable): Unit =
-    throw exception(errorMessages)
+  override def signalIfFailed(): Unit =
+    throw AssertionFailureException(errorMessages)
 }
 
-case class AssertionFailure(errorMessages: List[String]) extends RuntimeException

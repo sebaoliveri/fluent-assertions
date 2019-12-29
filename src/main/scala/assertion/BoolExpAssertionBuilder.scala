@@ -8,6 +8,11 @@ abstract class BoolExpAssertionBuilder[T,U <: BoolExpAssertionBuilder[T,U]](expr
 
   def or: U
 
+  def andThat[R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = andThat(_ => iterable)
+  def andThat[R](iterable: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ and _)
+  def orThat[R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = orThat(_ => iterable)
+  def orThat[R](iterable: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ or _)
+
   def andThat(quantity: Int): QuantifiableExpAssertionBuilder[T,Int] = andThat(_ => quantity)
   def andThat(quantity: T => Int): QuantifiableExpAssertionBuilder[T,Int] = andQuantifiableExp(quantity.andThen(new RichInt(_)))
   def andThat(quantity: Long): QuantifiableExpAssertionBuilder[T,Long] = andThat(_ => quantity)

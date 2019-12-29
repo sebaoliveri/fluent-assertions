@@ -132,7 +132,7 @@ case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String]
   def isNotBlank: OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isNotBlank)
 
-  private def newWith(newExpression: String => BooleanExp[T,Bool]) =
+  private def newWith(newExpression: String => BooleanExp[T,Bool]): OptionalStringExpAssertionBuilder[T] =
     OptionalStringExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,String](optionExp, newExpression)))
 

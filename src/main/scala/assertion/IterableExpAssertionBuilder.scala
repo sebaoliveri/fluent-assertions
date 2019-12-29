@@ -1,6 +1,6 @@
 package assertion
 
-import expression.{Bool, BooleanExp, IterableExp, NullBooleanExp}
+import expression.{Bool, BooleanExp, IterableExp, NullBooleanExp, ObjectExp}
 
 object IterableExpAssertionBuilder {
   import IterableExp._
@@ -21,11 +21,55 @@ object IterableExpAssertionBuilder {
 case class IterableExpAssertionBuilder[T,R](iterableExp: IterableExp[T,R], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
   extends BoolExpAssertionBuilder[T,IterableExpAssertionBuilder[T,R]](expression) {
 
-  def forAll(predicate: R => Boolean): IterableExpAssertionBuilder[T,R] =
+  import IterableExp._
+
+  def forAll(predicate: (R,Int) => Boolean): IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.forAll(predicate))
 
-  def existAny(predicate: R => Boolean): IterableExpAssertionBuilder[T,R] =
+  def existAny(predicate: (R,Int) => Boolean): IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.existAny(predicate))
+
+  def containsAllOrdered(objects: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsAllInSameOrder(iterableConstant(objects)))
+
+  def containsAllOrdered(objects: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsAllInSameOrder(iterableVariable(objects)))
+
+  def containsAll(objects: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsAll(iterableConstant(objects)))
+
+  def containsAll(objects: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsAll(iterableVariable(objects)))
+
+  def doesNotContainAnyOf(objects: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.doesNotContainAnyOf(iterableConstant(objects)))
+
+  def doesNotContainAnyOf(objects: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.doesNotContainAnyOf(iterableVariable(objects)))
+
+  def containsAnyOf(objects: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsAnyOf(iterableConstant(objects)))
+
+  def containsAnyOf(objects: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsAnyOf(iterableVariable(objects)))
+
+  def contains(anObject: R): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.contains(ObjectExp(_ => anObject)))
+
+  def contains(anObject: T => R): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.contains(ObjectExp(anObject)))
+
+  def doesNotContain(anObject: R): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.doesNotContain(ObjectExp(_ => anObject)))
+
+  def doesNotContain(anObject: T => R): IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.doesNotContain(ObjectExp(anObject)))
+
+  def containsNoDuplicates: IterableExpAssertionBuilder[T,R] =
+    newWith(iterableExp.containsNoDuplicates)
+
+  def containsNoDuplicatesMatching[R1](criteria: R => R1): IterableExpAssertionBuilder[T, R] =
+    newWith(iterableExp.containsNoDuplicatesMatching(criteria))
 
   def isNotEmpty: IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.isNotEmpty)
