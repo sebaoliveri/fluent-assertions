@@ -8,6 +8,8 @@ abstract class BoolExpAssertionBuilder[T,U <: BoolExpAssertionBuilder[T,U]](expr
 
   def or: U
 
+  //TODO add boolean expressions to concat
+
   def andThat[R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = andThat(_ => iterable)
   def andThat[R](iterable: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ and _)
   def orThat[R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = orThat(_ => iterable)

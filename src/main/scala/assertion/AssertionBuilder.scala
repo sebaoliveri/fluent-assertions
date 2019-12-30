@@ -4,6 +4,12 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
 
 object AssertionBuilder {
 
+  import BooleanExpAssertionBuilder._
+  def that[T](bool: Boolean): BooleanExpAssertionBuilder[T] =
+    fromBooleanConstant(bool)
+  def that[T](bool: T => Boolean): BooleanExpAssertionBuilder[T] =
+    fromBooleanVariable(bool)
+
   // traversable
   import IterableExpAssertionBuilder._
   def that[T,R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T,R] =

@@ -2,19 +2,10 @@
 import assertion.Assert
 import org.scalatest.{FlatSpec, Matchers}
 import assertion.AssertionBuilder._
-import expression.{AssertionFailureResult, AssertionSuccessfulResult}
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 
   case class Customer(name: String, email: String, homepage: String, age: String)
-
-  it should "kk" in {
-    val customers: collection.immutable.Iterable[Customer] = List(Customer("sebas","","",""),Customer("lau","","",""))
-    Assert.assert(that(customers).containsNoDuplicatesMatching(_.name).otherwise("PUM")).matches {
-      case AssertionSuccessfulResult(_) => println("Ok")
-      case AssertionFailureResult(errorMessages) => println(errorMessages)
-    }
-  }
 
   it should "isEqualTo constant" in {
     Assert
