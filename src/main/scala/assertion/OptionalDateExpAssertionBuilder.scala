@@ -31,14 +31,14 @@ object OptionalDateExpAssertionBuilder {
     OptionalDateExpAssertionBuilder(maybeLocalDateTimeVariable(maybeLocalDateTime))
 
   def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]]): OptionalDateExpAssertionBuilder[T,R] =
-    OptionalDateExpAssertionBuilder(optionalExp, new NullBooleanExp[T,Bool]())
+    OptionalDateExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())
 
-  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: BooleanExp[T,Bool]): OptionalDateExpAssertionBuilder[T,R] =
-    new OptionalDateExpAssertionBuilder(optionalExp, new NullBooleanExp[T,Bool](), _ and _)
+  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool]): OptionalDateExpAssertionBuilder[T,R] =
+    new OptionalDateExpAssertionBuilder(optionalExp, new NullExp[T,Bool](), _ and _)
 }
 
-case class OptionalDateExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
-  extends BoolExpAssertionBuilder[T,OptionalDateExpAssertionBuilder[T,R]](expression) {
+case class OptionalDateExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+  extends AssertionBuilder[T,OptionalDateExpAssertionBuilder[T,R]](expression) {
 
   def isDefined: OptionalDateExpAssertionBuilder[T,R] =
     OptionalDateExpAssertionBuilder(optionExp, operator.apply(expression, IsDefinedExp[T,Ordered[R]](optionExp)))
@@ -82,7 +82,7 @@ case class OptionalDateExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered
   override def or: OptionalDateExpAssertionBuilder[T, R] =
     OptionalDateExpAssertionBuilder(optionExp, expression, _ or _)
 
-  private def newWith(newExpression: Ordered[R] => BooleanExp[T,Bool]) =
+  private def newWith(newExpression: Ordered[R] => LogicalOperatorsExp[T,Bool]) =
     OptionalDateExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,Ordered[R]](optionExp, newExpression)))
 }

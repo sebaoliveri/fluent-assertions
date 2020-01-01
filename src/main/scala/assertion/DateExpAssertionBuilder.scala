@@ -32,14 +32,14 @@ object DateExpAssertionBuilder {
     DateExpAssertionBuilder(localDateTimeVariable(localDateTime))
 
   def apply[T,R](dateExp: QuantifiableOrderedExp[T,R]): DateExpAssertionBuilder[T,R] =
-    DateExpAssertionBuilder(dateExp, new NullBooleanExp[T,Bool]())
+    DateExpAssertionBuilder(dateExp, new NullExp[T,Bool]())
 
-  def apply[T,R](dateExp: QuantifiableOrderedExp[T,R], expression: BooleanExp[T,Bool]): DateExpAssertionBuilder[T,R] =
+  def apply[T,R](dateExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): DateExpAssertionBuilder[T,R] =
     new DateExpAssertionBuilder(dateExp, expression, _ and _)
 }
 
-case class DateExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
-  extends BoolExpAssertionBuilder[T,DateExpAssertionBuilder[T,R]](expression) {
+case class DateExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+  extends AssertionBuilder[T,DateExpAssertionBuilder[T,R]](expression) {
 
   def isAfter(date: R): DateExpAssertionBuilder[T,R] =
     isAfter(_ => date)
@@ -80,6 +80,6 @@ case class DateExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[
   override def or: DateExpAssertionBuilder[T, R] =
     DateExpAssertionBuilder(quantifiableExp, expression, _ or _)
 
-  private def newWith(newExpression: BooleanExp[T,Bool]) =
+  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]) =
     DateExpAssertionBuilder(quantifiableExp, operator.apply(expression, newExpression))
 }

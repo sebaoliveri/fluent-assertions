@@ -1,6 +1,6 @@
 import assertion.Assert
-import org.scalatest.{FlatSpec, Matchers}
 import assertion.AssertionBuilder._
+import org.scalatest.{FlatSpec, Matchers}
 
 class OptionalStringAssertionSpec extends FlatSpec with Matchers {
 

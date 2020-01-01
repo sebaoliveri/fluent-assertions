@@ -1,10 +1,19 @@
 package expression
 
-trait BooleanExp[T,R <: LogicalOperators[R]] extends Expression[T,R] {
+object BooleanExp {
 
-  def and(expression: BooleanExp[T,R]): BooleanExp[T,R] =
-    AndExp[T,R](left = this, right = expression)
+  def boolConstant[T](bool: => Boolean): BooleanExp[T] =
+    boolVariable(_ => bool)
 
-  def or(expression: BooleanExp[T,R]): BooleanExp[T,R] =
-    OrExp[T,R](left = this, right = expression)
+  def boolVariable[T](f: T => Boolean): BooleanExp[T] =
+    BooleanExp(f)
+}
+
+case class BooleanExp[T](func: T => Boolean) extends TypeExp[T,Boolean](func) {
+
+  def isTrue: IsEqualToExp[T,Boolean] = IsEqualToExp(ObjectExp(func), ObjectExp((_:T) => true))
+
+  def isFalse: NotExp[T] = NotExp(isTrue)
+
+  override def evaluate(context: T): Boolean = func(context)
 }

@@ -31,14 +31,14 @@ object QuantifiableExpAssertionBuilder {
     QuantifiableExpAssertionBuilder(bigDecimalVariable(bigDecimal))
 
   def apply[T,R](quantifiableExp: QuantifiableOrderedExp[T,R]): QuantifiableExpAssertionBuilder[T,R] =
-    QuantifiableExpAssertionBuilder(quantifiableExp, new NullBooleanExp[T,Bool]())
+    QuantifiableExpAssertionBuilder(quantifiableExp, new NullExp[T,Bool]())
 
-  def apply[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: BooleanExp[T,Bool]): QuantifiableExpAssertionBuilder[T,R] =
-    new QuantifiableExpAssertionBuilder(quantifiableExp, new NullBooleanExp[T,Bool](), _ and _)
+  def apply[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): QuantifiableExpAssertionBuilder[T,R] =
+    new QuantifiableExpAssertionBuilder(quantifiableExp, new NullExp[T,Bool](), _ and _)
 }
 
-case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
-  extends BoolExpAssertionBuilder[T,QuantifiableExpAssertionBuilder[T,R]](expression) {
+case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+  extends AssertionBuilder[T,QuantifiableExpAssertionBuilder[T,R]](expression) {
 
   def isEqualTo(number: R): QuantifiableExpAssertionBuilder[T,R] =
     isEqualTo(_ => number)
@@ -85,6 +85,6 @@ case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrd
   override def or: QuantifiableExpAssertionBuilder[T, R] =
     QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ or _)
 
-  private def newWith(newExpression: BooleanExp[T,Bool]) =
+  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]) =
     QuantifiableExpAssertionBuilder(quantifiableExp, operator.apply(expression, newExpression))
 }

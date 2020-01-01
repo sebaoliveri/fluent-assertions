@@ -31,14 +31,14 @@ object OptionalQuantifiableExpAssertionBuilder {
     OptionalQuantifiableExpAssertionBuilder(maybeBigDecimalVariable(maybeBigDecimal))
 
   def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]]): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    OptionalQuantifiableExpAssertionBuilder(optionalExp, new NullBooleanExp[T,Bool]())
+    OptionalQuantifiableExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())
 
-  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: BooleanExp[T,Bool]): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool]): OptionalQuantifiableExpAssertionBuilder[T,R] =
     new OptionalQuantifiableExpAssertionBuilder(optionalExp, expression, _ and _)
 }
 
-case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
-  extends BoolExpAssertionBuilder[T,OptionalQuantifiableExpAssertionBuilder[T,R]](expression) {
+case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+  extends AssertionBuilder[T,OptionalQuantifiableExpAssertionBuilder[T,R]](expression) {
 
   def isDefined: OptionalQuantifiableExpAssertionBuilder[T,R] =
     OptionalQuantifiableExpAssertionBuilder(optionExp, operator(expression, IsDefinedExp[T,Ordered[R]](optionExp)))
@@ -88,7 +88,7 @@ case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T
   override def or: OptionalQuantifiableExpAssertionBuilder[T, R] =
     OptionalQuantifiableExpAssertionBuilder(optionExp, expression, _ or _)
 
-  private def newWith(newExpression: Ordered[R] => BooleanExp[T,Bool]) =
+  private def newWith(newExpression: Ordered[R] => LogicalOperatorsExp[T,Bool]) =
     OptionalQuantifiableExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,Ordered[R]](optionExp, newExpression)))
 }

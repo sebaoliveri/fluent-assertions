@@ -1,9 +1,9 @@
 package assertion
 
-import expression.{Bool, BoolExp, BooleanExp, NullBooleanExp}
+import expression.{Bool, BooleanExp, LogicalOperatorsExp, NullExp}
 
 object BooleanExpAssertionBuilder {
-  import BoolExp._
+  import BooleanExp._
 
   def fromBooleanConstant[T](boolean: Boolean): BooleanExpAssertionBuilder[T]=
     BooleanExpAssertionBuilder(boolConstant(boolean))
@@ -11,15 +11,17 @@ object BooleanExpAssertionBuilder {
   def fromBooleanVariable[T](boolean: T => Boolean): BooleanExpAssertionBuilder[T]=
     BooleanExpAssertionBuilder(boolVariable(boolean))
 
-  def apply[T](boolExp: BoolExp[T]): BooleanExpAssertionBuilder[T] =
-    BooleanExpAssertionBuilder(boolExp, new NullBooleanExp[T,Bool]())
+  def apply[T](boolExp: BooleanExp[T]): BooleanExpAssertionBuilder[T] =
+    BooleanExpAssertionBuilder(boolExp, new NullExp[T,Bool]())
 
-  def apply[T](boolExp: BoolExp[T], expression: BooleanExp[T,Bool]): BooleanExpAssertionBuilder[T] =
+  def apply[T](boolExp: BooleanExp[T], expression: LogicalOperatorsExp[T,Bool]): BooleanExpAssertionBuilder[T] =
     new BooleanExpAssertionBuilder(boolExp, expression, _ and _)
 }
 
-case class BooleanExpAssertionBuilder[T](boolExp: BoolExp[T], expression: BooleanExp[T,Bool], operator: (BooleanExp[T,Bool], BooleanExp[T,Bool]) => BooleanExp[T,Bool])
-  extends BoolExpAssertionBuilder[T,BooleanExpAssertionBuilder[T]](expression) {
+case class BooleanExpAssertionBuilder[T](boolExp: BooleanExp[T],
+                                         expression: LogicalOperatorsExp[T,Bool],
+                                         operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+  extends AssertionBuilder[T,BooleanExpAssertionBuilder[T]](expression) {
 
   def isTrue: BooleanExpAssertionBuilder[T] =
     BooleanExpAssertionBuilder(boolExp, operator.apply(expression, boolExp.isTrue))

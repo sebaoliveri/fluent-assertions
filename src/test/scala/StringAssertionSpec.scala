@@ -1,11 +1,19 @@
 
 import assertion.Assert
-import org.scalatest.{FlatSpec, Matchers}
 import assertion.AssertionBuilder._
+import org.scalatest.{FlatSpec, Matchers}
+import expression.{QuantifiableExp, StringExp}
+import extension.QuantifiableExt._
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 
   case class Customer(name: String, email: String, homepage: String, age: String)
+
+  it should "pasar cosas" in {
+    val customerAges: Iterable[Int] = List(5, 35, 28)
+
+    Assert.assert(that(customerAges).forAll(_.isInInclusiveRange(4, 100)).otherwise("caca")).signalIfFailed()
+  }
 
   it should "isEqualTo constant" in {
     Assert
