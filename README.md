@@ -1,12 +1,12 @@
 ## Fluent assertions
 
 
-###Motivation
+### Motivation
 A long time ago, I was taught that real developers do not use IF. Of course, there are times when IF statements can not be avoided and this happens when evaluating two objects of different domains. In all other cases they can be replaced by polimorfism.
 
 __fluent-assertions__ _is the result of materializing my motivation to propose an assertion model to reify assertions as first class objects._ 
 
-###Simple Usage
+### Simple Usage
 
 Raise an _AssertionFailureException_ describing all the errors if User can not be instantiated because of invalid construction: 
 
@@ -27,7 +27,7 @@ You can build your own assertions in your business logic from any types, passing
 
 Assertions can be composed with __and__ and __or__ operators  
 
-###Assertions can be also evaluated in a context 
+### Assertions can be also evaluated in a context 
 
 Here we expect the user to fill a user registration form fulfilling certain business criteria:
 
@@ -53,9 +53,6 @@ Here we expect the user to fill a user registration form fulfilling certain busi
           .isShorterThanOrEqualTo(15)
           .otherwise("The password must be longer than 5 and shorter than 15"))
 
-
-      
-      
 ```
 
 Given the assertion previously written you can pattern match:
