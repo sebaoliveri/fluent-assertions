@@ -9,6 +9,16 @@ class StringAssertionSpec extends FlatSpec with Matchers {
 
   case class Customer(name: String, email: String, homepage: String, age: String)
 
+  case class User(name: String, email: String, password: String) {
+    Assert.assert(that(name).isNotBlank.otherwise("The name is required")
+      .and(that(name).isAlphabetic.otherwise("The name must contain alphabetic chars only"))
+      .and(that(email).isNotBlank.isEmail.otherwise("The email is required"))
+      .and(that(email).isEmail.otherwise("The email is not valid"))
+      .and(that(password).isNotBlank.otherwise("The password is expected"))
+      .and(that(password).isLongerThanOrEqualTo(7).isShorterThanOrEqualTo(20).otherwise("Password length must be between 7 and 20")))
+      .signalIfFailed()
+  }
+
   it should "pasar cosas" in {
     val customerAges: Iterable[Int] = List(5, 35, 28)
 

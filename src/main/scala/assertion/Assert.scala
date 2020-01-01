@@ -11,7 +11,7 @@ case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
 
   private val NoContext = new Object().asInstanceOf[T]
 
-  def toEither: Either[List[String], T] = inNoContext.toEither
+  def toEither: Either[AssertionFailureException, T] = inNoContext.toEither
 
   def toTry: Try[T] = inNoContext.toTry
 

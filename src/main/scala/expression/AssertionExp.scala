@@ -22,7 +22,7 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T]
 
-  def toEither: Either[List[String], T]
+  def toEither: Either[AssertionFailureException, T]
 
   def toTry: Try[T]
 
@@ -56,7 +56,7 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
     this
 
-  override def toEither: Either[List[String], T] =
+  override def toEither: Either[AssertionFailureException, T] =
     Right(context)
 
   override def toTry: Try[T] = Success(context)
@@ -89,8 +89,8 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
     AssertionFailureResult(result.errorMessages ++ errorMessages)
 
-  override def toEither: Either[List[String], T] =
-    Left(errorMessages)
+  override def toEither: Either[AssertionFailureException, T] =
+    Left(AssertionFailureException(errorMessages))
 
   override def toTry: Try[T] = Failure(AssertionFailureException(errorMessages))
 
@@ -104,4 +104,3 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def signalIfFailed(): Unit =
     throw AssertionFailureException(errorMessages)
 }
-
