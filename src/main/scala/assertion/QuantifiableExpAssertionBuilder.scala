@@ -34,7 +34,7 @@ object QuantifiableExpAssertionBuilder {
     QuantifiableExpAssertionBuilder(quantifiableExp, new NullExp[T,Bool]())
 
   def apply[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): QuantifiableExpAssertionBuilder[T,R] =
-    new QuantifiableExpAssertionBuilder(quantifiableExp, new NullExp[T,Bool](), _ and _)
+    new QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ and _)
 }
 
 case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
@@ -81,6 +81,9 @@ case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrd
 
   def isInExclusiveRange(min: T => R, max: T => R): QuantifiableExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isInInclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
+
+  def isPercentage: QuantifiableExpAssertionBuilder[T,R] =
+    isInInclusiveRange(0.asInstanceOf[R], 100.asInstanceOf[R])
 
   override def or: QuantifiableExpAssertionBuilder[T, R] =
     QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ or _)

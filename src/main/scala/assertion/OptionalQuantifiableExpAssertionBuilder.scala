@@ -85,6 +85,9 @@ case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T
   def wouldBeInExclusiveRange(min: T => R, max: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isInExclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
 
+  def isPercentage: OptionalQuantifiableExpAssertionBuilder[T, R] =
+    wouldBeInInclusiveRange(0.asInstanceOf[R], 100.asInstanceOf[R])
+
   override def or: OptionalQuantifiableExpAssertionBuilder[T, R] =
     OptionalQuantifiableExpAssertionBuilder(optionExp, expression, _ or _)
 
