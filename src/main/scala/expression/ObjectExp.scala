@@ -9,8 +9,4 @@ object ObjectExp {
     ObjectExp(anObject)
 }
 
-case class ObjectExp[T,R <: Any](func: T => R) extends TypeExp[T,R](func) {
-
-  override def evaluate(context: T): R =
-    func(context)
-}
+case class ObjectExp[T,R <: Any](func: T => R) extends AnyExp[T,R](func)

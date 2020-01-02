@@ -52,7 +52,7 @@ object QuantifiableOrderedExp {
     OptionalExp(maybeBigDecimal)
 }
 
-case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends TypeExp[T,Ordered[R]](func) {
+case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends AnyExp[T,Ordered[R]](func) {
 
   def isGreaterThan(anotherQuantifiableExp: QuantifiableExp[T,R]): IsGreaterThanExp[T,R] =
     IsGreaterThanExp(this, anotherQuantifiableExp)
@@ -77,14 +77,9 @@ case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends TypeExp[T,
 
   def isNotEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): NotExp[T] =
     NotExp(IsQuantifiableEqualToExp(this, anotherQuantifiableExp))
-
-  def evaluate(context: T): Ordered[R] = func(context)
 }
 
-case class QuantifiableExp[T,R](func: T => R) extends TypeExp[T,R](func) {
-
-  override def evaluate(context: T): R = func(context)
-}
+case class QuantifiableExp[T,R](func: T => R) extends AnyExp[T,R](func)
 
 case class IsGreaterThanExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends LogicalOperatorsExp[T,Bool] {
 

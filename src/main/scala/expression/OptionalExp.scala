@@ -9,11 +9,7 @@ object OptionalExp {
     OptionalExp(option)
 }
 
-case class OptionalExp[T,R](func: T => Option[R]) extends TypeExp[T,Option[R]](func) {
-
-  override def evaluate(context: T): Option[R] =
-    func(context)
-}
+case class OptionalExp[T,R](func: T => Option[R]) extends AnyExp[T,Option[R]](func)
 
 case class OptionalBoolExp[T,R](constantExp: OptionalExp[T,R], expressionProvider: R => LogicalOperatorsExp[T,Bool]) extends LogicalOperatorsExp[T,Bool] {
 

@@ -16,7 +16,7 @@ object StringExp {
     StringExp(f)
 }
 
-case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
+case class StringExp[T](func: T => String) extends AnyExp[T,String](func) {
 
   import StringExp._
   import QuantifiableOrderedExp._
@@ -83,9 +83,6 @@ case class StringExp[T](func: T => String) extends TypeExp[T,String](func) {
 
   def isNotBlank: NotExp[T] =
     NotExp(isBlank)
-
-  override def evaluate(context: T): String =
-    func(context)
 }
 
 case class MatchesExp[T](stringExp: StringExp[T], regex: StringExp[T]) extends LogicalOperatorsExp[T,Bool] {

@@ -12,7 +12,7 @@ object IterableExp {
     IterableExp(f)
 }
 
-case class IterableExp[T,R](func: T => Iterable[R]) extends TypeExp[T,Iterable[R]](func) {
+case class IterableExp[T,R](func: T => Iterable[R]) extends AnyExp[T,Iterable[R]](func) {
 
   import ObjectExp._
 
@@ -55,8 +55,6 @@ case class IterableExp[T,R](func: T => Iterable[R]) extends TypeExp[T,Iterable[R
     IsQuantifiableEqualToExp(intVariable(func.andThen(_.size)), QuantifiableExp(_ => 0))
 
   def isNotEmpty: LogicalOperatorsExp[T,Bool] = NotExp(isEmpty)
-
-  override def evaluate(context: T): Iterable[R] = func(context)
 }
 
 case class FoldIterableExp[T,R](iterableExp: IterableExp[T,R],
