@@ -1,6 +1,6 @@
 package assertion
 
-import expression.{Bool, LogicalOperatorsExp, IsGreaterThanExp, IterableExp, NullExp, ObjectExp}
+import expression.{Bool, IterableExp, LogicalOperatorsExp, NullExp, ObjectExp}
 
 object IterableExpAssertionBuilder {
   import IterableExp._
@@ -69,9 +69,6 @@ case class IterableExpAssertionBuilder[T,R](iterableExp: IterableExp[T,R], expre
 
   def containsNoDuplicates: IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.containsNoDuplicates)
-
-  def containsNoDuplicatesMatching[R1](criteria: R => R1): IterableExpAssertionBuilder[T, R] =
-    newWith(iterableExp.containsNoDuplicatesMatching(criteria))
 
   def isNotEmpty: IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.isNotEmpty)

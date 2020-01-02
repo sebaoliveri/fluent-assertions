@@ -51,9 +51,6 @@ case class IterableExp[T,R](func: T => Iterable[R]) extends TypeExp[T,Iterable[R
   def containsNoDuplicates: LogicalOperatorsExp[T,Bool] =
     intVariable(func.andThen(_.size)).isEqualTo(QuantifiableExp(func.andThen(_.toSet).andThen(_.size)))
 
-  def containsNoDuplicatesMatching[R1](criteria: R => R1): LogicalOperatorsExp[T,Bool] = // TODO matching?
-    intVariable(func.andThen(_.size)).isEqualTo(QuantifiableExp(func.andThen(_.map(criteria)).andThen(_.toSet).andThen(_.size)))
-
   def isEmpty: LogicalOperatorsExp[T,Bool] =
     IsQuantifiableEqualToExp(intVariable(func.andThen(_.size)), QuantifiableExp(_ => 0))
 

@@ -1,8 +1,11 @@
 package assertion
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
+
 import scala.runtime.{RichDouble, RichInt, RichLong}
 import expression._
+
+import scala.util.{Either, Try}
 
 object AssertionBuilder {
 
@@ -32,11 +35,6 @@ object AssertionBuilder {
     fromMaybeStringConstant(maybeString)
   def that[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringVariable(maybeString)
-
-  // object
-  import ObjectExpAssertionBuilder._
-  def thatFor[T,R](anObject: T): ObjectExpAssertionBuilder[T,R] = fromObjectConstant(anObject)
-  def thatFor[T,R](anObject: T => R): ObjectExpAssertionBuilder[T,R] = fromObjectVariable(anObject)
 
   // quantifiable
   import QuantifiableExpAssertionBuilder._
@@ -221,4 +219,31 @@ abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: Logica
 
   def otherwise(errorMsg: String): AssertionExp[T] = AssertionExp(expression, { _:T => errorMsg})
   def otherwise(errorMsg: T => String): AssertionExp[T] = AssertionExp(expression, errorMsg)
+}
+
+object Assert {
+  def assert[T](expression: Expression[T,AssertionResultBehaviour[T]]): Assert[T] = Assert(expression)
+}
+
+case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
+
+  private val NoContext = new Object().asInstanceOf[T]
+
+  def toEither: Either[AssertionFailureException, T] = inNoContext.toEither
+
+  def toTry: Try[T] = inNoContext.toTry
+
+  def signalIfFailed(): Unit = inNoContext.signalIfFailed()
+
+  def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
+    inNoContext.matches(partialFunction)
+
+  def in(context: T): AssertionResultBehaviour[T] = expression.evaluate(context)
+
+  def expectsToBeTrue(): Unit = inNoContext.expectsToBeTrue()
+
+  def expectsToBeFalseWith(errorMessages: String*): Unit =
+    inNoContext.expectsToBeFalseWith(errorMessages:_*)
+
+  def inNoContext: AssertionResultBehaviour[T] = in(NoContext)
 }
