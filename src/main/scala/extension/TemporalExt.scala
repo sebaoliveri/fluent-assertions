@@ -4,7 +4,7 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
 
 import expression.{Bool, IsQuantifiableEqualToExp, LogicalOperatorsExp, QuantifiableExp}
 
-class TemporalExt {
+object TemporalExt {
 
   implicit class InstantExtensions(instant: Instant) {
 
