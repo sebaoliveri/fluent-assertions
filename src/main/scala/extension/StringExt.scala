@@ -8,39 +8,42 @@ object StringExt {
 
   implicit class StringExtensions(string: String) {
 
-    def isEqualToIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def equalsTo(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+      stringConstant(string).isEqualTo(stringConstant(anotherString))
+
+    def equalsToIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).isEqualToIgnoringCase(stringConstant(anotherString))
 
-    def startsWith(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def startsWithPrefix(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).startsWith(stringConstant(anotherString))
 
-    def startsWithIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def startsWithPrefixIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).startsWithIgnoringCase(stringConstant(anotherString))
 
-    def endsWith(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def endsWithSuffix(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).endsWith(stringConstant(anotherString))
 
-    def endsWithIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def endsWithSuffixIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).endsWithIgnoringCase(stringConstant(anotherString))
 
-    def contains(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def containsString(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).contains(stringConstant(anotherString))
 
-    def containsIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
+    def containsStringIgnoringCase(anotherString: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).containsIgnoringCase(stringConstant(anotherString))
 
-    def matches(regex: String): LogicalOperatorsExp[Unit,Bool] =
+    def matchesRegex(regex: String): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).matches(stringConstant(regex))
 
-    def isEmail: LogicalOperatorsExp[Unit, Bool] = matches(emailRegex)
+    def isEmail: LogicalOperatorsExp[Unit, Bool] = matchesRegex(emailRegex)
 
-    def isUri: LogicalOperatorsExp[Unit, Bool] = matches(uriRegex)
+    def isUri: LogicalOperatorsExp[Unit, Bool] = matchesRegex(uriRegex)
 
-    def isAlphanumeric: LogicalOperatorsExp[Unit, Bool] = matches(alphanumericRegex)
+    def isAlphanumeric: LogicalOperatorsExp[Unit, Bool] = matchesRegex(alphanumericRegex)
 
-    def isAlphabetic: LogicalOperatorsExp[Unit, Bool] = matches(alphabeticRegex)
+    def isAlphabetic: LogicalOperatorsExp[Unit, Bool] = matchesRegex(alphabeticRegex)
 
-    def isNumber: LogicalOperatorsExp[Unit, Bool] = matches(numberRegex)
+    def isNumber: LogicalOperatorsExp[Unit, Bool] = matchesRegex(numberRegex)
 
     def isSameLengthAs(length: Int): LogicalOperatorsExp[Unit,Bool] =
       stringConstant(string).isSameLengthAs(length)
