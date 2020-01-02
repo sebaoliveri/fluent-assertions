@@ -25,6 +25,9 @@ object QuantifiableExt {
 
     def isInExclusiveRange(min: Int, max: Int): LogicalOperatorsExp[Unit,Bool] =
       intConstant(int).isInExclusiveRange(QuantifiableExp(_ => min), QuantifiableExp(_ => max))
+
+    def isPercentage: LogicalOperatorsExp[Unit,Bool] =
+      isInInclusiveRange(0, 100)
   }
 
   implicit class LongExtensions(long: Long) {
@@ -46,6 +49,9 @@ object QuantifiableExt {
 
     def isInExclusiveRange(min: Long, max: Long): LogicalOperatorsExp[Unit,Bool] =
       longConstant(long).isInExclusiveRange(QuantifiableExp(_ => min), QuantifiableExp(_ => max))
+
+    def isPercentage: LogicalOperatorsExp[Unit,Bool] =
+      isInInclusiveRange(0, 100)
   }
 
   implicit class DoubleExtensions(double: Double) {
@@ -67,6 +73,9 @@ object QuantifiableExt {
 
     def isInExclusiveRange(min: Double, max: Double): LogicalOperatorsExp[Unit,Bool] =
       doubleConstant(double).isInExclusiveRange(QuantifiableExp(_ => min), QuantifiableExp(_ => max))
+
+    def isPercentage: LogicalOperatorsExp[Unit,Bool] =
+      isInInclusiveRange(0, 100)
   }
 
   implicit class BigDecimalExtensions(bigDecimal: BigDecimal) {
@@ -88,5 +97,8 @@ object QuantifiableExt {
 
     def isInExclusiveRange(min: BigDecimal, max: BigDecimal): LogicalOperatorsExp[Unit,Bool] =
       bigDecimalConstant(bigDecimal).isInExclusiveRange(QuantifiableExp(_ => min), QuantifiableExp(_ => max))
+
+    def isPercentage: LogicalOperatorsExp[Unit,Bool] =
+      isInInclusiveRange(BigDecimal(0), BigDecimal(100))
   }
 }
