@@ -6,6 +6,9 @@ import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String) extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
 
+  def ifPassesAssert(assertionExp: AssertionExp[T]): LogicalOperatorsExp[T,AssertionResultBehaviour[T]] =
+    FlatMapExp(left = this, right = assertionExp)
+
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     expression.evaluate(context).thenElse(
       AssertionSuccessfulResult(context),
@@ -34,6 +37,8 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     partialFunction.apply(this)
+
+  def flatMap[U](f: T => AssertionResultBehaviour[U]): AssertionResultBehaviour[U]
 }
 
 case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehaviour[T] {
@@ -67,6 +72,9 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
     throw new RuntimeException("Expected to be false, but is true")
 
   override def signalIfFailed(): Unit = {}
+
+  override def flatMap[U](f: T => AssertionResultBehaviour[U]): AssertionResultBehaviour[U] =
+    f(context)
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -103,4 +111,7 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
 
   override def signalIfFailed(): Unit =
     throw AssertionFailureException(errorMessages)
+
+  override def flatMap[U](f: T => AssertionResultBehaviour[U]): AssertionResultBehaviour[U] =
+    this.asInstanceOf[AssertionResultBehaviour[U]]
 }

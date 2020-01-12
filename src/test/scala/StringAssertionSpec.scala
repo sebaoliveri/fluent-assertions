@@ -2,8 +2,6 @@
 import assertion.Assert
 import assertion.AssertionBuilder._
 import org.scalatest.{FlatSpec, Matchers}
-import expression.{QuantifiableExp, StringExp}
-import extension.QuantifiableExt._
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 

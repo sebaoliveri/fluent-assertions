@@ -2,6 +2,8 @@ package assertion
 
 import expression._
 
+import scala.reflect.{ClassTag,classTag}
+
 object QuantifiableExpAssertionBuilder {
 
   import QuantifiableOrderedExp._
@@ -30,14 +32,14 @@ object QuantifiableExpAssertionBuilder {
   def fromBigDecimalVariable[T](bigDecimal: T => BigDecimal): QuantifiableExpAssertionBuilder[T,BigDecimal] =
     QuantifiableExpAssertionBuilder(bigDecimalVariable(bigDecimal))
 
-  def apply[T,R](quantifiableExp: QuantifiableOrderedExp[T,R]): QuantifiableExpAssertionBuilder[T,R] =
+  def apply[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R]): QuantifiableExpAssertionBuilder[T,R] =
     QuantifiableExpAssertionBuilder(quantifiableExp, new NullExp[T,Bool]())
 
-  def apply[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): QuantifiableExpAssertionBuilder[T,R] =
+  def apply[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): QuantifiableExpAssertionBuilder[T,R] =
     new QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ and _)
 }
 
-case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class QuantifiableExpAssertionBuilder[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
   extends AssertionBuilder[T,QuantifiableExpAssertionBuilder[T,R]](expression) {
 
   def isEqualTo(number: R): QuantifiableExpAssertionBuilder[T,R] =
@@ -82,8 +84,13 @@ case class QuantifiableExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrd
   def isInExclusiveRange(min: T => R, max: T => R): QuantifiableExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isInInclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
 
-  def isPercentage: QuantifiableExpAssertionBuilder[T,R] =
-    isInInclusiveRange(0.asInstanceOf[R], 100.asInstanceOf[R])
+  def isPercentage: QuantifiableExpAssertionBuilder[T,R] = {
+    val clazz = classTag[R].runtimeClass
+    if (clazz == classOf[BigDecimal]) isInInclusiveRange(BigDecimal(0).asInstanceOf[R], BigDecimal(100).asInstanceOf[R])
+    else if (clazz == classOf[Double]) isInInclusiveRange(0D.asInstanceOf[R], 100D.asInstanceOf[R])
+    else if (clazz == classOf[Long]) isInInclusiveRange(0L.asInstanceOf[R], 100L.asInstanceOf[R])
+    else isInInclusiveRange(0.asInstanceOf[R], 100.asInstanceOf[R])
+  }
 
   override def or: QuantifiableExpAssertionBuilder[T, R] =
     QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ or _)

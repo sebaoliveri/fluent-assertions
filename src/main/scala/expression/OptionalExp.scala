@@ -2,10 +2,10 @@ package expression
 
 object OptionalExp {
 
-  def maybeStringConstant[T,R](option: Option[R]): OptionalExp[T, R] =
-    maybeStringVariable(_ => option)
+  def maybeOptionConstant[T,R](option: Option[R]): OptionalExp[T, R] =
+    maybeOptionVariable(_ => option)
 
-  def maybeStringVariable[T,R](option: T => Option[R]): OptionalExp[T, R] =
+  def maybeOptionVariable[T,R](option: T => Option[R]): OptionalExp[T, R] =
     OptionalExp(option)
 }
 

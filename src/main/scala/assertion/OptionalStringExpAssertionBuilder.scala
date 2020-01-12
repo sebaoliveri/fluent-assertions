@@ -7,10 +7,10 @@ object OptionalStringExpAssertionBuilder {
   import OptionalExp._
 
   def fromMaybeStringConstant[T](maybeString: Option[String]): OptionalStringExpAssertionBuilder[T]=
-    OptionalStringExpAssertionBuilder(maybeStringConstant(maybeString))
+    OptionalStringExpAssertionBuilder(maybeOptionConstant(maybeString))
 
   def fromMaybeStringVariable[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
-    OptionalStringExpAssertionBuilder(maybeStringVariable(maybeString))
+    OptionalStringExpAssertionBuilder(maybeOptionVariable(maybeString))
 
   def apply[T](optionalExp: OptionalExp[T,String]): OptionalStringExpAssertionBuilder[T] =
     OptionalStringExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())

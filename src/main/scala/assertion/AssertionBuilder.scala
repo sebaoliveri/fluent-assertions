@@ -4,8 +4,7 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
 
 import scala.runtime.{RichDouble, RichInt, RichLong}
 import expression._
-
-import scala.util.{Either, Try}
+import scala.reflect.ClassTag
 
 object AssertionBuilder {
 
@@ -22,6 +21,13 @@ object AssertionBuilder {
   def that[T,R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T,R] =
     fromIterableVariable(iterable)
 
+  // maybe traversable
+  import OptionalIterableExpAssertionBuilder._
+  def that[T,R](iterable: Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
+    fromMaybeIterableConstant(iterable)
+  def that[T,R](iterable: T => Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
+    fromMaybeIterableVariable(iterable)
+
   // string
   import StringExpAssertionBuilder._
   def that[T](string: String): StringExpAssertionBuilder[T] =
@@ -29,7 +35,7 @@ object AssertionBuilder {
   def that[T](string: T => String): StringExpAssertionBuilder[T] =
     fromStringVariable(string)
 
-  // optional string
+  // maybe string
   import OptionalStringExpAssertionBuilder._
   def that[T](maybeString: Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringConstant(maybeString)
@@ -55,7 +61,7 @@ object AssertionBuilder {
   def that[T](bigDecimal: T => BigDecimal)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit, d4:DummyImplicit): QuantifiableExpAssertionBuilder[T,BigDecimal] =
     fromBigDecimalVariable(bigDecimal)
 
-  // optional quantifiable
+  // maybe quantifiable
   import OptionalQuantifiableExpAssertionBuilder._
   def that[T](maybeInt: Option[Int]): OptionalQuantifiableExpAssertionBuilder[T,Int] =
     fromMaybeIntConstant(maybeInt)
@@ -93,7 +99,7 @@ object AssertionBuilder {
   def that[T](localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): DateExpAssertionBuilder[T,LocalDateTime] =
     fromLocalDateTimeVariable(localDateTime)
 
-  // optional date
+  // maybe date
   import OptionalDateExpAssertionBuilder._
   def that[T](instant: Option[Instant]): OptionalDateExpAssertionBuilder[T,Instant] =
     fromMaybeInstantConstant(instant)
@@ -122,10 +128,17 @@ abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: Logica
   def orThat(boolean: Boolean): BooleanExpAssertionBuilder[T] = orThat(_ => boolean)
   def orThat(boolean: T => Boolean): BooleanExpAssertionBuilder[T] = BooleanExpAssertionBuilder(BooleanExp(boolean), expression, _ or _)
 
-  def andThat[R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = andThat(_ => iterable)
-  def andThat[R](iterable: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ and _)
-  def orThat[R](iterable: collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = orThat(_ => iterable)
-  def orThat[R](iterable: T => collection.immutable.Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ or _)
+  //TODO add option boolean
+
+  def andThat[R](iterable: Iterable[R]): IterableExpAssertionBuilder[T, R] = andThat(_ => iterable)
+  def andThat[R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ and _)
+  def orThat[R](iterable: Iterable[R]): IterableExpAssertionBuilder[T, R] = orThat(_ => iterable)
+  def orThat[R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T, R] = new IterableExpAssertionBuilder(IterableExp(iterable), expression, _ or _)
+
+  def andThat[R](iterable: Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T, R] = andThat(_ => iterable)
+  def andThat[R](iterable: T => Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T, R] = new OptionalIterableExpAssertionBuilder(OptionalExp(iterable), expression, _ and _)
+  def orThat[R](iterable: Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T, R] = orThat(_ => iterable)
+  def orThat[R](iterable: T => Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T, R] = new OptionalIterableExpAssertionBuilder(OptionalExp(iterable), expression, _ or _)
 
   def andThat(quantity: Int): QuantifiableExpAssertionBuilder[T,Int] = andThat(_ => quantity)
   def andThat(quantity: T => Int): QuantifiableExpAssertionBuilder[T,Int] = andQuantifiableExp(quantity.andThen(new RichInt(_)))
@@ -135,7 +148,7 @@ abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: Logica
   def andThat(quantity: T => Double)(implicit d1:DummyImplicit,d2:DummyImplicit): QuantifiableExpAssertionBuilder[T,Double] = andQuantifiableExp(quantity.andThen(new RichDouble(_)))
   def andThat(quantity: BigDecimal): QuantifiableExpAssertionBuilder[T,BigDecimal] = andThat(_ => quantity)
   def andThat(quantity: T => BigDecimal)(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): QuantifiableExpAssertionBuilder[T,BigDecimal] = andQuantifiableExp(quantity)
-  private def andQuantifiableExp[R](quantity: T => Ordered[R]): QuantifiableExpAssertionBuilder[T,R] = QuantifiableExpAssertionBuilder(QuantifiableOrderedExp(quantity), expression, _ and _)
+  private def andQuantifiableExp[R: ClassTag](quantity: T => Ordered[R]): QuantifiableExpAssertionBuilder[T,R] = QuantifiableExpAssertionBuilder(QuantifiableOrderedExp(quantity), expression, _ and _)
 
   def orThat(quantity: Int): QuantifiableExpAssertionBuilder[T,Int] = orThat(_ => quantity)
   def orThat(quantity: T => Int): QuantifiableExpAssertionBuilder[T,Int] = orQuantifiableExp(quantity.andThen(new RichInt(_)))
@@ -145,7 +158,7 @@ abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: Logica
   def orThat(quantity: T => Double)(implicit d1:DummyImplicit,d2:DummyImplicit): QuantifiableExpAssertionBuilder[T,Double] = orQuantifiableExp(quantity.andThen(new RichDouble(_)))
   def orThat(quantity: BigDecimal): QuantifiableExpAssertionBuilder[T,BigDecimal] = orThat(_ => quantity)
   def orThat(quantity: T => BigDecimal)(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): QuantifiableExpAssertionBuilder[T,BigDecimal] = orQuantifiableExp(quantity)
-  private def orQuantifiableExp[R](quantity: T => Ordered[R]): QuantifiableExpAssertionBuilder[T,R] = QuantifiableExpAssertionBuilder(QuantifiableOrderedExp(quantity), expression, _ or _)
+  private def orQuantifiableExp[R: ClassTag](quantity: T => Ordered[R]): QuantifiableExpAssertionBuilder[T,R] = QuantifiableExpAssertionBuilder(QuantifiableOrderedExp(quantity), expression, _ or _)
 
   def andThat(quantity: Option[Int]): OptionalQuantifiableExpAssertionBuilder[T,Int] = andMaybeQuantifiableExp({_:T => quantity}.andThen(_.map(new RichInt(_))))
   def andThat(quantity: T => Option[Int]): OptionalQuantifiableExpAssertionBuilder[T, Int] = andMaybeQuantifiableExp(quantity.andThen(_.map(new RichInt(_))))

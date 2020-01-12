@@ -9,7 +9,7 @@ object StringExp {
   val alphabeticRegex = "^[a-zA-Z ]+$"
   val numberRegex = "^[0-9]+$"
 
-  def stringConstant[T](string: => String): StringExp[T] =
+  def stringConstant[T](string: String): StringExp[T] =
     stringVariable(_ => string)
 
   def stringVariable[T](f: T => String): StringExp[T] =
