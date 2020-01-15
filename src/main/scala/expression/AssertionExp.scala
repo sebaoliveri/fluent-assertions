@@ -7,7 +7,7 @@ import scala.util.{Either, Failure, Success, Try}
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String)
   extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
 
-  def followedBy(assertionExp: => LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): FlatMapAssertionExp[T] =
+  def followedBy(assertionExp: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): FlatMapAssertionExp[T] =
     FlatMapAssertionExp(left = this, right = assertionExp)
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
