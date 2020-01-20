@@ -5,15 +5,18 @@ import assertion.AssertionFailureException
 import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String)
-  extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
-
-  def followedBy(assertionExp: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): FlatMapAssertionExp[T] =
-    FlatMapAssertionExp(left = this, right = assertionExp)
+  extends FollowedBy[T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     expression.evaluate(context).thenElse(
       AssertionSuccessfulResult(context),
       AssertionFailureResult(List(otherwise(context))))
+}
+
+case class SuccessfulAssertionExp[T]() extends FollowedBy[T] {
+
+  override def evaluate(context: T): AssertionResultBehaviour[T] =
+    AssertionSuccessfulResult(context)
 }
 
 trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehaviour[T]] {
