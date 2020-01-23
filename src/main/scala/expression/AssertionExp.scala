@@ -39,6 +39,8 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def signalIfFailed(): Unit
 
+  def signalIfFailed(throwable: Seq[String] => Throwable): Unit
+
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     partialFunction.apply(this)
 
@@ -84,6 +86,8 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
 
   override def map[U](f: T => U): AssertionResultBehaviour[U] =
     AssertionSuccessfulResult(f(context))
+
+  override def signalIfFailed(throwable: Seq[String] => Throwable): Unit = {}
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -126,4 +130,7 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
 
   override def map[U](f: T => U): AssertionResultBehaviour[U] =
     this.asInstanceOf[AssertionResultBehaviour[U]]
+
+  override def signalIfFailed(throwable: Seq[String] => Throwable): Unit =
+    throwable(errorMessages)
 }
