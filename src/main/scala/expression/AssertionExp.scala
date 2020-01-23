@@ -132,5 +132,5 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
     this.asInstanceOf[AssertionResultBehaviour[U]]
 
   override def signalIfFailed(throwable: Seq[String] => Throwable): Unit =
-    throwable(errorMessages)
+    throw throwable(errorMessages)
 }
