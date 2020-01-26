@@ -10,8 +10,7 @@ trait Bool extends LogicalOperators[Bool] {
 object Bool {
 
   def apply(boolean: Boolean): Bool =
-    if (boolean) TrueExp
-    else FalseExp
+    if (boolean) TrueExp else FalseExp
 }
 
 object TrueExp extends Bool  {
@@ -23,6 +22,8 @@ object TrueExp extends Bool  {
   override def or(other: => Bool): Bool = this
 
   override def not(): Bool = FalseExp
+
+  override def ifTrue[Z](block: => Z): Z = block
 }
 
 object FalseExp extends Bool {
@@ -34,4 +35,6 @@ object FalseExp extends Bool {
   override def or(other: => Bool): Bool = other
 
   override def not(): Bool = TrueExp
+
+  override def ifTrue[Z](block: => Z): Z = this.asInstanceOf[Z]
 }

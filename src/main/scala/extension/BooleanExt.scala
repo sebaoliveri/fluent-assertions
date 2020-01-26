@@ -8,8 +8,8 @@ object BooleanExt {
 
   implicit class BooleanExtensions(boolean: Boolean) {
 
-    def isTrue: LogicalOperatorsExp[Unit,Bool] = boolConstant(boolean).isTrue
+    def isTrueExp: LogicalOperatorsExp[Unit,Bool] = boolConstant(boolean).isTrue
 
-    def isFalse: LogicalOperatorsExp[Unit,Bool] = boolConstant(boolean).isFalse
+    def isFalseExp: LogicalOperatorsExp[Unit,Bool] = boolConstant(boolean).isFalse
   }
 }

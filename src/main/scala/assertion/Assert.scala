@@ -1,14 +1,17 @@
 package assertion
 
-import expression.{AssertionResultBehaviour, Expression}
+import expression.{AssertionResultBehaviour, LogicalOperatorsExp, SuccessfulAssertionExp}
 
 import scala.util.{Either, Try}
 
 object Assert {
-  def assert[T](expression: Expression[T,AssertionResultBehaviour[T]]): Assert[T] = Assert(expression)
+
+  def assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] = Assert(expression)
+
+  def truth[T]: Assert[T] = Assert(SuccessfulAssertionExp())
 }
 
-case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
+case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]) {
 
   private val NoContext = new Object().asInstanceOf[T]
 
@@ -29,4 +32,13 @@ case class Assert[T](expression: Expression[T,AssertionResultBehaviour[T]]) {
     inNoContext.expectsToBeFalseWith(errorMessages:_*)
 
   def inNoContext: AssertionResultBehaviour[T] = in(NoContext)
+
+  def ifTrueAssert(anotherAssert: Assert[T]): Assert[T] =
+    copy(expression = expression.ifTrue(anotherAssert.expression))
+
+  def andAssert(anotherAssert: Assert[T]): Assert[T] =
+    copy(expression = expression.and(anotherAssert.expression))
+
+  def orAssert(anotherAssert: Assert[T]): Assert[T] =
+    copy(expression = expression.or(anotherAssert.expression))
 }

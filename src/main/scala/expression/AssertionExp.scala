@@ -5,7 +5,7 @@ import assertion.AssertionFailureException
 import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String)
-  extends FollowedBy[T] {
+  extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     expression.evaluate(context).thenElse(
@@ -13,7 +13,8 @@ case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => Strin
       AssertionFailureResult(List(otherwise(context))))
 }
 
-case class SuccessfulAssertionExp[T]() extends FollowedBy[T] {
+case class SuccessfulAssertionExp[T]()
+  extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     AssertionSuccessfulResult(context)
@@ -88,6 +89,8 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
     AssertionSuccessfulResult(f(context))
 
   override def signalIfFailed(throwable: Seq[String] => Throwable): Unit = {}
+
+  override def ifTrue[Z](block: => Z): Z = block
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -133,4 +136,6 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
 
   override def signalIfFailed(throwable: Seq[String] => Throwable): Unit =
     throw throwable(errorMessages)
+
+  override def ifTrue[Z](block: => Z): Z = this.asInstanceOf[Z]
 }
