@@ -23,7 +23,7 @@ object TrueExp extends Bool  {
 
   override def not(): Bool = FalseExp
 
-  override def ifTrue[Z](block: => Z): Z = block
+  override def ifTrue(block: => Bool): Bool = block
 }
 
 object FalseExp extends Bool {
@@ -36,5 +36,5 @@ object FalseExp extends Bool {
 
   override def not(): Bool = TrueExp
 
-  override def ifTrue[Z](block: => Z): Z = this.asInstanceOf[Z]
+  override def ifTrue(block: => Bool): Bool = this
 }

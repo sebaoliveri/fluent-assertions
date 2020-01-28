@@ -90,7 +90,7 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
 
   override def signalIfFailed(throwable: Seq[String] => Throwable): Unit = {}
 
-  override def ifTrue[Z](block: => Z): Z = block
+  override def ifTrue(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = block
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -137,5 +137,5 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def signalIfFailed(throwable: Seq[String] => Throwable): Unit =
     throw throwable(errorMessages)
 
-  override def ifTrue[Z](block: => Z): Z = this.asInstanceOf[Z]
+  override def ifTrue(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = this
 }

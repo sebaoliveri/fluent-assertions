@@ -33,12 +33,21 @@ case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[
 
   def inNoContext: AssertionResultBehaviour[T] = in(NoContext)
 
-  def ifTrueAssert(anotherAssert: Assert[T]): Assert[T] =
+  def ifTrue(anotherAssert: Assert[T]): Assert[T] =
     copy(expression = expression.ifTrue(anotherAssert.expression))
 
-  def andAssert(anotherAssert: Assert[T]): Assert[T] =
+  def and(anotherAssert: Assert[T]): Assert[T] =
     copy(expression = expression.and(anotherAssert.expression))
 
-  def orAssert(anotherAssert: Assert[T]): Assert[T] =
+  def or(anotherAssert: Assert[T]): Assert[T] =
     copy(expression = expression.or(anotherAssert.expression))
+
+  def ifTrueAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
+    copy(expression = expression.ifTrue(anExpression))
+
+  def andAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
+    copy(expression = expression.and(anExpression))
+
+  def orAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
+    copy(expression = expression.or(anExpression))
 }

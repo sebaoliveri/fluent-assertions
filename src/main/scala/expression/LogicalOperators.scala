@@ -6,5 +6,5 @@ trait LogicalOperators[X] {
 
   def or(other: => X): X
 
-  def ifTrue[Z](block: => Z): Z
+  def ifTrue(block: => X): X
 }
