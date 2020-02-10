@@ -48,6 +48,10 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
   def flatMap[U](f: T => AssertionResultBehaviour[U]): AssertionResultBehaviour[U]
 
   def map[U](f: T => U): AssertionResultBehaviour[U]
+
+  def fold[U](fa: List[String] => U, fb: T => U): U
+
+  def toOption: Option[T]
 }
 
 case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehaviour[T] {
@@ -91,6 +95,10 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def signalIfFailed(throwable: Seq[String] => Throwable): Unit = {}
 
   override def ifTrue(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = block
+
+  override def fold[U](fa: List[String] => U, fb: T => U): U = fb(context)
+
+  override def toOption: Option[T] = Some(context)
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -138,4 +146,8 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
     throw throwable(errorMessages)
 
   override def ifTrue(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = this
+
+  override def fold[U](fa: List[String] => U, fb: T => U): U = fa(errorMessages)
+
+  override def toOption: Option[T] = None
 }
