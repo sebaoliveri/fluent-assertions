@@ -1,7 +1,7 @@
 name := "fluent-assertions"
 organization := "assertions"
 
-version := "0.9.29"
+version := "0.9.30"
 
 scalaVersion := "2.13.1"
 

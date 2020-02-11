@@ -21,6 +21,8 @@ case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[
 
   def signalIfFailed(): Unit = inNoContext.signalIfFailed()
 
+  def signalIfFailed(throwable: Seq[String] => Throwable): Unit = inNoContext.signalIfFailed(throwable)
+
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     inNoContext.matches(partialFunction)
 
