@@ -41,28 +41,28 @@ object DateExpAssertionBuilder {
 case class DateExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
   extends AssertionBuilder[T,DateExpAssertionBuilder[T,R]](expression) {
 
-  def occursAfter(date: R): DateExpAssertionBuilder[T,R] =
-    occursAfter(_ => date)
+  def isAfter(date: R): DateExpAssertionBuilder[T,R] =
+    isAfter(_ => date)
 
-  def occursAfter(date: T => R): DateExpAssertionBuilder[T,R] =
+  def isAfter(date: T => R): DateExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isGreaterThan(QuantifiableExp(date)))
 
-  def occursBefore(date: R): DateExpAssertionBuilder[T,R] =
-    occursBefore(_ => date)
+  def isBefore(date: R): DateExpAssertionBuilder[T,R] =
+    isBefore(_ => date)
 
-  def occursBefore(date: T => R): DateExpAssertionBuilder[T,R] =
+  def isBefore(date: T => R): DateExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isLessThan(QuantifiableExp(date)))
 
-  def occursAfterOrIsSameThan(date: R): DateExpAssertionBuilder[T,R] =
-    occursAfterOrIsSameThan(_ => date)
+  def isAfterOrSameThan(date: R): DateExpAssertionBuilder[T,R] =
+    isAfterOrSameThan(_ => date)
 
-  def occursAfterOrIsSameThan(date: T => R): DateExpAssertionBuilder[T,R] =
+  def isAfterOrSameThan(date: T => R): DateExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isGreaterThanOrEqualTo(QuantifiableExp(date)))
 
-  def occursBeforeOrIsSameThan(date: R): DateExpAssertionBuilder[T,R] =
-    occursBeforeOrIsSameThan(_ => date)
+  def isBeforeOrSameThan(date: R): DateExpAssertionBuilder[T,R] =
+    isBeforeOrSameThan(_ => date)
 
-  def occursBeforeOrIsSameThan(date: T => R): DateExpAssertionBuilder[T,R] =
+  def isBeforeOrSameThan(date: T => R): DateExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isLessThanOrEqualTo(QuantifiableExp(date)))
 
   def isInBetween(min: R, max: R): DateExpAssertionBuilder[T,R] =
@@ -71,15 +71,15 @@ case class DateExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[
   def isInBetween(min: T => R, max: T => R): DateExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isGreaterThanOrEqualTo(QuantifiableExp(min)).and(quantifiableExp.isLessThanOrEqualTo(QuantifiableExp(max))))
 
-  def equalsTo(date: R): DateExpAssertionBuilder[T,R] =
-    equalsTo(_ => date)
+  def isEqualTo(date: R): DateExpAssertionBuilder[T,R] =
+    isEqualTo(_ => date)
 
-  def equalsTo(date: T => R): DateExpAssertionBuilder[T,R] =
+  def isEqualTo(date: T => R): DateExpAssertionBuilder[T,R] =
     newWith(quantifiableExp.isEqualTo(QuantifiableExp(date)))
 
   override def or: DateExpAssertionBuilder[T, R] =
     DateExpAssertionBuilder(quantifiableExp, expression, _ or _)
 
-  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]) =
+  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]): DateExpAssertionBuilder[T, R] =
     DateExpAssertionBuilder(quantifiableExp, operator.apply(expression, newExpression))
 }
