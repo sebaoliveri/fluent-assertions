@@ -8,7 +8,7 @@ object TemporalExt {
 
   implicit class InstantExtensions(instant: Instant) {
 
-    import expression.DateExp._
+    import expression.TemporalExp._
 
     def isAfterExp(anotherInstant: Instant): LogicalOperatorsExp[Unit,Bool] =
       instantConstant(instant).isGreaterThan(QuantifiableExp(_ => anotherInstant))
@@ -31,7 +31,7 @@ object TemporalExt {
 
   implicit class ZonedDateTimeExtensions(zonedDateTime: ZonedDateTime) {
 
-    import expression.DateExp._
+    import expression.TemporalExp._
 
     def isAfterExp(anotherZonedDateTime: ZonedDateTime): LogicalOperatorsExp[Unit,Bool] =
       zonedDateTimeConstant(zonedDateTime).isGreaterThan(QuantifiableExp(_ => anotherZonedDateTime))
@@ -54,7 +54,7 @@ object TemporalExt {
 
   implicit class LocalDateExtensions(localDate: LocalDate) {
 
-    import expression.DateExp._
+    import expression.TemporalExp._
 
     def isAfterExp(anotherLocalDate: LocalDate): LogicalOperatorsExp[Unit,Bool] =
       localDateConstant(localDate).isGreaterThan(QuantifiableExp(_ => anotherLocalDate))
@@ -77,7 +77,7 @@ object TemporalExt {
 
   implicit class LocalDateTimeExtensions(localDateTime: LocalDateTime) {
 
-    import expression.DateExp._
+    import expression.TemporalExp._
 
     def isAfterExp(anotherLocalDateTime: LocalDateTime): LogicalOperatorsExp[Unit,Bool] =
       localDateTimeConstant(localDateTime).isGreaterThan(QuantifiableExp(_ => anotherLocalDateTime))

@@ -81,41 +81,41 @@ object AssertionBuilder {
     fromMaybeBigDecimalVariable(maybeBigDecimal)
 
   // date
-  import DateExpAssertionBuilder._
-  def that[T](instant: Instant): DateExpAssertionBuilder[T,Instant] =
+  import TemporalExpAssertionBuilder._
+  def that[T](instant: Instant): TemporalExpAssertionBuilder[T,Instant] =
     fromInstantConstant(instant)
-  def that[T](zonedDateTime: ZonedDateTime): DateExpAssertionBuilder[T,ZonedDateTime] =
+  def that[T](zonedDateTime: ZonedDateTime): TemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromZonedDateTimeConstant(zonedDateTime)
-  def that[T](localDate: LocalDate): DateExpAssertionBuilder[T,LocalDate] =
+  def that[T](localDate: LocalDate): TemporalExpAssertionBuilder[T,LocalDate] =
     fromLocalDateConstant(localDate)
-  def that[T](localDateTime: LocalDateTime): DateExpAssertionBuilder[T,LocalDateTime] =
+  def that[T](localDateTime: LocalDateTime): TemporalExpAssertionBuilder[T,LocalDateTime] =
     fromLocalDateTimeConstant(localDateTime)
-  def that[T](instant: T => Instant): DateExpAssertionBuilder[T,Instant] =
+  def that[T](instant: T => Instant): TemporalExpAssertionBuilder[T,Instant] =
     fromInstantVariable(instant)
-  def that[T](zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): DateExpAssertionBuilder[T,ZonedDateTime] =
+  def that[T](zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): TemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromZonedDateTimeVariable(zonedDateTime)
-  def that[T](localDate: T => LocalDate)(implicit d1:DummyImplicit, d2:DummyImplicit): DateExpAssertionBuilder[T,LocalDate] =
+  def that[T](localDate: T => LocalDate)(implicit d1:DummyImplicit, d2:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDate] =
     fromLocalDateVariable(localDate)
-  def that[T](localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): DateExpAssertionBuilder[T,LocalDateTime] =
+  def that[T](localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDateTime] =
     fromLocalDateTimeVariable(localDateTime)
 
   // maybe date
-  import OptionalDateExpAssertionBuilder._
-  def that[T](instant: Option[Instant]): OptionalDateExpAssertionBuilder[T,Instant] =
+  import OptionalTemporalExpAssertionBuilder._
+  def that[T](instant: Option[Instant]): OptionalTemporalExpAssertionBuilder[T,Instant] =
     fromMaybeInstantConstant(instant)
-  def that[T](zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalDateExpAssertionBuilder[T,ZonedDateTime] =
+  def that[T](zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromMaybeZonedDateTimeConstant(zonedDateTime)
-  def that[T](localDate: Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDate] =
+  def that[T](localDate: Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] =
     fromMaybeLocalDateConstant(localDate)
-  def that[T](localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] =
+  def that[T](localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] =
     fromMaybeLocalDateTimeConstant(localDateTime)
-  def that[T](instant: T => Option[Instant]): OptionalDateExpAssertionBuilder[T,Instant] =
+  def that[T](instant: T => Option[Instant]): OptionalTemporalExpAssertionBuilder[T,Instant] =
     fromMaybeInstantVariable(instant)
-  def that[T](zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalDateExpAssertionBuilder[T,ZonedDateTime] =
+  def that[T](zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromMaybeZonedDateTimeVariable(zonedDateTime)
-  def that[T](localDate: T => Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDate] =
+  def that[T](localDate: T => Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] =
     fromMaybeLocalDateVariable(localDate)
-  def that[T](localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] =
+  def that[T](localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] =
     fromMaybeLocalDateTimeVariable(localDateTime)
 }
 
@@ -190,45 +190,45 @@ abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: Logica
   def orThat(string: Option[String])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit): OptionalStringExpAssertionBuilder[T] = OptionalStringExpAssertionBuilder(OptionalExp({_:T => string}), expression, _ or _)
   def orThat(string: T => Option[String])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit): OptionalStringExpAssertionBuilder[T] = OptionalStringExpAssertionBuilder(OptionalExp(string), expression, _ or _)
 
-  def andThat(instant: Instant): DateExpAssertionBuilder[T,Instant] = andThat(_ => instant)
-  def andThat(instant: T => Instant): DateExpAssertionBuilder[T,Instant] = andDateExp(instant.andThen(OrderedInstant))
-  def andThat(zonedDateTime: ZonedDateTime): DateExpAssertionBuilder[T,ZonedDateTime] = andThat(_ => zonedDateTime)
-  def andThat(zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): DateExpAssertionBuilder[T,ZonedDateTime] = andDateExp(zonedDateTime.andThen(OrderedZonedDateTime))
-  def andThat(localDate: LocalDate): DateExpAssertionBuilder[T,LocalDate] = andThat(_ => localDate)
-  def andThat(localDate: T => LocalDate)(implicit d1:DummyImplicit,d2:DummyImplicit): DateExpAssertionBuilder[T,LocalDate] = andDateExp(localDate.andThen(OrderedLocalDate))
-  def andThat(localDateTime: LocalDateTime): DateExpAssertionBuilder[T,LocalDateTime] = andThat(_ => localDateTime)
-  def andThat(localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): DateExpAssertionBuilder[T,LocalDateTime] = andDateExp(localDateTime.andThen(OrderedLocalDateTime))
-  private def andDateExp[R](dateExp: T => Ordered[R]): DateExpAssertionBuilder[T,R] = new DateExpAssertionBuilder(QuantifiableOrderedExp(dateExp), expression, _ and _)
+  def andThat(instant: Instant): TemporalExpAssertionBuilder[T,Instant] = andThat(_ => instant)
+  def andThat(instant: T => Instant): TemporalExpAssertionBuilder[T,Instant] = andDateExp(instant.andThen(OrderedInstant))
+  def andThat(zonedDateTime: ZonedDateTime): TemporalExpAssertionBuilder[T,ZonedDateTime] = andThat(_ => zonedDateTime)
+  def andThat(zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): TemporalExpAssertionBuilder[T,ZonedDateTime] = andDateExp(zonedDateTime.andThen(OrderedZonedDateTime))
+  def andThat(localDate: LocalDate): TemporalExpAssertionBuilder[T,LocalDate] = andThat(_ => localDate)
+  def andThat(localDate: T => LocalDate)(implicit d1:DummyImplicit,d2:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDate] = andDateExp(localDate.andThen(OrderedLocalDate))
+  def andThat(localDateTime: LocalDateTime): TemporalExpAssertionBuilder[T,LocalDateTime] = andThat(_ => localDateTime)
+  def andThat(localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDateTime] = andDateExp(localDateTime.andThen(OrderedLocalDateTime))
+  private def andDateExp[R](dateExp: T => Ordered[R]): TemporalExpAssertionBuilder[T,R] = new TemporalExpAssertionBuilder(QuantifiableOrderedExp(dateExp), expression, _ and _)
 
-  def orThat(instant: Instant): DateExpAssertionBuilder[T,Instant] = orThat(_ => instant)
-  def orThat(instant: T => Instant): DateExpAssertionBuilder[T,Instant] = orDateExp(instant.andThen(OrderedInstant))
-  def orThat(zonedDateTime: ZonedDateTime): DateExpAssertionBuilder[T,ZonedDateTime] = orThat(_ => zonedDateTime)
-  def orThat(zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): DateExpAssertionBuilder[T,ZonedDateTime] = orDateExp(zonedDateTime.andThen(OrderedZonedDateTime))
-  def orThat(localDate: LocalDate): DateExpAssertionBuilder[T,LocalDate] = orThat(_ => localDate)
-  def orThat(localDate: T => LocalDate)(implicit d1:DummyImplicit,d2:DummyImplicit): DateExpAssertionBuilder[T,LocalDate] = orDateExp(localDate.andThen(OrderedLocalDate))
-  def orThat(localDateTime: LocalDateTime): DateExpAssertionBuilder[T,LocalDateTime] = orThat(_ => localDateTime)
-  def orThat(localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): DateExpAssertionBuilder[T,LocalDateTime] = orDateExp(localDateTime.andThen(OrderedLocalDateTime))
-  private def orDateExp[R](dateExp: T => Ordered[R]): DateExpAssertionBuilder[T,R] = new DateExpAssertionBuilder(QuantifiableOrderedExp(dateExp), expression, _ or _)
+  def orThat(instant: Instant): TemporalExpAssertionBuilder[T,Instant] = orThat(_ => instant)
+  def orThat(instant: T => Instant): TemporalExpAssertionBuilder[T,Instant] = orDateExp(instant.andThen(OrderedInstant))
+  def orThat(zonedDateTime: ZonedDateTime): TemporalExpAssertionBuilder[T,ZonedDateTime] = orThat(_ => zonedDateTime)
+  def orThat(zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): TemporalExpAssertionBuilder[T,ZonedDateTime] = orDateExp(zonedDateTime.andThen(OrderedZonedDateTime))
+  def orThat(localDate: LocalDate): TemporalExpAssertionBuilder[T,LocalDate] = orThat(_ => localDate)
+  def orThat(localDate: T => LocalDate)(implicit d1:DummyImplicit,d2:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDate] = orDateExp(localDate.andThen(OrderedLocalDate))
+  def orThat(localDateTime: LocalDateTime): TemporalExpAssertionBuilder[T,LocalDateTime] = orThat(_ => localDateTime)
+  def orThat(localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDateTime] = orDateExp(localDateTime.andThen(OrderedLocalDateTime))
+  private def orDateExp[R](dateExp: T => Ordered[R]): TemporalExpAssertionBuilder[T,R] = new TemporalExpAssertionBuilder(QuantifiableOrderedExp(dateExp), expression, _ or _)
 
-  def andThat(instant: Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalDateExpAssertionBuilder[T,Instant] = andThatMaybeDateExp({_:T => instant}.andThen(_.map(OrderedInstant)))
-  def andThat(instant: T => Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalDateExpAssertionBuilder[T,Instant] = andThatMaybeDateExp(instant.andThen(_.map(OrderedInstant)))
-  def andThat(zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalDateExpAssertionBuilder[T,ZonedDateTime] = andThatMaybeDateExp({_:T => zonedDateTime}.andThen(_.map(OrderedZonedDateTime)))
-  def andThat(zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalDateExpAssertionBuilder[T,ZonedDateTime] = andThatMaybeDateExp(zonedDateTime.andThen(_.map(OrderedZonedDateTime)))
-  def andThat(localDate: Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDate] = andThatMaybeDateExp({_:T => localDate}.andThen(_.map(OrderedLocalDate)))
-  def andThat(localDate: T => Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDate] = andThatMaybeDateExp(localDate.andThen(_.map(OrderedLocalDate)))
-  def andThat(localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] = andThatMaybeDateExp({_:T => localDateTime}.andThen(_.map(OrderedLocalDateTime)))
-  def andThat(localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] = andThatMaybeDateExp(localDateTime.andThen(_.map(OrderedLocalDateTime)))
-  private def andThatMaybeDateExp[R](maybeOrdered: T => Option[Ordered[R]]): OptionalDateExpAssertionBuilder[T,R] = new OptionalDateExpAssertionBuilder(OptionalExp(maybeOrdered), expression, _ and _)
+  def andThat(instant: Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,Instant] = andThatMaybeDateExp({ _:T => instant}.andThen(_.map(OrderedInstant)))
+  def andThat(instant: T => Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,Instant] = andThatMaybeDateExp(instant.andThen(_.map(OrderedInstant)))
+  def andThat(zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] = andThatMaybeDateExp({ _:T => zonedDateTime}.andThen(_.map(OrderedZonedDateTime)))
+  def andThat(zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] = andThatMaybeDateExp(zonedDateTime.andThen(_.map(OrderedZonedDateTime)))
+  def andThat(localDate: Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] = andThatMaybeDateExp({ _:T => localDate}.andThen(_.map(OrderedLocalDate)))
+  def andThat(localDate: T => Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] = andThatMaybeDateExp(localDate.andThen(_.map(OrderedLocalDate)))
+  def andThat(localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] = andThatMaybeDateExp({ _:T => localDateTime}.andThen(_.map(OrderedLocalDateTime)))
+  def andThat(localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] = andThatMaybeDateExp(localDateTime.andThen(_.map(OrderedLocalDateTime)))
+  private def andThatMaybeDateExp[R](maybeOrdered: T => Option[Ordered[R]]): OptionalTemporalExpAssertionBuilder[T,R] = new OptionalTemporalExpAssertionBuilder(OptionalExp(maybeOrdered), expression, _ and _)
 
-  def orThat(instant: Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalDateExpAssertionBuilder[T,Instant] = orThatMaybeDateExp({_:T => instant}.andThen(_.map(OrderedInstant)))
-  def orThat(instant: T => Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalDateExpAssertionBuilder[T,Instant] = orThatMaybeDateExp(instant.andThen(_.map(OrderedInstant)))
-  def orThat(zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalDateExpAssertionBuilder[T,ZonedDateTime] = orThatMaybeDateExp({_:T => zonedDateTime}.andThen(_.map(OrderedZonedDateTime)))
-  def orThat(zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalDateExpAssertionBuilder[T,ZonedDateTime] = orThatMaybeDateExp(zonedDateTime.andThen(_.map(OrderedZonedDateTime)))
-  def orThat(localDate: Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDate] = orThatMaybeDateExp({_:T => localDate}.andThen(_.map(OrderedLocalDate)))
-  def orThat(localDate: T => Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDate] = orThatMaybeDateExp(localDate.andThen(_.map(OrderedLocalDate)))
-  def orThat(localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] = orThatMaybeDateExp({_:T => localDateTime}.andThen(_.map(OrderedLocalDateTime)))
-  def orThat(localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalDateExpAssertionBuilder[T,LocalDateTime] = orThatMaybeDateExp(localDateTime.andThen(_.map(OrderedLocalDateTime)))
-  private def orThatMaybeDateExp[R](maybeOrdered: T => Option[Ordered[R]]): OptionalDateExpAssertionBuilder[T,R] = new OptionalDateExpAssertionBuilder(OptionalExp(maybeOrdered), expression, _ or _)
+  def orThat(instant: Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,Instant] = orThatMaybeDateExp({ _:T => instant}.andThen(_.map(OrderedInstant)))
+  def orThat(instant: T => Option[Instant])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,Instant] = orThatMaybeDateExp(instant.andThen(_.map(OrderedInstant)))
+  def orThat(zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] = orThatMaybeDateExp({ _:T => zonedDateTime}.andThen(_.map(OrderedZonedDateTime)))
+  def orThat(zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] = orThatMaybeDateExp(zonedDateTime.andThen(_.map(OrderedZonedDateTime)))
+  def orThat(localDate: Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] = orThatMaybeDateExp({ _:T => localDate}.andThen(_.map(OrderedLocalDate)))
+  def orThat(localDate: T => Option[LocalDate])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] = orThatMaybeDateExp(localDate.andThen(_.map(OrderedLocalDate)))
+  def orThat(localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] = orThatMaybeDateExp({ _:T => localDateTime}.andThen(_.map(OrderedLocalDateTime)))
+  def orThat(localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] = orThatMaybeDateExp(localDateTime.andThen(_.map(OrderedLocalDateTime)))
+  private def orThatMaybeDateExp[R](maybeOrdered: T => Option[Ordered[R]]): OptionalTemporalExpAssertionBuilder[T,R] = new OptionalTemporalExpAssertionBuilder(OptionalExp(maybeOrdered), expression, _ or _)
 
   def otherwise(errorMsg: String): AssertionExp[T] = AssertionExp(expression, { _:T => errorMsg})
   def otherwise(errorMsg: T => String): AssertionExp[T] = AssertionExp(expression, errorMsg)

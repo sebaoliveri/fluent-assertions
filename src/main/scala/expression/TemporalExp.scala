@@ -2,7 +2,7 @@ package expression
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
 
-object DateExp {
+object TemporalExp {
 
   def instantConstant[T](instant: Instant): QuantifiableOrderedExp[T,Instant] =
     instantVariable(_ => instant)
