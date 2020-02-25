@@ -10,4 +10,7 @@ trait LogicalOperatorsExp[T,R <: LogicalOperators[R]] extends Expression[T,R] {
 
   def ifTrue(expression: LogicalOperatorsExp[T,R]): LogicalOperatorsExp[T,R] =
     IfTrueExp(left = this, right = expression)
+
+  def ifFalse(expression: LogicalOperatorsExp[T,R]): LogicalOperatorsExp[T,R] =
+    IfFalseExp(left = this, right = expression)
 }

@@ -99,6 +99,8 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def fold[U](fa: List[String] => U, fb: T => U): U = fb(context)
 
   override def toOption: Option[T] = Some(context)
+
+  override def ifFalse(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = this
 }
 
 case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
@@ -150,4 +152,6 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def fold[U](fa: List[String] => U, fb: T => U): U = fa(errorMessages)
 
   override def toOption: Option[T] = None
+
+  override def ifFalse(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = block
 }

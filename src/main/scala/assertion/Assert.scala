@@ -38,6 +38,9 @@ case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[
   def ifTrue(anotherAssert: Assert[T]): Assert[T] =
     copy(expression = expression.ifTrue(anotherAssert.expression))
 
+  def ifFalse(anotherAssert: Assert[T]): Assert[T] =
+    copy(expression = expression.ifFalse(anotherAssert.expression))
+
   def and(anotherAssert: Assert[T]): Assert[T] =
     copy(expression = expression.and(anotherAssert.expression))
 
@@ -46,6 +49,9 @@ case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[
 
   def ifTrueAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
     copy(expression = expression.ifTrue(anExpression))
+
+  def ifFalseAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
+    copy(expression = expression.ifFalse(anExpression))
 
   def andAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
     copy(expression = expression.and(anExpression))

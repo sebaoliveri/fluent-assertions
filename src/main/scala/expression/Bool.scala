@@ -24,6 +24,8 @@ object TrueExp extends Bool  {
   override def not(): Bool = FalseExp
 
   override def ifTrue(block: => Bool): Bool = block
+
+  override def ifFalse(block: => Bool): Bool = this
 }
 
 object FalseExp extends Bool {
@@ -37,4 +39,6 @@ object FalseExp extends Bool {
   override def not(): Bool = TrueExp
 
   override def ifTrue(block: => Bool): Bool = this
+
+  override def ifFalse(block: => Bool): Bool = block
 }
