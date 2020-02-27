@@ -9,113 +9,113 @@ import scala.reflect.ClassTag
 object AssertionBuilder {
 
   import BooleanExpAssertionBuilder._
-  def that[T](bool: Boolean): BooleanExpAssertionBuilder[T] =
+  def assertThat[T](bool: Boolean): BooleanExpAssertionBuilder[T] =
     fromBooleanConstant(bool)
-  def that[T](bool: T => Boolean): BooleanExpAssertionBuilder[T] =
+  def assertThat[T](bool: T => Boolean): BooleanExpAssertionBuilder[T] =
     fromBooleanVariable(bool)
 
   // traversable
   import IterableExpAssertionBuilder._
-  def that[T,R](iterable: Iterable[R]): IterableExpAssertionBuilder[T,R] =
+  def assertThat[T,R](iterable: Iterable[R]): IterableExpAssertionBuilder[T,R] =
     fromIterableConstant(iterable)
-  def that[T,R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T,R] =
+  def assertThat[T,R](iterable: T => Iterable[R]): IterableExpAssertionBuilder[T,R] =
     fromIterableVariable(iterable)
 
   // maybe traversable
   import OptionalIterableExpAssertionBuilder._
-  def that[T,R](iterable: Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
+  def assertThat[T,R](iterable: Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
     fromMaybeIterableConstant(iterable)
-  def that[T,R](iterable: T => Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
+  def assertThat[T,R](iterable: T => Option[Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
     fromMaybeIterableVariable(iterable)
 
   // string
   import StringExpAssertionBuilder._
-  def that[T](string: String): StringExpAssertionBuilder[T] =
+  def assertThat[T](string: String): StringExpAssertionBuilder[T] =
     fromStringConstant(string)
-  def that[T](string: T => String): StringExpAssertionBuilder[T] =
+  def assertThat[T](string: T => String): StringExpAssertionBuilder[T] =
     fromStringVariable(string)
 
   // maybe string
   import OptionalStringExpAssertionBuilder._
-  def that[T](maybeString: Option[String]): OptionalStringExpAssertionBuilder[T] =
+  def assertThat[T](maybeString: Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringConstant(maybeString)
-  def that[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
+  def assertThat[T](maybeString: T => Option[String]): OptionalStringExpAssertionBuilder[T] =
     fromMaybeStringVariable(maybeString)
 
   // quantifiable
   import QuantifiableExpAssertionBuilder._
-  def that[T](int: Int): QuantifiableExpAssertionBuilder[T,Int] =
+  def assertThat[T](int: Int): QuantifiableExpAssertionBuilder[T,Int] =
     fromIntConstant(int)
-  def that[T](int: T => Int)(implicit d:DummyImplicit): QuantifiableExpAssertionBuilder[T,Int] =
+  def assertThat[T](int: T => Int)(implicit d:DummyImplicit): QuantifiableExpAssertionBuilder[T,Int] =
     fromIntVariable(int)
-  def that[T](double: Double): QuantifiableExpAssertionBuilder[T,Double] =
+  def assertThat[T](double: Double): QuantifiableExpAssertionBuilder[T,Double] =
     fromDoubleConstant(double)
-  def that[T](double: T => Double)(implicit d1:DummyImplicit, d2:DummyImplicit): QuantifiableExpAssertionBuilder[T,Double] =
+  def assertThat[T](double: T => Double)(implicit d1:DummyImplicit, d2:DummyImplicit): QuantifiableExpAssertionBuilder[T,Double] =
     fromDoubleVariable(double)
-  def that[T](long: Long): QuantifiableExpAssertionBuilder[T,Long] =
+  def assertThat[T](long: Long): QuantifiableExpAssertionBuilder[T,Long] =
     fromLongConstant(long)
-  def that[T](long: T => Long)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): QuantifiableExpAssertionBuilder[T,Long] =
+  def assertThat[T](long: T => Long)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): QuantifiableExpAssertionBuilder[T,Long] =
     fromLongVariable(long)
-  def that[T](bigDecimal: BigDecimal): QuantifiableExpAssertionBuilder[T,BigDecimal] =
+  def assertThat[T](bigDecimal: BigDecimal): QuantifiableExpAssertionBuilder[T,BigDecimal] =
     fromBigDecimalConstant(bigDecimal)
-  def that[T](bigDecimal: T => BigDecimal)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit, d4:DummyImplicit): QuantifiableExpAssertionBuilder[T,BigDecimal] =
+  def assertThat[T](bigDecimal: T => BigDecimal)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit, d4:DummyImplicit): QuantifiableExpAssertionBuilder[T,BigDecimal] =
     fromBigDecimalVariable(bigDecimal)
 
   // maybe quantifiable
   import OptionalQuantifiableExpAssertionBuilder._
-  def that[T](maybeInt: Option[Int]): OptionalQuantifiableExpAssertionBuilder[T,Int] =
+  def assertThat[T](maybeInt: Option[Int]): OptionalQuantifiableExpAssertionBuilder[T,Int] =
     fromMaybeIntConstant(maybeInt)
-  def that[T](maybeInt: T => Option[Int])(implicit d:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Int] =
+  def assertThat[T](maybeInt: T => Option[Int])(implicit d:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Int] =
     fromMaybeIntVariable(maybeInt)
-  def that[T](maybeDouble: Option[Double])(implicit d:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Double] =
+  def assertThat[T](maybeDouble: Option[Double])(implicit d:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Double] =
     fromMaybeDoubleConstant(maybeDouble)
-  def that[T](maybeDouble: T => Option[Double])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Double] =
+  def assertThat[T](maybeDouble: T => Option[Double])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Double] =
     fromMaybeDoubleVariable(maybeDouble)
-  def that[T](maybeLong: Option[Long])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Long] =
+  def assertThat[T](maybeLong: Option[Long])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Long] =
     fromMaybeLongConstant(maybeLong)
-  def that[T](maybeLong: T => Option[Long])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Long] =
+  def assertThat[T](maybeLong: T => Option[Long])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,Long] =
     fromMaybeLongVariable(maybeLong)
-  def that[T](maybeBigDecimal: Option[BigDecimal])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,BigDecimal] =
+  def assertThat[T](maybeBigDecimal: Option[BigDecimal])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalQuantifiableExpAssertionBuilder[T,BigDecimal] =
     fromMaybeBigDecimalConstant(maybeBigDecimal)
-  def that[T](maybeBigDecimal: T => Option[BigDecimal]): OptionalQuantifiableExpAssertionBuilder[T,BigDecimal] =
+  def assertThat[T](maybeBigDecimal: T => Option[BigDecimal]): OptionalQuantifiableExpAssertionBuilder[T,BigDecimal] =
     fromMaybeBigDecimalVariable(maybeBigDecimal)
 
   // date
   import TemporalExpAssertionBuilder._
-  def that[T](instant: Instant): TemporalExpAssertionBuilder[T,Instant] =
+  def assertThat[T](instant: Instant): TemporalExpAssertionBuilder[T,Instant] =
     fromInstantConstant(instant)
-  def that[T](zonedDateTime: ZonedDateTime): TemporalExpAssertionBuilder[T,ZonedDateTime] =
+  def assertThat[T](zonedDateTime: ZonedDateTime): TemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromZonedDateTimeConstant(zonedDateTime)
-  def that[T](localDate: LocalDate): TemporalExpAssertionBuilder[T,LocalDate] =
+  def assertThat[T](localDate: LocalDate): TemporalExpAssertionBuilder[T,LocalDate] =
     fromLocalDateConstant(localDate)
-  def that[T](localDateTime: LocalDateTime): TemporalExpAssertionBuilder[T,LocalDateTime] =
+  def assertThat[T](localDateTime: LocalDateTime): TemporalExpAssertionBuilder[T,LocalDateTime] =
     fromLocalDateTimeConstant(localDateTime)
-  def that[T](instant: T => Instant): TemporalExpAssertionBuilder[T,Instant] =
+  def assertThat[T](instant: T => Instant): TemporalExpAssertionBuilder[T,Instant] =
     fromInstantVariable(instant)
-  def that[T](zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): TemporalExpAssertionBuilder[T,ZonedDateTime] =
+  def assertThat[T](zonedDateTime: T => ZonedDateTime)(implicit d1:DummyImplicit): TemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromZonedDateTimeVariable(zonedDateTime)
-  def that[T](localDate: T => LocalDate)(implicit d1:DummyImplicit, d2:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDate] =
+  def assertThat[T](localDate: T => LocalDate)(implicit d1:DummyImplicit, d2:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDate] =
     fromLocalDateVariable(localDate)
-  def that[T](localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDateTime] =
+  def assertThat[T](localDateTime: T => LocalDateTime)(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): TemporalExpAssertionBuilder[T,LocalDateTime] =
     fromLocalDateTimeVariable(localDateTime)
 
   // maybe date
   import OptionalTemporalExpAssertionBuilder._
-  def that[T](instant: Option[Instant]): OptionalTemporalExpAssertionBuilder[T,Instant] =
+  def assertThat[T](instant: Option[Instant]): OptionalTemporalExpAssertionBuilder[T,Instant] =
     fromMaybeInstantConstant(instant)
-  def that[T](zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] =
+  def assertThat[T](zonedDateTime: Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromMaybeZonedDateTimeConstant(zonedDateTime)
-  def that[T](localDate: Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] =
+  def assertThat[T](localDate: Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] =
     fromMaybeLocalDateConstant(localDate)
-  def that[T](localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] =
+  def assertThat[T](localDateTime: Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] =
     fromMaybeLocalDateTimeConstant(localDateTime)
-  def that[T](instant: T => Option[Instant]): OptionalTemporalExpAssertionBuilder[T,Instant] =
+  def assertThat[T](instant: T => Option[Instant]): OptionalTemporalExpAssertionBuilder[T,Instant] =
     fromMaybeInstantVariable(instant)
-  def that[T](zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] =
+  def assertThat[T](zonedDateTime: T => Option[ZonedDateTime])(implicit d1:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,ZonedDateTime] =
     fromMaybeZonedDateTimeVariable(zonedDateTime)
-  def that[T](localDate: T => Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] =
+  def assertThat[T](localDate: T => Option[LocalDate])(implicit d1:DummyImplicit, d2:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDate] =
     fromMaybeLocalDateVariable(localDate)
-  def that[T](localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] =
+  def assertThat[T](localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit, d2:DummyImplicit, d3:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] =
     fromMaybeLocalDateTimeVariable(localDateTime)
 }
 

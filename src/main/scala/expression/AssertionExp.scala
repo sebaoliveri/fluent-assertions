@@ -5,16 +5,12 @@ import assertion.AssertionFailureException
 import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String)
-  extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
+  extends AssertionExpBehaviour[T,T,T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     expression.evaluate(context).thenElse(
       AssertionSuccessfulResult(context),
       AssertionFailureResult(List(otherwise(context))))
-
-
-  def map[U](f: T => U): MapAssertionExp[T,T,U] =
-    MapAssertionExp(this, f)
 }
 
 case class SuccessfulAssertionExp[T]()

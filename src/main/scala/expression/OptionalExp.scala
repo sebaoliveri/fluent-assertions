@@ -24,4 +24,3 @@ case class IsDefinedExp[T,R](constantExp: OptionalExp[T,R]) extends LogicalOpera
   override def evaluate(context: T): Bool =
     Bool(constantExp.evaluate(context).isDefined)
 }
-
