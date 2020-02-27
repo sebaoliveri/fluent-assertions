@@ -11,6 +11,10 @@ case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => Strin
     expression.evaluate(context).thenElse(
       AssertionSuccessfulResult(context),
       AssertionFailureResult(List(otherwise(context))))
+
+
+  def map[U](f: T => U): MapAssertionExp[T,T,U] =
+    MapAssertionExp(this, f)
 }
 
 case class SuccessfulAssertionExp[T]()

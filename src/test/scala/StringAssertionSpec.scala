@@ -8,6 +8,21 @@ class StringAssertionSpec extends FlatSpec with Matchers {
   case class Customer(name: String, email: String, homepage: String, age: String)
 
   it should "isEqualTo constant" in {
+
+    println(
+    Assert
+      .assert(that({ customersByAge:Map[Int,Customer] => customersByAge}).isNotEmpty.otherwise("puto1"))
+      .map { custByAge =>
+        println("eeeeeeh!")
+        custByAge.keys
+      }
+      .map(_.headOption)
+      .map(_.isDefined)
+      .in(Map(
+        1 -> Customer("sebas", "sebas@gmail.com", "sebas", "37"),
+          2 -> Customer("rata", "rata@gmail.com", "rata", "27")))
+    )
+
     Assert
       .assert(that("Sebastian").isEqualTo("Sebastian").otherwise("No way it fails..."))
       .expectsToBeTrue()

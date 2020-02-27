@@ -1,6 +1,6 @@
 package assertion
 
-import expression.{AssertionResultBehaviour, LogicalOperatorsExp, SuccessfulAssertionExp}
+import expression.{AssertionResultBehaviour, LogicalOperatorsExp, MapAssertionExp, SuccessfulAssertionExp}
 
 import scala.util.{Either, Try}
 
@@ -15,7 +15,7 @@ case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[
 
   private val NoContext = new Object().asInstanceOf[T]
 
-  def toEither: Either[AssertionFailureException, T] = inNoContext.toEither
+  def toEither: Either[AssertionFailureException,T] = inNoContext.toEither
 
   def toTry: Try[T] = inNoContext.toTry
 
@@ -58,4 +58,7 @@ case class Assert[T](expression: LogicalOperatorsExp[T,AssertionResultBehaviour[
 
   def orAssert(anExpression: LogicalOperatorsExp[T,AssertionResultBehaviour[T]]): Assert[T] =
     copy(expression = expression.or(anExpression))
+
+  def map[U](f: T => U): MapAssertionExp[T, T, U] =
+    MapAssertionExp(expression, f)
 }
