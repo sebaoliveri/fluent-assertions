@@ -1,5 +1,5 @@
 
-import assertion.AssertionBuilder._
+import org.validify.assertion.AssertionBuilder._
 import org.scalatest.{FlatSpec, Matchers}
 
 class OptionalStringAssertionSpec extends FlatSpec with Matchers {

@@ -5,7 +5,7 @@ IMPORTANT! This Readme is a lil bit deprecated and describes just a few operatio
 ### Motivation
 A long time ago, I was taught that real developers do not use IF. Of course, there are times when IF statements can not be avoided and this happens when evaluating two objects of different domains. In all other cases they can be replaced by polimorfism.
 
-__fluent-assertions__ _is the result of materializing my motivation to propose an assertion model to reify assertions as first class objects._ 
+__fluent-assertions__ _is the result of materializing my motivation to propose an org.validify.assertion model to reify assertions as first class objects._ 
 
 ### Simple Usage
 
@@ -56,7 +56,7 @@ Here we expect the user to fill a user registration form fulfilling certain busi
 
 ```
 
-Given the assertion previously written you can pattern match:
+Given the org.validify.assertion previously written you can pattern match:
 
 ```scala
 
