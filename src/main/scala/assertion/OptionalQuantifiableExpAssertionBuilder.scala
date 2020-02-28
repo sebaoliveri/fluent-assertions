@@ -43,50 +43,50 @@ case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T
   def isDefined: OptionalQuantifiableExpAssertionBuilder[T,R] =
     OptionalQuantifiableExpAssertionBuilder(optionExp, operator(expression, IsDefinedExp[T,Ordered[R]](optionExp)))
 
-  def wouldBeEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeEqualTo(_ => maybeQuantity)
+  def isEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isEqualTo(_ => maybeQuantity)
 
-  def wouldBeEqualTo(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isEqualTo(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isEqualTo(QuantifiableExp(maybeQuantity)))
 
-  def wouldBeGreaterThan(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeGreaterThan(_ => maybeQuantity)
+  def isGreaterThan(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isGreaterThan(_ => maybeQuantity)
 
-  def wouldBeGreaterThan(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isGreaterThan(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isGreaterThan(QuantifiableExp(maybeQuantity)))
 
-  def wouldBeLessThan(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeLessThan(_ => maybeQuantity)
+  def isLessThan(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isLessThan(_ => maybeQuantity)
 
-  def wouldBeLessThan(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isLessThan(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isLessThan(QuantifiableExp(maybeQuantity)))
 
-  def wouldBeGreaterThanOrEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeGreaterThanOrEqualTo(_ => maybeQuantity)
+  def isGreaterThanOrEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isGreaterThanOrEqualTo(_ => maybeQuantity)
 
-  def wouldBeGreaterThanOrEqualTo(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isGreaterThanOrEqualTo(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isGreaterThanOrEqualTo(QuantifiableExp(maybeQuantity)))
 
-  def wouldBeLessThanOrEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeLessThanOrEqualTo(_ => maybeQuantity)
+  def isLessThanOrEqualTo(maybeQuantity: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isLessThanOrEqualTo(_ => maybeQuantity)
 
-  def wouldBeLessThanOrEqualTo(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isLessThanOrEqualTo(maybeQuantity: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isLessThanOrEqualTo(QuantifiableExp(maybeQuantity)))
 
-  def wouldBeInInclusiveRange(min: R, max: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeInInclusiveRange(_ => min, _ => max)
+  def isInInclusiveRange(min: R, max: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isInInclusiveRange(_ => min, _ => max)
 
-  def wouldBeInInclusiveRange(min: T => R, max: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isInInclusiveRange(min: T => R, max: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isInInclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
 
-  def wouldBeInExclusiveRange(min: R, max: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
-    wouldBeInExclusiveRange(_ => min, _ => max)
+  def isInExclusiveRange(min: R, max: R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+    isInExclusiveRange(_ => min, _ => max)
 
-  def wouldBeInExclusiveRange(min: T => R, max: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def isInExclusiveRange(min: T => R, max: T => R): OptionalQuantifiableExpAssertionBuilder[T,R] =
     newWith(ordered => QuantifiableOrderedExp({_:T => ordered}).isInExclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
 
   def isPercentage: OptionalQuantifiableExpAssertionBuilder[T, R] =
-    wouldBeInInclusiveRange(0.asInstanceOf[R], 100.asInstanceOf[R])
+    isInInclusiveRange(0.asInstanceOf[R], 100.asInstanceOf[R])
 
   override def or: OptionalQuantifiableExpAssertionBuilder[T, R] =
     OptionalQuantifiableExpAssertionBuilder(optionExp, expression, _ or _)
