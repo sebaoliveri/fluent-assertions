@@ -14,7 +14,7 @@ case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => Strin
 }
 
 case class SuccessfulAssertionExp[T]()
-  extends LogicalOperatorsExp[T,AssertionResultBehaviour[T]] {
+  extends AssertionExpBehaviour[T,T,T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     AssertionSuccessfulResult(context)
