@@ -9,7 +9,7 @@ abstract class AnyExp[T,R](func: T => R) extends Expression[T,R] {
     func(context)
 }
 
-case class IsEqualToExp[T,R](left: AnyExp[T,R], right: AnyExp[T,R]) extends LogicalOperatorsExp[T,Bool] {
+case class IsEqualToExp[T,R](left: AnyExp[T,R], right: AnyExp[T,R]) extends BoolExpBehaviour[T] {
 
   override def evaluate(context: T): Bool =
     Bool(left.evaluate(context) == right.evaluate(context))

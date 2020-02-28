@@ -33,11 +33,11 @@ object OptionalQuantifiableExpAssertionBuilder {
   def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]]): OptionalQuantifiableExpAssertionBuilder[T,R] =
     OptionalQuantifiableExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())
 
-  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool]): OptionalQuantifiableExpAssertionBuilder[T,R] =
+  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: BoolExpBehaviour[T]): OptionalQuantifiableExpAssertionBuilder[T,R] =
     new OptionalQuantifiableExpAssertionBuilder(optionalExp, expression, _ and _)
 }
 
-case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
   extends AssertionBuilder[T,OptionalQuantifiableExpAssertionBuilder[T,R]](expression) {
 
   def isDefined: OptionalQuantifiableExpAssertionBuilder[T,R] =
@@ -91,7 +91,7 @@ case class OptionalQuantifiableExpAssertionBuilder[T,R](optionExp: OptionalExp[T
   override def or: OptionalQuantifiableExpAssertionBuilder[T, R] =
     OptionalQuantifiableExpAssertionBuilder(optionExp, expression, _ or _)
 
-  private def newWith(newExpression: Ordered[R] => LogicalOperatorsExp[T,Bool]) =
+  private def newWith(newExpression: Ordered[R] => BoolExpBehaviour[T]) =
     OptionalQuantifiableExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,Ordered[R]](optionExp, newExpression)))
 }

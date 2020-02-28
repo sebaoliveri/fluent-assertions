@@ -35,11 +35,11 @@ object QuantifiableExpAssertionBuilder {
   def apply[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R]): QuantifiableExpAssertionBuilder[T,R] =
     QuantifiableExpAssertionBuilder(quantifiableExp, new NullExp[T,Bool]())
 
-  def apply[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): QuantifiableExpAssertionBuilder[T,R] =
+  def apply[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R], expression: BoolExpBehaviour[T]): QuantifiableExpAssertionBuilder[T,R] =
     new QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ and _)
 }
 
-case class QuantifiableExpAssertionBuilder[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class QuantifiableExpAssertionBuilder[T,R: ClassTag](quantifiableExp: QuantifiableOrderedExp[T,R], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
   extends AssertionBuilder[T,QuantifiableExpAssertionBuilder[T,R]](expression) {
 
   def isEqualTo(number: R): QuantifiableExpAssertionBuilder[T,R] =
@@ -95,6 +95,6 @@ case class QuantifiableExpAssertionBuilder[T,R: ClassTag](quantifiableExp: Quant
   override def or: QuantifiableExpAssertionBuilder[T, R] =
     QuantifiableExpAssertionBuilder(quantifiableExp, expression, _ or _)
 
-  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]) =
+  private def newWith(newExpression: BoolExpBehaviour[T]) =
     QuantifiableExpAssertionBuilder(quantifiableExp, operator.apply(expression, newExpression))
 }

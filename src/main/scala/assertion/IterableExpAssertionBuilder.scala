@@ -1,6 +1,6 @@
 package assertion
 
-import expression.{Bool, IterableExp, LogicalOperatorsExp, NullExp, ObjectExp}
+import expression.{Bool, BoolExpBehaviour, IterableExp, NullExp, ObjectExp}
 
 object IterableExpAssertionBuilder {
   import IterableExp._
@@ -14,21 +14,21 @@ object IterableExpAssertionBuilder {
   def apply[T,R](iterableExp: IterableExp[T,R]): IterableExpAssertionBuilder[T,R] =
     IterableExpAssertionBuilder(iterableExp, new NullExp[T,Bool]())
 
-  def apply[T,R](iterableExp: IterableExp[T,R], expression: LogicalOperatorsExp[T,Bool]): IterableExpAssertionBuilder[T,R] =
+  def apply[T,R](iterableExp: IterableExp[T,R], expression: BoolExpBehaviour[T]): IterableExpAssertionBuilder[T,R] =
     new IterableExpAssertionBuilder(iterableExp, expression, _ and _)
 }
 
-case class IterableExpAssertionBuilder[T,R](iterableExp: IterableExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class IterableExpAssertionBuilder[T,R](iterableExp: IterableExp[T,R], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
   extends AssertionBuilder[T,IterableExpAssertionBuilder[T,R]](expression) {
 
   import IterableExp._
 
-  private def indexBoundedTo(predicate: R => LogicalOperatorsExp[Unit,Bool]): Int => R => LogicalOperatorsExp[Unit,Bool] = index => predicate
+  private def indexBoundedTo(predicate: R => BoolExpBehaviour[Unit]): Int => R => BoolExpBehaviour[Unit] = index => predicate
 
-  def forAll(predicate: R => LogicalOperatorsExp[Unit,Bool]): IterableExpAssertionBuilder[T,R] =
+  def forAll(predicate: R => BoolExpBehaviour[Unit]): IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.forAll(indexBoundedTo(predicate)))
 
-  def existAny(predicate: R => LogicalOperatorsExp[Unit,Bool]): IterableExpAssertionBuilder[T,R] =
+  def existAny(predicate: R => BoolExpBehaviour[Unit]): IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.existAny(indexBoundedTo(predicate)))
 
   def containsAllOrdered(objects: Iterable[R]): IterableExpAssertionBuilder[T,R] =
@@ -76,7 +76,7 @@ case class IterableExpAssertionBuilder[T,R](iterableExp: IterableExp[T,R], expre
   def isEmpty: IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.isEmpty)
 
-  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]): IterableExpAssertionBuilder[T,R] =
+  private def newWith(newExpression: BoolExpBehaviour[T]): IterableExpAssertionBuilder[T,R] =
     IterableExpAssertionBuilder(iterableExp, operator.apply(expression, newExpression))
 
   override def or: IterableExpAssertionBuilder[T,R] =

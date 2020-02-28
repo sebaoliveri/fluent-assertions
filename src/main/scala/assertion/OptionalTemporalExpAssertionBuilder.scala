@@ -33,11 +33,11 @@ object OptionalTemporalExpAssertionBuilder {
   def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]]): OptionalTemporalExpAssertionBuilder[T,R] =
     OptionalTemporalExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())
 
-  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool]): OptionalTemporalExpAssertionBuilder[T,R] =
+  def apply[T,R](optionalExp: OptionalExp[T,Ordered[R]], expression: BoolExpBehaviour[T]): OptionalTemporalExpAssertionBuilder[T,R] =
     new OptionalTemporalExpAssertionBuilder(optionalExp, new NullExp[T,Bool](), _ and _)
 }
 
-case class OptionalTemporalExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class OptionalTemporalExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ordered[R]], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
   extends AssertionBuilder[T,OptionalTemporalExpAssertionBuilder[T,R]](expression) {
 
   def isDefined: OptionalTemporalExpAssertionBuilder[T,R] =
@@ -82,7 +82,7 @@ case class OptionalTemporalExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ord
   override def or: OptionalTemporalExpAssertionBuilder[T, R] =
     OptionalTemporalExpAssertionBuilder(optionExp, expression, _ or _)
 
-  private def newWith(newExpression: Ordered[R] => LogicalOperatorsExp[T,Bool]) =
+  private def newWith(newExpression: Ordered[R] => BoolExpBehaviour[T]) =
     OptionalTemporalExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,Ordered[R]](optionExp, newExpression)))
 }

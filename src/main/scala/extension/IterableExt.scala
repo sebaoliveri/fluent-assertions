@@ -1,6 +1,6 @@
 package extension
 
-import expression.{Bool, LogicalOperatorsExp, ObjectExp}
+import expression.{BoolExpBehaviour, ObjectExp}
 
 object IterableExt {
 
@@ -8,40 +8,40 @@ object IterableExt {
 
   implicit class IterableExtensions[R](iterable: Iterable[R]) {
 
-    private def indexBoundedTo(predicate: R => LogicalOperatorsExp[Unit,Bool]): Int => R => LogicalOperatorsExp[Unit,Bool] =
+    private def indexBoundedTo(predicate: R => BoolExpBehaviour[Unit]): Int => R => BoolExpBehaviour[Unit] =
       index => predicate
 
-    def forAllExp(predicate: R => LogicalOperatorsExp[Unit,Bool]): LogicalOperatorsExp[Unit,Bool] =
+    def forAllExp(predicate: R => BoolExpBehaviour[Unit]): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).forAll(indexBoundedTo(predicate))
 
-    def existAnyExp(predicate: R => LogicalOperatorsExp[Unit,Bool]): LogicalOperatorsExp[Unit,Bool] =
+    def existAnyExp(predicate: R => BoolExpBehaviour[Unit]): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).existAny(indexBoundedTo(predicate))
 
-    def containsAllOrderedExp(objects: Iterable[R]): LogicalOperatorsExp[Unit,Bool] =
+    def containsAllOrderedExp(objects: Iterable[R]): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).containsAllInSameOrder(iterableConstant(objects))
 
-    def containsAllExp(objects: Iterable[R]): LogicalOperatorsExp[Unit,Bool] =
+    def containsAllExp(objects: Iterable[R]): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).containsAll(iterableConstant(objects))
 
-    def doesNotContainAnyOfExp(objects: Iterable[R]): LogicalOperatorsExp[Unit,Bool] =
+    def doesNotContainAnyOfExp(objects: Iterable[R]): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).doesNotContainAnyOf(iterableConstant(objects))
 
-    def containsAnyOfExp(objects: Iterable[R]): LogicalOperatorsExp[Unit,Bool] =
+    def containsAnyOfExp(objects: Iterable[R]): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).containsAnyOf(iterableConstant(objects))
 
-    def containsExp(anObject: R): LogicalOperatorsExp[Unit,Bool] =
+    def containsExp(anObject: R): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).contains(ObjectExp(_ => anObject))
 
-    def doesNotContainExp(anObject: R): LogicalOperatorsExp[Unit,Bool] =
+    def doesNotContainExp(anObject: R): BoolExpBehaviour[Unit] =
       iterableConstant(iterable).doesNotContain(ObjectExp(_ => anObject))
 
-    def containsNoDuplicatesExp: LogicalOperatorsExp[Unit,Bool] =
+    def containsNoDuplicatesExp: BoolExpBehaviour[Unit] =
       iterableConstant(iterable).containsNoDuplicates
 
-    def isEmptyExp: LogicalOperatorsExp[Unit,Bool] =
+    def isEmptyExp: BoolExpBehaviour[Unit] =
       iterableConstant(iterable).isEmpty
 
-    def isNotEmptyExp: LogicalOperatorsExp[Unit,Bool] =
+    def isNotEmptyExp: BoolExpBehaviour[Unit] =
       iterableConstant(iterable).isNotEmpty
   }
 }

@@ -15,11 +15,11 @@ object OptionalStringExpAssertionBuilder {
   def apply[T](optionalExp: OptionalExp[T,String]): OptionalStringExpAssertionBuilder[T] =
     OptionalStringExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())
 
-  def apply[T](optionalExp: OptionalExp[T,String], expression: LogicalOperatorsExp[T,Bool]): OptionalStringExpAssertionBuilder[T] =
+  def apply[T](optionalExp: OptionalExp[T,String], expression: BoolExpBehaviour[T]): OptionalStringExpAssertionBuilder[T] =
     new OptionalStringExpAssertionBuilder(optionalExp, expression, _ and _)
 }
 
-case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
   extends AssertionBuilder[T,OptionalStringExpAssertionBuilder[T]](expression) {
 
   import StringExp._
@@ -132,7 +132,7 @@ case class OptionalStringExpAssertionBuilder[T](optionExp: OptionalExp[T,String]
   def isNotBlank: OptionalStringExpAssertionBuilder[T] =
     newWith(stringConstant(_).isNotBlank)
 
-  private def newWith(newExpression: String => LogicalOperatorsExp[T,Bool]): OptionalStringExpAssertionBuilder[T] =
+  private def newWith(newExpression: String => BoolExpBehaviour[T]): OptionalStringExpAssertionBuilder[T] =
     OptionalStringExpAssertionBuilder(optionExp,
       operator.apply(expression, OptionalBoolExp[T,String](optionExp, newExpression)))
 

@@ -34,11 +34,11 @@ object TemporalExpAssertionBuilder {
   def apply[T,R](dateExp: QuantifiableOrderedExp[T,R]): TemporalExpAssertionBuilder[T,R] =
     TemporalExpAssertionBuilder(dateExp, new NullExp[T,Bool]())
 
-  def apply[T,R](dateExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool]): TemporalExpAssertionBuilder[T,R] =
+  def apply[T,R](dateExp: QuantifiableOrderedExp[T,R], expression: BoolExpBehaviour[T]): TemporalExpAssertionBuilder[T,R] =
     new TemporalExpAssertionBuilder(dateExp, expression, _ and _)
 }
 
-case class TemporalExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: LogicalOperatorsExp[T,Bool], operator: (LogicalOperatorsExp[T,Bool], LogicalOperatorsExp[T,Bool]) => LogicalOperatorsExp[T,Bool])
+case class TemporalExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrderedExp[T,R], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
   extends AssertionBuilder[T,TemporalExpAssertionBuilder[T,R]](expression) {
 
   def isAfter(date: R): TemporalExpAssertionBuilder[T,R] =
@@ -80,6 +80,6 @@ case class TemporalExpAssertionBuilder[T,R](quantifiableExp: QuantifiableOrdered
   override def or: TemporalExpAssertionBuilder[T, R] =
     TemporalExpAssertionBuilder(quantifiableExp, expression, _ or _)
 
-  private def newWith(newExpression: LogicalOperatorsExp[T,Bool]): TemporalExpAssertionBuilder[T, R] =
+  private def newWith(newExpression: BoolExpBehaviour[T]): TemporalExpAssertionBuilder[T, R] =
     TemporalExpAssertionBuilder(quantifiableExp, operator.apply(expression, newExpression))
 }

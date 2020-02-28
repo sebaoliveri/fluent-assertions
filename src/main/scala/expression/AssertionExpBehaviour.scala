@@ -6,6 +6,18 @@ import scala.util.{Either, Try}
 
 trait AssertionExpBehaviour[P1,P2,P3] extends LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]] {
 
+  def and(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
+    new AndExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+
+  def or(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
+    new OrExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+
+  def ifTrue(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
+    new IfTrueExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+
+  def ifFalse(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
+    new IfFalseExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+
   def map[P4](f: P3 => P4): MapAssertionExp[P1, P3, P4] =
     MapAssertionExp(this, f)
 

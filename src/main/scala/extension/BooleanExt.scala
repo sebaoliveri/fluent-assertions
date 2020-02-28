@@ -1,6 +1,6 @@
 package extension
 
-import expression.{Bool, LogicalOperatorsExp}
+import expression.BoolExpBehaviour
 
 object BooleanExt {
 
@@ -8,8 +8,8 @@ object BooleanExt {
 
   implicit class BooleanExtensions(boolean: Boolean) {
 
-    def isTrueExp: LogicalOperatorsExp[Unit,Bool] = boolConstant(boolean).isTrue
+    def isTrueExp: BoolExpBehaviour[Unit] = boolConstant(boolean).isTrue
 
-    def isFalseExp: LogicalOperatorsExp[Unit,Bool] = boolConstant(boolean).isFalse
+    def isFalseExp: BoolExpBehaviour[Unit] = boolConstant(boolean).isFalse
   }
 }
