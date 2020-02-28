@@ -1,5 +1,6 @@
 ## Fluent assertions
 
+IMPORTANT! This Readme is a lil bit deprecated and describes just a few operations with this lib , will update it soon and publish version 1.0 to bintray...
 
 ### Motivation
 A long time ago, I was taught that real developers do not use IF. Of course, there are times when IF statements can not be avoided and this happens when evaluating two objects of different domains. In all other cases they can be replaced by polimorfism.
