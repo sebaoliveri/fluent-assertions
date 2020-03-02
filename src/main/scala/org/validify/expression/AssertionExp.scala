@@ -5,7 +5,7 @@ import org.validify.assertion.AssertionFailureException
 import scala.util.{Either, Failure, Success, Try}
 
 case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String)
-  extends AssertionExpBehaviour[T,T,T] {
+  extends ComposableAssertionExp[T,T,T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     expression.evaluate(context).thenElse(
@@ -14,7 +14,7 @@ case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => Strin
 }
 
 case class SuccessfulAssertionExp[T]()
-  extends AssertionExpBehaviour[T,T,T] {
+  extends ComposableAssertionExp[T,T,T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     AssertionSuccessfulResult(context)

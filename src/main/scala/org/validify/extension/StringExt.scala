@@ -1,6 +1,6 @@
 package org.validify.extension
 
-import org.validify.expression.{Bool, BoolExpBehaviour, LogicalOperatorsExp}
+import org.validify.expression.ComposableBooleanExp
 
 object StringExt {
 
@@ -8,62 +8,62 @@ object StringExt {
 
   implicit class StringExtensions(string: String) {
 
-    def isEqualToExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def isEqualToExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).isEqualTo(stringConstant(anotherString))
 
-    def isEqualToIgnoringCaseExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def isEqualToIgnoringCaseExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).isEqualToIgnoringCase(stringConstant(anotherString))
 
-    def startsWithExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def startsWithExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).startsWith(stringConstant(anotherString))
 
-    def startsWithIgnoringCaseExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def startsWithIgnoringCaseExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).startsWithIgnoringCase(stringConstant(anotherString))
 
-    def endsWithExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def endsWithExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).endsWith(stringConstant(anotherString))
 
-    def endsWithIgnoringCaseExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def endsWithIgnoringCaseExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).endsWithIgnoringCase(stringConstant(anotherString))
 
-    def containsExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def containsExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).contains(stringConstant(anotherString))
 
-    def containsIgnoringCaseExp(anotherString: String): BoolExpBehaviour[Unit] =
+    def containsIgnoringCaseExp(anotherString: String): ComposableBooleanExp[Unit] =
       stringConstant(string).containsIgnoringCase(stringConstant(anotherString))
 
-    def matchesRegexExp(regex: String): BoolExpBehaviour[Unit] =
+    def matchesRegexExp(regex: String): ComposableBooleanExp[Unit] =
       stringConstant(string).matches(stringConstant(regex))
 
-    def isEmail: BoolExpBehaviour[Unit] = matchesRegexExp(emailRegex)
+    def isEmail: ComposableBooleanExp[Unit] = matchesRegexExp(emailRegex)
 
-    def isUri: BoolExpBehaviour[Unit] = matchesRegexExp(uriRegex)
+    def isUri: ComposableBooleanExp[Unit] = matchesRegexExp(uriRegex)
 
-    def isAlphanumeric: BoolExpBehaviour[Unit] = matchesRegexExp(alphanumericRegex)
+    def isAlphanumeric: ComposableBooleanExp[Unit] = matchesRegexExp(alphanumericRegex)
 
-    def isAlphabetic: BoolExpBehaviour[Unit] = matchesRegexExp(alphabeticRegex)
+    def isAlphabetic: ComposableBooleanExp[Unit] = matchesRegexExp(alphabeticRegex)
 
-    def isNumber: BoolExpBehaviour[Unit] = matchesRegexExp(numberRegex)
+    def isNumber: ComposableBooleanExp[Unit] = matchesRegexExp(numberRegex)
 
-    def isSameLengthAsExp(length: Int): BoolExpBehaviour[Unit] =
+    def isSameLengthAsExp(length: Int): ComposableBooleanExp[Unit] =
       stringConstant(string).isSameLengthAs(length)
 
-    def isLongerThanExp(length: Int): BoolExpBehaviour[Unit] =
+    def isLongerThanExp(length: Int): ComposableBooleanExp[Unit] =
       stringConstant(string).isLongerThan(length)
 
-    def isShorterThanExp(length: Int): BoolExpBehaviour[Unit] =
+    def isShorterThanExp(length: Int): ComposableBooleanExp[Unit] =
       stringConstant(string).isShorterThan(length)
 
-    def isLongerThanOrEqualToExp(length: Int): BoolExpBehaviour[Unit] =
+    def isLongerThanOrEqualToExp(length: Int): ComposableBooleanExp[Unit] =
       stringConstant(string).isLongerThanOrEqualTo(length)
 
-    def isShorterThanOrEqualToExp(length: Int): BoolExpBehaviour[Unit] =
+    def isShorterThanOrEqualToExp(length: Int): ComposableBooleanExp[Unit] =
       stringConstant(string).isShorterThanOrEqualTo(length)
 
-    def isBlankExp: BoolExpBehaviour[Unit] =
+    def isBlankExp: ComposableBooleanExp[Unit] =
       stringConstant(string).isBlank
 
-    def isNotBlankExp: BoolExpBehaviour[Unit] =
+    def isNotBlankExp: ComposableBooleanExp[Unit] =
       stringConstant(string).isNotBlank
   }
 }

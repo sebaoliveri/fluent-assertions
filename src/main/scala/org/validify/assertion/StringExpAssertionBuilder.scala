@@ -14,11 +14,11 @@ object StringExpAssertionBuilder {
   def apply[T](stringExp: StringExp[T]): StringExpAssertionBuilder[T] =
     StringExpAssertionBuilder(stringExp, new NullExp[T,Bool]())
 
-  def apply[T](stringExp: StringExp[T], expression: BoolExpBehaviour[T]): StringExpAssertionBuilder[T] =
+  def apply[T](stringExp: StringExp[T], expression: ComposableBooleanExp[T]): StringExpAssertionBuilder[T] =
     new StringExpAssertionBuilder(stringExp, expression, _ and _)
 }
 
-case class StringExpAssertionBuilder[T](stringExp: StringExp[T], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
+case class StringExpAssertionBuilder[T](stringExp: StringExp[T], expression: ComposableBooleanExp[T], operator: (ComposableBooleanExp[T], ComposableBooleanExp[T]) => ComposableBooleanExp[T])
   extends AssertionBuilder[T,StringExpAssertionBuilder[T]](expression) {
 
   import StringExp._
@@ -128,7 +128,7 @@ case class StringExpAssertionBuilder[T](stringExp: StringExp[T], expression: Boo
   def isNotBlank: StringExpAssertionBuilder[T] =
     newWith(stringExp.isNotBlank)
 
-  private def newWith(newExpression: BoolExpBehaviour[T]) =
+  private def newWith(newExpression: ComposableBooleanExp[T]) =
     StringExpAssertionBuilder(stringExp, operator.apply(expression, newExpression))
 
   override def or: StringExpAssertionBuilder[T] =

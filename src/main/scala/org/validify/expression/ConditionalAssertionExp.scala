@@ -1,9 +1,9 @@
 package org.validify.expression
 
-case class ConditionalAssertionExp[T](predicate: BoolExpBehaviour[T],
-                                      trueExp: LogicalOperatorsExp[T,AssertionResultBehaviour[T]],
-                                      falseExp: LogicalOperatorsExp[T,AssertionResultBehaviour[T]])
-                                      extends AssertionExpBehaviour[T,T,T] {
+case class ConditionalAssertionExp[T](predicate: ComposableBooleanExp[T],
+                                      trueExp: Expression[T,AssertionResultBehaviour[T]],
+                                      falseExp: Expression[T,AssertionResultBehaviour[T]])
+                                      extends ComposableAssertionExp[T,T,T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
     predicate.evaluate(context)

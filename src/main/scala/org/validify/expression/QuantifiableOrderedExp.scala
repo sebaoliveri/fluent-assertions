@@ -60,16 +60,16 @@ case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends AnyExp[T,O
   def isLessThan(anotherQuantifiableExp: QuantifiableExp[T,R]): IsLessThanExp[T, R] =
     IsLessThanExp(this, anotherQuantifiableExp)
 
-  def isGreaterThanOrEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): BoolExpBehaviour[T] =
+  def isGreaterThanOrEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): ComposableBooleanExp[T] =
     isGreaterThan(anotherQuantifiableExp).or(isEqualTo(anotherQuantifiableExp))
 
-  def isLessThanOrEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): BoolExpBehaviour[T] =
+  def isLessThanOrEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): ComposableBooleanExp[T] =
     isLessThan(anotherQuantifiableExp).or(isEqualTo(anotherQuantifiableExp))
 
-  def isInInclusiveRange(min: QuantifiableExp[T,R], max: QuantifiableExp[T,R]): BoolExpBehaviour[T] =
+  def isInInclusiveRange(min: QuantifiableExp[T,R], max: QuantifiableExp[T,R]): ComposableBooleanExp[T] =
     isGreaterThanOrEqualTo(min).and(isLessThanOrEqualTo(max))
 
-  def isInExclusiveRange(min: QuantifiableExp[T,R], max: QuantifiableExp[T,R]): BoolExpBehaviour[T]  =
+  def isInExclusiveRange(min: QuantifiableExp[T,R], max: QuantifiableExp[T,R]): ComposableBooleanExp[T]  =
     isGreaterThan(min).and(isLessThan(max))
 
   def isEqualTo(anotherQuantifiableExp: QuantifiableExp[T,R]): IsQuantifiableEqualToExp[T, R] =
@@ -81,19 +81,19 @@ case class QuantifiableOrderedExp[T,R](func: T => Ordered[R]) extends AnyExp[T,O
 
 case class QuantifiableExp[T,R](func: T => R) extends AnyExp[T,R](func)
 
-case class IsGreaterThanExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends BoolExpBehaviour[T] {
+case class IsGreaterThanExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool =
     Bool(left.evaluate(context) > right.evaluate(context))
 }
 
-case class IsLessThanExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends BoolExpBehaviour[T] {
+case class IsLessThanExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool =
     Bool(left.evaluate(context) < right.evaluate(context))
 }
 
-case class IsQuantifiableEqualToExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends BoolExpBehaviour[T] {
+case class IsQuantifiableEqualToExp[T,R](left: QuantifiableOrderedExp[T,R], right: QuantifiableExp[T,R]) extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool =
     Bool(left.evaluate(context).compareTo(right.evaluate(context)) == 0)

@@ -4,24 +4,24 @@ import org.validify.assertion.AssertionFailureException
 
 import scala.util.{Either, Try}
 
-trait AssertionExpBehaviour[P1,P2,P3] extends LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]] {
+trait ComposableAssertionExp[P1,P2,P3] extends Expression[P1,AssertionResultBehaviour[P3]] {
 
-  def and(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
-    new AndExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+  def and(expression: Expression[P1,AssertionResultBehaviour[P3]]) =
+    new AndExp(left = this, right = expression) with ComposableAssertionExp[P1,P2,P3]
 
-  def or(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
-    new OrExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+  def or(expression: Expression[P1,AssertionResultBehaviour[P3]]) =
+    new OrExp(left = this, right = expression) with ComposableAssertionExp[P1,P2,P3]
 
-  def ifTrue(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
-    new IfTrueExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+  def ifTrue(expression: Expression[P1,AssertionResultBehaviour[P3]]) =
+    new IfTrueExp(left = this, right = expression) with ComposableAssertionExp[P1,P2,P3]
 
-  def ifFalse(expression: LogicalOperatorsExp[P1,AssertionResultBehaviour[P3]]) =
-    new IfFalseExp(left = this, right = expression) with AssertionExpBehaviour[P1,P2,P3]
+  def ifFalse(expression: Expression[P1,AssertionResultBehaviour[P3]]) =
+    new IfFalseExp(left = this, right = expression) with ComposableAssertionExp[P1,P2,P3]
 
   def map[P4](f: P3 => P4): MapAssertionExp[P1, P3, P4] =
     MapAssertionExp(this, f)
 
-  def flatMap[P4](f: P3 => LogicalOperatorsExp[P3,AssertionResultBehaviour[P4]]): FlatMapAssertionExp[P1,P3,P4] =
+  def flatMap[P4](f: P3 => Expression[P3,AssertionResultBehaviour[P4]]): FlatMapAssertionExp[P1,P3,P4] =
     FlatMapAssertionExp(this, f)
 
   def evaluate: AssertionResultBehaviour[P3] =

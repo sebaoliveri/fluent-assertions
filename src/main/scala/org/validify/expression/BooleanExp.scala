@@ -16,12 +16,12 @@ case class BooleanExp[T](func: T => Boolean) extends AnyExp[T,Boolean](func) {
   def isFalse: NotExp[T] = NotExp(isTrue)
 }
 
-case class TrueBooleanExp[T]() extends BoolExpBehaviour[T] {
+case class TrueBooleanExp[T]() extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool = TrueExp
 }
 
-case class FalseBooleanExp[T]() extends BoolExpBehaviour[T] {
+case class FalseBooleanExp[T]() extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool = FalseExp
 }

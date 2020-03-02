@@ -1,10 +1,13 @@
 
 import org.validify.assertion.AssertionBuilder._
 import org.scalatest.{FlatSpec, Matchers}
+import org.validify.expression.BooleanExp
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 
   case class Customer(name: String, email: String, homepage: String, age: String)
+
+  import org.validify.assertion.AssertionBuilder._
 
   it should "isEqualTo constant" in {
     assertThat("Sebastian").isEqualTo("Sebastian").otherwise("No way it fails...")

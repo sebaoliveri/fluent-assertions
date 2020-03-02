@@ -1,6 +1,6 @@
 package org.validify.assertion
 
-import org.validify.expression.{Bool, BoolExpBehaviour, IsDefinedExp, IterableExp, NullExp, ObjectExp, OptionalBoolExp, OptionalExp}
+import org.validify.expression.{Bool, ComposableBooleanExp, IsDefinedExp, IterableExp, NullExp, ObjectExp, OptionalBoolExp, OptionalExp}
 
 object OptionalIterableExpAssertionBuilder {
 
@@ -15,11 +15,11 @@ object OptionalIterableExpAssertionBuilder {
   def apply[T,R](optionalExp: OptionalExp[T,Iterable[R]]): OptionalIterableExpAssertionBuilder[T,R] =
     OptionalIterableExpAssertionBuilder(optionalExp, new NullExp[T,Bool]())
 
-  def apply[T,R](optionalExp: OptionalExp[T,Iterable[R]], expression: BoolExpBehaviour[T]): OptionalIterableExpAssertionBuilder[T,R] =
+  def apply[T,R](optionalExp: OptionalExp[T,Iterable[R]], expression: ComposableBooleanExp[T]): OptionalIterableExpAssertionBuilder[T,R] =
     new OptionalIterableExpAssertionBuilder(optionalExp, expression, _ and _)
 }
 
-case class OptionalIterableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Iterable[R]], expression: BoolExpBehaviour[T], operator: (BoolExpBehaviour[T], BoolExpBehaviour[T]) => BoolExpBehaviour[T])
+case class OptionalIterableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Iterable[R]], expression: ComposableBooleanExp[T], operator: (ComposableBooleanExp[T], ComposableBooleanExp[T]) => ComposableBooleanExp[T])
   extends AssertionBuilder[T,OptionalIterableExpAssertionBuilder[T,R]](expression) {
 
   import IterableExp._
@@ -27,12 +27,12 @@ case class OptionalIterableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ite
   def isDefined: OptionalIterableExpAssertionBuilder[T,R] =
     OptionalIterableExpAssertionBuilder(optionExp, operator(expression, IsDefinedExp[T,Iterable[R]](optionExp)))
 
-  private def indexBoundedTo(predicate: R => BoolExpBehaviour[Unit]): Int => R => BoolExpBehaviour[Unit] = index => predicate
+  private def indexBoundedTo(predicate: R => ComposableBooleanExp[Unit]): Int => R => ComposableBooleanExp[Unit] = index => predicate
 
-  def forAll(predicate: R => BoolExpBehaviour[Unit]): OptionalIterableExpAssertionBuilder[T,R] =
+  def forAll(predicate: R => ComposableBooleanExp[Unit]): OptionalIterableExpAssertionBuilder[T,R] =
     newWith(iterableConstant(_).forAll(indexBoundedTo(predicate)))
 
-  def existAny(predicate: R => BoolExpBehaviour[Unit]): OptionalIterableExpAssertionBuilder[T,R] =
+  def existAny(predicate: R => ComposableBooleanExp[Unit]): OptionalIterableExpAssertionBuilder[T,R] =
     newWith(iterableConstant(_).existAny(indexBoundedTo(predicate)))
 
   def containsAllOrdered(objects: Iterable[R]): OptionalIterableExpAssertionBuilder[T,R] =
@@ -83,6 +83,6 @@ case class OptionalIterableExpAssertionBuilder[T,R](optionExp: OptionalExp[T,Ite
   override def or: OptionalIterableExpAssertionBuilder[T, R] =
     OptionalIterableExpAssertionBuilder(optionExp, expression, _ or _)
 
-  private def newWith(newExpression: Iterable[R] => BoolExpBehaviour[T]): OptionalIterableExpAssertionBuilder[T,R] =
+  private def newWith(newExpression: Iterable[R] => ComposableBooleanExp[T]): OptionalIterableExpAssertionBuilder[T,R] =
     OptionalIterableExpAssertionBuilder(optionExp, operator.apply(expression, OptionalBoolExp[T,Iterable[R]](optionExp, newExpression)))
 }

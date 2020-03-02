@@ -1,11 +1,11 @@
 package org.validify.expression
 
-case class NullExp[T,R <: LogicalOperators[R]]() extends BoolExpBehaviour[T] {
+case class NullExp[T,R <: LogicalOperators[R]]() extends ComposableBooleanExp[T] {
 
-  override def and(expression: BoolExpBehaviour[T]): BoolExpBehaviour[T] =
+  override def and(expression: ComposableBooleanExp[T]): ComposableBooleanExp[T] =
     expression
 
-  override def or(expression: BoolExpBehaviour[T]): BoolExpBehaviour[T] =
+  override def or(expression: ComposableBooleanExp[T]): ComposableBooleanExp[T] =
     expression
 
   override def evaluate(context: T): Bool = ??? // do nothing

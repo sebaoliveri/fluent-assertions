@@ -119,7 +119,7 @@ object AssertionBuilder {
     fromMaybeLocalDateTimeVariable(localDateTime)
 }
 
-abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: BoolExpBehaviour[T]) {
+abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: ComposableBooleanExp[T]) {
 
   def or: U
 

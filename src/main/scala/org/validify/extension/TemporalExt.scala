@@ -1,7 +1,7 @@
 package org.validify.extension
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZonedDateTime}
-import org.validify.expression.{BoolExpBehaviour, IsQuantifiableEqualToExp, QuantifiableExp}
+import org.validify.expression.{ComposableBooleanExp, IsQuantifiableEqualToExp, QuantifiableExp}
 
 object TemporalExt {
 
@@ -9,19 +9,19 @@ object TemporalExt {
 
     import org.validify.expression.TemporalExp._
 
-    def isAfterExp(anotherInstant: Instant): BoolExpBehaviour[Unit] =
+    def isAfterExp(anotherInstant: Instant): ComposableBooleanExp[Unit] =
       instantConstant(instant).isGreaterThan(QuantifiableExp(_ => anotherInstant))
 
-    def isBeforeExp(anotherInstant: Instant): BoolExpBehaviour[Unit] =
+    def isBeforeExp(anotherInstant: Instant): ComposableBooleanExp[Unit] =
       instantConstant(instant).isLessThan(QuantifiableExp(_ => anotherInstant))
 
-    def isAfterOrSameThanExp(anotherInstant: Instant): BoolExpBehaviour[Unit] =
+    def isAfterOrSameThanExp(anotherInstant: Instant): ComposableBooleanExp[Unit] =
       instantConstant(instant).isGreaterThanOrEqualTo(QuantifiableExp(_ => anotherInstant))
 
-    def isBeforeOrSameThanExp(anotherInstant: Instant): BoolExpBehaviour[Unit] =
+    def isBeforeOrSameThanExp(anotherInstant: Instant): ComposableBooleanExp[Unit] =
       instantConstant(instant).isLessThanOrEqualTo(QuantifiableExp(_ => anotherInstant))
 
-    def isInBetweenExp(min: Instant, max: Instant): BoolExpBehaviour[Unit] =
+    def isInBetweenExp(min: Instant, max: Instant): ComposableBooleanExp[Unit] =
       isAfterOrSameThanExp(min).and(isBeforeOrSameThanExp(max))
 
     def isEqualToExp(anotherInstant: Instant): IsQuantifiableEqualToExp[Unit,Instant] =
@@ -32,19 +32,19 @@ object TemporalExt {
 
     import org.validify.expression.TemporalExp._
 
-    def isAfterExp(anotherZonedDateTime: ZonedDateTime): BoolExpBehaviour[Unit] =
+    def isAfterExp(anotherZonedDateTime: ZonedDateTime): ComposableBooleanExp[Unit] =
       zonedDateTimeConstant(zonedDateTime).isGreaterThan(QuantifiableExp(_ => anotherZonedDateTime))
 
-    def isBeforeExp(anotherZonedDateTime: ZonedDateTime): BoolExpBehaviour[Unit] =
+    def isBeforeExp(anotherZonedDateTime: ZonedDateTime): ComposableBooleanExp[Unit] =
       zonedDateTimeConstant(zonedDateTime).isLessThan(QuantifiableExp(_ => anotherZonedDateTime))
 
-    def isAfterOrSameThanExp(anotherZonedDateTime: ZonedDateTime): BoolExpBehaviour[Unit] =
+    def isAfterOrSameThanExp(anotherZonedDateTime: ZonedDateTime): ComposableBooleanExp[Unit] =
       zonedDateTimeConstant(zonedDateTime).isGreaterThanOrEqualTo(QuantifiableExp(_ => anotherZonedDateTime))
 
-    def isBeforeOrSameThanExp(anotherZonedDateTime: ZonedDateTime): BoolExpBehaviour[Unit] =
+    def isBeforeOrSameThanExp(anotherZonedDateTime: ZonedDateTime): ComposableBooleanExp[Unit] =
       zonedDateTimeConstant(zonedDateTime).isLessThanOrEqualTo(QuantifiableExp(_ => anotherZonedDateTime))
 
-    def isInBetweenExp(min: ZonedDateTime, max: ZonedDateTime): BoolExpBehaviour[Unit] =
+    def isInBetweenExp(min: ZonedDateTime, max: ZonedDateTime): ComposableBooleanExp[Unit] =
       isAfterOrSameThanExp(min).and(isBeforeOrSameThanExp(max))
 
     def isEqualToExp(anotherZonedDateTime: ZonedDateTime): IsQuantifiableEqualToExp[Unit,ZonedDateTime] =
@@ -55,19 +55,19 @@ object TemporalExt {
 
     import org.validify.expression.TemporalExp._
 
-    def isAfterExp(anotherLocalDate: LocalDate): BoolExpBehaviour[Unit] =
+    def isAfterExp(anotherLocalDate: LocalDate): ComposableBooleanExp[Unit] =
       localDateConstant(localDate).isGreaterThan(QuantifiableExp(_ => anotherLocalDate))
 
-    def isBeforeExp(anotherLocalDate: LocalDate): BoolExpBehaviour[Unit] =
+    def isBeforeExp(anotherLocalDate: LocalDate): ComposableBooleanExp[Unit] =
       localDateConstant(localDate).isLessThan(QuantifiableExp(_ => anotherLocalDate))
 
-    def isAfterOrSameThanExp(anotherLocalDate: LocalDate): BoolExpBehaviour[Unit] =
+    def isAfterOrSameThanExp(anotherLocalDate: LocalDate): ComposableBooleanExp[Unit] =
       localDateConstant(localDate).isGreaterThanOrEqualTo(QuantifiableExp(_ => anotherLocalDate))
 
-    def isBeforeOrSameThanExp(anotherLocalDate: LocalDate): BoolExpBehaviour[Unit] =
+    def isBeforeOrSameThanExp(anotherLocalDate: LocalDate): ComposableBooleanExp[Unit] =
       localDateConstant(localDate).isLessThanOrEqualTo(QuantifiableExp(_ => anotherLocalDate))
 
-    def isInBetweenExp(min: LocalDate, max: LocalDate): BoolExpBehaviour[Unit] =
+    def isInBetweenExp(min: LocalDate, max: LocalDate): ComposableBooleanExp[Unit] =
       isAfterOrSameThanExp(min).and(isBeforeOrSameThanExp(max))
 
     def isEqualToExp(anotherLocalDate: LocalDate): IsQuantifiableEqualToExp[Unit,LocalDate] =
@@ -78,19 +78,19 @@ object TemporalExt {
 
     import org.validify.expression.TemporalExp._
 
-    def isAfterExp(anotherLocalDateTime: LocalDateTime): BoolExpBehaviour[Unit] =
+    def isAfterExp(anotherLocalDateTime: LocalDateTime): ComposableBooleanExp[Unit] =
       localDateTimeConstant(localDateTime).isGreaterThan(QuantifiableExp(_ => anotherLocalDateTime))
 
-    def isBeforeExp(anotherLocalDateTime: LocalDateTime): BoolExpBehaviour[Unit] =
+    def isBeforeExp(anotherLocalDateTime: LocalDateTime): ComposableBooleanExp[Unit] =
       localDateTimeConstant(localDateTime).isLessThan(QuantifiableExp(_ => anotherLocalDateTime))
 
-    def isAfterOrSameThanExp(anotherLocalDateTime: LocalDateTime): BoolExpBehaviour[Unit] =
+    def isAfterOrSameThanExp(anotherLocalDateTime: LocalDateTime): ComposableBooleanExp[Unit] =
       localDateTimeConstant(localDateTime).isGreaterThanOrEqualTo(QuantifiableExp(_ => anotherLocalDateTime))
 
-    def isBeforeOrSameThanExp(anotherLocalDateTime: LocalDateTime): BoolExpBehaviour[Unit] =
+    def isBeforeOrSameThanExp(anotherLocalDateTime: LocalDateTime): ComposableBooleanExp[Unit] =
       localDateTimeConstant(localDateTime).isLessThanOrEqualTo(QuantifiableExp(_ => anotherLocalDateTime))
 
-    def isInBetweenExp(min: LocalDateTime, max: LocalDateTime): BoolExpBehaviour[Unit] =
+    def isInBetweenExp(min: LocalDateTime, max: LocalDateTime): ComposableBooleanExp[Unit] =
       isAfterOrSameThanExp(min).and(isBeforeOrSameThanExp(max))
 
     def isEqualToExp(anotherLocalDateTime: LocalDateTime): IsQuantifiableEqualToExp[Unit,LocalDateTime] =

@@ -1,6 +1,6 @@
 package org.validify.extension
 
-import org.validify.expression.BoolExpBehaviour
+import org.validify.expression.ComposableBooleanExp
 
 object BooleanExt {
 
@@ -8,8 +8,8 @@ object BooleanExt {
 
   implicit class BooleanExtensions(boolean: Boolean) {
 
-    def isTrueExp: BoolExpBehaviour[Unit] = boolConstant(boolean).isTrue
+    def isTrueExp: ComposableBooleanExp[Unit] = boolConstant(boolean).isTrue
 
-    def isFalseExp: BoolExpBehaviour[Unit] = boolConstant(boolean).isFalse
+    def isFalseExp: ComposableBooleanExp[Unit] = boolConstant(boolean).isFalse
   }
 }

@@ -11,7 +11,7 @@ object OptionalExp {
 
 case class OptionalExp[T,R](func: T => Option[R]) extends AnyExp[T,Option[R]](func)
 
-case class OptionalBoolExp[T,R](constantExp: OptionalExp[T,R], expressionProvider: R => BoolExpBehaviour[T]) extends BoolExpBehaviour[T] {
+case class OptionalBoolExp[T,R](constantExp: OptionalExp[T,R], expressionProvider: R => ComposableBooleanExp[T]) extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool =
     constantExp.evaluate(context)
@@ -19,7 +19,7 @@ case class OptionalBoolExp[T,R](constantExp: OptionalExp[T,R], expressionProvide
       .getOrElse(TrueExp)
 }
 
-case class IsDefinedExp[T,R](constantExp: OptionalExp[T,R]) extends BoolExpBehaviour[T] {
+case class IsDefinedExp[T,R](constantExp: OptionalExp[T,R]) extends ComposableBooleanExp[T] {
 
   override def evaluate(context: T): Bool =
     Bool(constantExp.evaluate(context).isDefined)
