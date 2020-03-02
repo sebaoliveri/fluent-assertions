@@ -17,4 +17,7 @@ trait ComposableBooleanExp[T] extends Expression[T,Bool] {
   def thenElse(trueExp: Expression[T,AssertionResultBehaviour[T]],
                falseExp: Expression[T,AssertionResultBehaviour[T]]): ConditionalAssertionExp[T] =
     ConditionalAssertionExp(this, trueExp, falseExp)
+
+  def evaluate: Bool =
+    evaluate(new Object().asInstanceOf[T])
 }
