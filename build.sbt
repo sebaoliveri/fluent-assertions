@@ -1,5 +1,5 @@
 name := "fluent-assertions"
-organization := "validify"
+organization := "nulluncertainty"
 
 version := "1.0.0"
 

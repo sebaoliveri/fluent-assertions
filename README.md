@@ -16,7 +16,7 @@ libraryDependencies += "validify" %% "fluent-assertions" % "1.0.0"
 Raise an _AssertionFailureException_ describing all the errors if User can not be instantiated because of invalid construction: 
 
 ```scala
-    import org.validify.assertion.AssertionBuilder._
+    import org.nulluncertainty.assertion.AssertionBuilder._
 
     assertThat(name).isNotBlank.otherwise("The name is required")
     .and(assertThat(name).isAlphabetic.otherwise("The name must contain alphabetic chars only"))
@@ -31,7 +31,7 @@ Raise an _AssertionFailureException_ describing all the errors if User can not b
 Or raise your own _DomainValidationException_ describing all the errors if User can not be instantiated because of invalid construction: 
 
 ```scala
-    import org.validify.assertion.AssertionBuilder._
+    import org.nulluncertainty.assertion.AssertionBuilder._
 
     assertThat(name).isNotBlank.otherwise("The name is required")
     .and(assertThat(name).isAlphabetic.otherwise("The name must contain alphabetic chars only"))
@@ -46,7 +46,7 @@ Or raise your own _DomainValidationException_ describing all the errors if User 
 Assertions can also be lazily evaluated passing in a context:
 
 ```scala
-    import org.validify.assertion.AssertionBuilder._
+    import org.nulluncertainty.assertion.AssertionBuilder._
 
     assertThat({user:User => user.name}).isNotBlank.otherwise("The name is required")
     .and(assertThat({user:User => user.name}).isAlphabetic.otherwise("The name must contain alphabetic chars only"))
@@ -62,7 +62,7 @@ Assertions can also be lazily evaluated passing in a context:
 Because of assertions can be lazily evaluated, at the end it is just a description of what should be evaluated:
 
 ```scala
-    import org.validify.assertion.AssertionBuilder._
+    import org.nulluncertainty.assertion.AssertionBuilder._
 
     val userValidation =
         assertThat({user:User => user.name}).isNotBlank.otherwise("The name is required")
@@ -148,7 +148,7 @@ or to get an Either[AssertionFailureException, T]
 Assertions can also be composable by using Map and FlatMap:
 
 ```scala
-    import org.validify.extension.QuantifiableExt._
+    import org.nulluncertainty.extension.QuantifiableExt._
 
     assertThat({customersByAge: Map[Int,String] => customersByAge}).containsNoDuplicates.otherwise("repeated customers not allowed")
       .map(_.keys)
@@ -167,7 +167,7 @@ They can also be used in test cases, expected to be True:
 
 
 ```scala
-    import org.validify.assertion.AssertionBuilder._
+    import org.nulluncertainty.assertion.AssertionBuilder._
 
     assertThat(name).isNotBlank.otherwise("The name is required")
     .and(assertThat(name).isAlphabetic.otherwise("The name must contain alphabetic chars only"))
