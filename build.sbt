@@ -1,9 +1,14 @@
+
+lazy val scala212 = "2.12.9"
+lazy val scala213 = "2.13.1"
+lazy val supportedScalaVersions = List(scala212, scala213)
+lazy val akkaVersion = "2.6.1"
+
 name := "fluent-assertions"
 organization := "nulluncertainty"
-
-version := "1.0.0"
-
-scalaVersion := "2.13.1"
+version := "1.1.0"
+scalaVersion := scala213
+crossScalaVersions := supportedScalaVersions
 
 resolvers += Resolver.bintrayRepo("sebasoliveri", "maven")
 

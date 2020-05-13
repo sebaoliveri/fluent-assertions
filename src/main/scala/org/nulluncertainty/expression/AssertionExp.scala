@@ -4,7 +4,7 @@ import org.nulluncertainty.assertion.AssertionFailureException
 
 import scala.util.{Either, Failure, Success, Try}
 
-case class AssertionExp[T](expression: Expression[T,Bool], otherwise: T => String)
+case class AssertionExp[T,E](expression: Expression[T,Bool], otherwise: T => E)
   extends ComposableAssertionExp[T,T,T] {
 
   override def evaluate(context: T): AssertionResultBehaviour[T] =
@@ -24,13 +24,13 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def andSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T]
 
-  def andFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T]
+  def andFailure[E](result: AssertionFailureResult[T,E]): AssertionResultBehaviour[T]
 
   def orSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T]
 
-  def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T]
+  def orFailure[E](result: AssertionFailureResult[T,E]): AssertionResultBehaviour[T]
 
-  def toEither: Either[AssertionFailureException, T]
+  def toEither[E]: Either[AssertionFailureException[E], T]
 
   def toTry: Try[T]
 
@@ -40,7 +40,7 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def signalIfFailed(): Unit
 
-  def signalIfFailed(throwable: Seq[String] => Throwable): Unit
+  def signalIfFailed[E](throwable: Seq[E] => Throwable): Unit
 
   def matches[R](partialFunction: PartialFunction[AssertionResultBehaviour[_], R]): R =
     partialFunction.apply(this)
@@ -49,7 +49,7 @@ trait AssertionResultBehaviour[T] extends LogicalOperators[AssertionResultBehavi
 
   def map[U](f: T => U): AssertionResultBehaviour[U]
 
-  def fold[U](fa: List[String] => U, fb: T => U): U
+  def fold[U,E](fa: List[E] => U, fb: T => U): U
 
   def toOption: Option[T]
 }
@@ -62,7 +62,7 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def andSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
     this
 
-  override def andFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
+  override def andFailure[E](result: AssertionFailureResult[T,E]): AssertionResultBehaviour[T] =
     result
 
   override def or(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
@@ -71,10 +71,10 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def orSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
     this
 
-  override def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
+  override def orFailure[E](result: AssertionFailureResult[T,E]): AssertionResultBehaviour[T] =
     this
 
-  override def toEither: Either[AssertionFailureException, T] =
+  override def toEither[E]: Either[AssertionFailureException[E], T] =
     Right(context)
 
   override def toTry: Try[T] = Success(context)
@@ -92,18 +92,18 @@ case class AssertionSuccessfulResult[T](context: T) extends AssertionResultBehav
   override def map[U](f: T => U): AssertionResultBehaviour[U] =
     AssertionSuccessfulResult(f(context))
 
-  override def signalIfFailed(throwable: Seq[String] => Throwable): Unit = {}
+  override def signalIfFailed[E](throwable: Seq[E] => Throwable): Unit = {}
 
   override def ifTrue(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = block
 
-  override def fold[U](fa: List[String] => U, fb: T => U): U = fb(context)
+  override def fold[U,E](fa: List[E] => U, fb: T => U): U = fb(context)
 
   override def toOption: Option[T] = Some(context)
 
   override def ifFalse(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = this
 }
 
-case class AssertionFailureResult[T](errorMessages: List[String]) extends AssertionResultBehaviour[T] {
+case class AssertionFailureResult[T,E](errorMessages: List[E]) extends AssertionResultBehaviour[T] {
 
   override def and(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
     assertionResult.andFailure(this)
@@ -111,7 +111,7 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def andSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
     this
 
-  override def andFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
+  override def andFailure[E](result: AssertionFailureResult[T,E]): AssertionResultBehaviour[T] =
     AssertionFailureResult(result.errorMessages ++ errorMessages)
 
   override def or(assertionResult: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] =
@@ -120,11 +120,11 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def orSuccessful(result: AssertionSuccessfulResult[T]): AssertionResultBehaviour[T] =
     result
 
-  override def orFailure(result: AssertionFailureResult[T]): AssertionResultBehaviour[T] =
+  override def orFailure[E](result: AssertionFailureResult[T,E]): AssertionResultBehaviour[T] =
     AssertionFailureResult(result.errorMessages ++ errorMessages)
 
-  override def toEither: Either[AssertionFailureException, T] =
-    Left(AssertionFailureException(errorMessages))
+  override def toEither[E]: Either[AssertionFailureException[E], T] =
+    Left(AssertionFailureException(errorMessages.map(_.asInstanceOf[E])))
 
   override def toTry: Try[T] = Failure(AssertionFailureException(errorMessages))
 
@@ -144,12 +144,12 @@ case class AssertionFailureResult[T](errorMessages: List[String]) extends Assert
   override def map[U](f: T => U): AssertionResultBehaviour[U] =
     this.asInstanceOf[AssertionResultBehaviour[U]]
 
-  override def signalIfFailed(throwable: Seq[String] => Throwable): Unit =
-    throw throwable(errorMessages)
+  override def signalIfFailed[E](throwable: Seq[E] => Throwable): Unit =
+    throw throwable(errorMessages.map(_.asInstanceOf[E]))
 
   override def ifTrue(block: => AssertionResultBehaviour[T]): AssertionResultBehaviour[T] = this
 
-  override def fold[U](fa: List[String] => U, fb: T => U): U = fa(errorMessages)
+  override def fold[U,E](fa: List[E] => U, fb: T => U): U = fa(errorMessages.map(_.asInstanceOf[E]))
 
   override def toOption: Option[T] = None
 

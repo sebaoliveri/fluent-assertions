@@ -1,15 +1,24 @@
 package org.nulluncertainty
 
 
+import org.nulluncertainty.assertion.AssertionFailureException
+import org.nulluncertainty.expression.{AssertionExp, AssertionFailureResult, AssertionResultBehaviour, AssertionSuccessfulResult, ComposableAssertionExp, Expression, SuccessfulAssertionExp}
 import org.scalatest.{FlatSpec, Matchers}
+
+import scala.util.Try
 
 class StringAssertionSpec extends FlatSpec with Matchers {
 
-  case class Customer(name: String, email: String, homepage: String, age: String)
-
   import org.nulluncertainty.assertion.AssertionBuilder._
 
+  case class Customer(name: String, email: String, homepage: String, age: String)
+
+  case class Error(property: String, message: String)
+
   it should "isEqualTo constant" in {
+
+    assertThat(10).isLessThan(100).otherwise("Boom!").signalIfFailed()
+
     assertThat("Sebastian").isEqualTo("Sebastian").otherwise("No way it fails...")
       .expectsToBeTrue()
     assertThat("Sebastian").isEqualTo("sebastian").otherwise("Sebastian is not equal to sebastian")

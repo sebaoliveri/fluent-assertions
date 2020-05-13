@@ -230,6 +230,6 @@ abstract class AssertionBuilder[T,U <: AssertionBuilder[T,U]](expression: Compos
   def orThat(localDateTime: T => Option[LocalDateTime])(implicit d1:DummyImplicit,d2:DummyImplicit,d3:DummyImplicit,d4:DummyImplicit,d5:DummyImplicit,d6:DummyImplicit,d7:DummyImplicit,d8:DummyImplicit): OptionalTemporalExpAssertionBuilder[T,LocalDateTime] = orThatMaybeDateExp(localDateTime.andThen(_.map(OrderedLocalDateTime)))
   private def orThatMaybeDateExp[R](maybeOrdered: T => Option[Ordered[R]]): OptionalTemporalExpAssertionBuilder[T,R] = new OptionalTemporalExpAssertionBuilder(OptionalExp(maybeOrdered), expression, _ or _)
 
-  def otherwise(errorMsg: String): AssertionExp[T] = AssertionExp(expression, { _:T => errorMsg})
-  def otherwise(errorMsg: T => String): AssertionExp[T] = AssertionExp(expression, errorMsg)
+  def otherwise[E](error: E): AssertionExp[T,E] = AssertionExp(expression, { _:T => error})
+  def otherwise[E](error: T => E): AssertionExp[T,E] = AssertionExp(expression, error)
 }

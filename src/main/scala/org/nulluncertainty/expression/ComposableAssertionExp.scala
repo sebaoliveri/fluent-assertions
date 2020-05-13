@@ -27,7 +27,7 @@ trait ComposableAssertionExp[P1,P2,P3] extends Expression[P1,AssertionResultBeha
   def evaluate: AssertionResultBehaviour[P3] =
     evaluate(new Object().asInstanceOf[P1])
 
-  def toEither: Either[AssertionFailureException,P3] =
+  def toEither[E]: Either[AssertionFailureException[E],P3] =
     evaluate.toEither
 
   def toTry: Try[P3] =
