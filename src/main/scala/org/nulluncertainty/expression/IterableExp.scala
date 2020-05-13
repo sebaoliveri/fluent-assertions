@@ -21,6 +21,9 @@ case class IterableExp[T,R](func: T => Iterable[R]) extends AnyExp[T,Iterable[R]
   private val ignoreOrder: Int => R => Int => R => ComposableBooleanExp[Unit] = _ => r1 => _ => r2 =>
     objectConstant(r1).isEqualTo(objectConstant(r2))
 
+  def mustBeEqual[R1](func: R => R1): ComposableBooleanExp[T] =
+    MustBeEqualExp(this, func)
+
   def forAll(predicate: Int => R => ComposableBooleanExp[Unit]): ComposableBooleanExp[T] =
     FoldIterableExp(this, predicate, TrueExp, _ and _)
 
@@ -55,6 +58,13 @@ case class IterableExp[T,R](func: T => Iterable[R]) extends AnyExp[T,Iterable[R]
     IsQuantifiableEqualToExp(intVariable(func.andThen(_.size)), QuantifiableExp(_ => 0))
 
   def isNotEmpty: ComposableBooleanExp[T] = NotExp(isEmpty)
+}
+
+case class MustBeEqualExp[T,R,R1](iterableExp: IterableExp[T,R], func: R => R1) extends ComposableBooleanExp[T] {
+
+  override def evaluate(context: T): Bool =
+    if (iterableExp.evaluate(context).isEmpty) TrueExp
+    else Bool(iterableExp.evaluate(context).map(func).toSet.size == 1)
 }
 
 case class FoldIterableExp[T,R](iterableExp: IterableExp[T,R],

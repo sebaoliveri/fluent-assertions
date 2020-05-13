@@ -6,7 +6,7 @@ lazy val akkaVersion = "2.6.1"
 
 name := "fluent-assertions"
 organization := "nulluncertainty"
-version := "1.1.0"
+version := "2.0.0"
 scalaVersion := scala213
 crossScalaVersions := supportedScalaVersions
 

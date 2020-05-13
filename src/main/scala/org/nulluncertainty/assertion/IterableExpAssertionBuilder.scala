@@ -76,6 +76,12 @@ case class IterableExpAssertionBuilder[T,R](iterableExp: IterableExp[T,R], expre
   def isEmpty: IterableExpAssertionBuilder[T,R] =
     newWith(iterableExp.isEmpty)
 
+  def mustBeEqual[R1](func: R => R1): IterableExpAssertionBuilder[T, R] =
+    newWith(iterableExp.mustBeEqual(func))
+
+  def mustBeEqual: IterableExpAssertionBuilder[T, R] =
+    newWith(iterableExp.mustBeEqual(identity))
+
   private def newWith(newExpression: ComposableBooleanExp[T]): IterableExpAssertionBuilder[T,R] =
     IterableExpAssertionBuilder(iterableExp, operator.apply(expression, newExpression))
 
