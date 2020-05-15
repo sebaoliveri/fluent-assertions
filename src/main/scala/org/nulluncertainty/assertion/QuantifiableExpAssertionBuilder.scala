@@ -82,7 +82,7 @@ case class QuantifiableExpAssertionBuilder[T,R: ClassTag](quantifiableExp: Quant
     isInExclusiveRange(_ => min, _ => max)
 
   def isInExclusiveRange(min: T => R, max: T => R): QuantifiableExpAssertionBuilder[T,R] =
-    newWith(quantifiableExp.isInInclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
+    newWith(quantifiableExp.isInExclusiveRange(QuantifiableExp(min), QuantifiableExp(max)))
 
   def isPercentage: QuantifiableExpAssertionBuilder[T,R] = {
     val clazz = classTag[R].runtimeClass
