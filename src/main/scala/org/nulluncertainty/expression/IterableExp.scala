@@ -83,11 +83,13 @@ case class ContainsAllIterableExp[T,R](iterableExp: IterableExp[T,R],
                                        operator: (ComposableBooleanExp[T],ComposableBooleanExp[T]) => ComposableBooleanExp[T],
                                        predicate: Int => R => Int => R => ComposableBooleanExp[Unit]) extends ComposableBooleanExp[T] {
 
-  override def evaluate(context: T): Bool = {
+  override def evaluate(context: T): Bool =
     subIterableExp.evaluate(context).zipWithIndex.foldLeft[ComposableBooleanExp[T]](NullExp[T,Bool]())
       { case (result,(iterated,index)) => operator(result, iterableExp.existAny(predicate(index)(iterated))) }
-    .evaluate(context)
-  }
+      match {
+        case _:NullExp[T,R] => FalseExp
+        case other => other.evaluate(context)
+      }
 }
 
 case class ContainsSomeIterableExp[T,R](iterableExp: IterableExp[T,R],

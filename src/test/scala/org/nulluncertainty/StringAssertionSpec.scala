@@ -5,8 +5,6 @@ import org.nulluncertainty.assertion.AssertionFailureException
 import org.nulluncertainty.expression.{AssertionExp, AssertionFailureResult, AssertionResultBehaviour, AssertionSuccessfulResult, ComposableAssertionExp, Expression, SuccessfulAssertionExp}
 import org.scalatest.{FlatSpec, Matchers}
 
-import scala.util.Try
-
 class StringAssertionSpec extends FlatSpec with Matchers {
 
   import org.nulluncertainty.assertion.AssertionBuilder._

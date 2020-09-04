@@ -20,4 +20,8 @@ trait ComposableBooleanExp[T] extends Expression[T,Bool] {
 
   def evaluate: Bool =
     evaluate(new Object().asInstanceOf[T])
+
+  def isTrue: Boolean = evaluate == TrueExp
+
+  def isFalse: Boolean = !isTrue
 }
