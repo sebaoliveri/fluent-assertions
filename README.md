@@ -1,8 +1,8 @@
 ## Fluent assertions
 
-A long long time ago I was taught real devs do not use IFs. However, when writing a condition using objects of different domains there's no way to avoid IFs. For Domain Driven Design we need IFs for describing preconditions. Mostly, this applies for objects construction as well as message sending between objects. Why not to validate http requests too? As you see, preconditions are key to describe scenarios for valid object instantiation and valid object transitions in any effective model.
+A long long time ago I was taught real devs do not use IFs. However, when writing a condition using objects of different domains there's no way to avoid IFs. In OO  preconditions are used when creating new instances to make sure objects are valid since momento zero, as well as describing preconditions when evaluation an object method to make sure invariants are preserved.
 
-Software models must be legible, representative of what they are modelling. The semantic gap betweeen the Model and the Reality being modelled should tend to zero. Code with tons of idented IFs-ELSEs are error prone, really hard to reason about, add accidental complexity and misrepresent the reality being modelled, among other disadvantages.  
+Large IF-ELSE lines of codes depend on the developer to maintain and are really hard to reason about. Let's delegate that task to the objects of fluent-assertions and lighten the work of the developer. At the end software models must be legible, representative of what they are modelling.
 
 __fluent-assertions__ _is the result of materializing my motivation to propose a validation model to reify assertions as first class objects._ 
 
