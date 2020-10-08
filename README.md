@@ -12,7 +12,7 @@ This lib supports Scala 2.13
 Add in your build.sbt the following lines:
 ```
 resolvers += Resolver.bintrayRepo("fluent-assertions", "releases")
-libraryDependencies += "nulluncertainty" %% "fluent-assertions" % "1.0.0"
+libraryDependencies += "nulluncertainty" %% "fluent-assertions" % "2.0.1"
 ```
 
 ### Usages
