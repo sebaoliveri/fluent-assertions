@@ -10,8 +10,6 @@ version := "2.0.2"
 scalaVersion := scala213
 crossScalaVersions := supportedScalaVersions
 
-resolvers += Resolver.bintrayRepo("sebasoliveri", "maven")
-
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.8" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 
@@ -37,8 +35,7 @@ pomExtra :=
     </developers>
 
 publishTo := Some(
-  "bintray" at
-    "https://api.bintray.com/maven/fluent-assertions/" +
-      "releases/fluent-assertions/;publish=1")
+  "chalten" at
+    "https://chalten.jfrog.io/artifactory/releases")
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
 publishMavenStyle := true
